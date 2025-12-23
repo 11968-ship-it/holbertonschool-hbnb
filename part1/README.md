@@ -90,7 +90,7 @@ This section describes how the system components interact for selected API calls
 
 ### 1) User Registration Flow
 
-Goal: Create a new user account while ensuring valid input and preventing duplicate registrations (email uniqueness).
+**Goal**: Create a new user account while ensuring valid input and preventing duplicate registrations (email uniqueness).
 
 ![SequenceDiagram4](https://github.com/user-attachments/assets/e3a8fdf2-d27b-4d10-8004-26bf109eb803)
 
@@ -103,20 +103,20 @@ Goal: Create a new user account while ensuring valid input and preventing duplic
 
 **Sequence Summary**
 
-1. User → API: ```Register(id, first_name, last_name, password, email)```
-2. API: Validates required fields and request format.
-3. API → HBnBFacade: Forwards a valid registration request.
-4. HBnBFacade → Database: Checks if the email already exists (```Query user by email```).
-5. Database → HBnBFacade: Returns result (```Email exists? true/false```).
+1. **User → API**: ```Register(id, first_name, last_name, password, email)```
+2. **API**: Validates required fields and request format.
+3. **API → HBnBFacade**: Forwards a valid registration request.
+4. **HBnBFacade → Database**: Checks if the email already exists (```Query user by email```).
+5. **Database → HBnBFacade**: Returns result (```Email exists? true/false```).
 6. If email exists:
-  * HBnBFacade → API: Returns registration failure (```email in use```)
-  * API → User: Displays error/failure response
+  * **HBnBFacade → API**: Returns registration failure (```email in use```)
+  * **API → User**: Displays error/failure response
 7. If email does not exist:
-  * HBnBFacade: Hashes password and builds the user entity.
-  * HBnBFacade → Database: Saves user record (```Save user``` with id, hashed password, created/updated timestamps, etc.).
-  * Database → HBnBFacade: Confirms record creation (```User created```).
-  * HBnBFacade → API: Returns success.
-  * API → User: Displays success response.
+  * **HBnBFacade**: Hashes password and builds the user entity.
+  * **HBnBFacade → Database**: Saves user record (```Save user``` with id, hashed password, created/updated timestamps, etc.).
+  * **Database → HBnBFacade**: Confirms record creation (```User created```).
+  * **HBnBFacade → API**: Returns success.
+  * **API → User**: Displays success response.
 
 **Data Flow Notes**
 
