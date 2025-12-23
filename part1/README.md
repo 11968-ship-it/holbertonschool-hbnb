@@ -4,7 +4,7 @@
 what this project about
 
 ## High-Level Architecture
-<img width="657" height="505" alt="image" src="https://github.com/user-attachments/assets/c07b85df-9f7d-4b68-be88-d319fb6d77bb" />
+![PackageDiagram1](https://github.com/user-attachments/assets/54af4884-1032-42e9-9884-49f828d9797d)
 
 **Overview**
 
