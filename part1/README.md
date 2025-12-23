@@ -85,3 +85,44 @@ The Persistence Layer is responsible for managing data persistence and retrieval
 ## Business Logic Layer
 fff
 ## API Interaction Flow
+
+This section describes how the system components interact for selected API calls. The sequence diagrams illustrate the flow of control and data exchanged between the User (client), Presentation Layer (API), Business Logic Layer (HBnBFacade), and Persistence Layer (Database).
+
+### 1) User Registration Flow
+
+Goal: Create a new user account while ensuring valid input and preventing duplicate registrations (email uniqueness).
+
+![SequenceDiagram4](https://github.com/user-attachments/assets/e3a8fdf2-d27b-4d10-8004-26bf109eb803)
+
+**Actors / Components**
+
+* User (Client): Sends registration details
+* Presentation Layer (API): Receives request, validates fields, triggers the use case
+* Business Logic Layer (HBnBFacade): Applies business rules (uniqueness, hashing, entity creation)
+* Persistence Layer (Database): Checks existing users and stores the new user record
+
+**Sequence Summary**
+
+1. User → API: ```Register(id, first_name, last_name, password, email)```
+2. API: Validates required fields and request format.
+3. API → HBnBFacade: Forwards a valid registration request.
+4. HBnBFacade → Database: Checks if the email already exists (```Query user by email```).
+5. Database → HBnBFacade: Returns result (```Email exists? true/false```).
+6. If email exists:
+  * HBnBFacade → API: Returns registration failure (```email in use```)
+  * API → User: Displays error/failure response
+7. If email does not exist:
+  * HBnBFacade: Hashes password and builds the user entity.
+  * HBnBFacade → Database: Saves user record (```Save user``` with id, hashed password, created/updated timestamps, etc.).
+  * Database → HBnBFacade: Confirms record creation (```User created```).
+  * HBnBFacade → API: Returns success.
+  * API → User: Displays success response.
+
+**Data Flow Notes**
+
+* The API layer should never store passwords directly; it only forwards them to business logic for hashing.
+* The Business Logic Layer is responsible for enforcing:
+  * uniqueness constraints (email)
+  * password hashing
+  * entity creation rules
+* The Persistence Layer handles the actual write operation and returns storage results.
