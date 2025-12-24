@@ -167,10 +167,10 @@ It shows how the request flows through the system layers and how components inte
 6. HBnBFacade returns the created Place to PlaceController
 7. PlaceController responds with HTTP 201 Created to the client
 
-<<<<<<< HEAD
 ** Conclusion **
 This sequence shows how a create-place request moves through the system.
 It helps ensure correct interaction between the API, business logic, and persistence layers. 
+
 =======
 ### 3) Review Submission
 Lamyaa here
