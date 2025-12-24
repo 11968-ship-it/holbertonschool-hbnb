@@ -126,3 +126,9 @@ This section describes how the system components interact for selected API calls
   * password hashing
   * entity creation rules
 * The Persistence Layer handles the actual write operation and returns storage results.
+
+
+
+
+### 2) Place Creation
+here thikera
