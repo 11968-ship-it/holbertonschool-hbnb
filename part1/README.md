@@ -131,14 +131,12 @@ This section describes how the system components interact for selected API calls
 
 
 ### 2) Place Creation
-This section explains how a Place is created in the HBnB application.1~This section explains how a Place is created in the HBnB application.
+This section explains how a Place is created in the HBnB application.
+It shows how the request flows through the system layers and how components interact. It shows:
 
-It shows:
 * The interaction between the client and API
 * The role of the facade in orchestrating business logic
 * Validation and persistence responsibilities
-
-This diagram ensures clarity in how responsibilities are distributed across components.
 
 ** Actors **
 * Client: A user or frontend application sending an HTTP request
@@ -155,9 +153,20 @@ This diagram ensures clarity in how responsibilities are distributed across comp
 * The controller does not interact directly with the database.
 * Persistence is handled exclusively by the repository.
 
-** API Call: Retrieve Place by ID **
+** API Call: Create Place **
+* Endpoint: POST /places
+* Action: Create a new place listing
+* Result: A new place is saved and returned to the clint
 
-Purpose
-Shows how a client retrieves detailed information about a specific place.
+** Sequence Flow **
+1. Client sends POST /places request with place data
+2. PlaceController receives the request and forwards it to HBnBFacade
+3. HBnBFacade validates the user and city
+4. HBnBFacade creates a new Place entity
+5. PlaceRepository saves the Place
+6. HBnBFacade returns the created Place to PlaceController
+7. PlaceController responds with HTTP 201 Created to the client
 
-
+** Conclusion **
+This sequence shows how a create-place request moves through the system.
+It helps ensure correct interaction between the API, business logic, and persistence layers. 
