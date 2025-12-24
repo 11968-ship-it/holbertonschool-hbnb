@@ -131,7 +131,7 @@ This section describes how the system components interact for selected API calls
 
 
 ### 2) Place Creation
-Purpose of the Sequence Diagram: It illustrates how a request to create a new place flows through the system layers.
+This section explains how a Place is created in the HBnB application.1~This section explains how a Place is created in the HBnB application.
 
 It shows:
 * The interaction between the client and API
@@ -140,12 +140,24 @@ It shows:
 
 This diagram ensures clarity in how responsibilities are distributed across components.
 
-Actors
+** Actors **
 * Client: A user or frontend application sending an HTTP request
 
-System Components
+** System Components **
 * PlaceController (API Layer): Handles incoming HTTP requests
 * HBnBFacade (Business Logic Layer): Coordinates application logic
 * Place Entity: Represents the place being created
 * PlaceRepository (Persistence Layer): Manages data storage
+
+** Key Notes **
+
+* Validation occurs in the Business Logic layer.
+* The controller does not interact directly with the database.
+* Persistence is handled exclusively by the repository.
+
+** API Call: Retrieve Place by ID **
+
+Purpose
+Shows how a client retrieves detailed information about a specific place.
+
 
