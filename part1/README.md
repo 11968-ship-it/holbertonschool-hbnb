@@ -88,7 +88,7 @@ fff
 
 This section describes how the system components interact for selected API calls. The sequence diagrams illustrate the flow of control and data exchanged between the User (client), Presentation Layer (API), Business Logic Layer (HBnBFacade), and Persistence Layer (Database).
 
-### 1) User Registration Flow
+### 1) User Registration
 
 **Goal**: Create a new user account while ensuring valid input and preventing duplicate registrations (email uniqueness).
 
