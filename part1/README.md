@@ -88,7 +88,7 @@ fff
 
 This section describes how the system components interact for selected API calls. The sequence diagrams illustrate the flow of control and data exchanged between the User (client), Presentation Layer (API), Business Logic Layer (HBnBFacade), and Persistence Layer (Database).
 
-### 1) User Registration Flow
+### 1) User Registration
 
 **Goal**: Create a new user account while ensuring valid input and preventing duplicate registrations (email uniqueness).
 
@@ -167,6 +167,13 @@ It shows how the request flows through the system layers and how components inte
 6. HBnBFacade returns the created Place to PlaceController
 7. PlaceController responds with HTTP 201 Created to the client
 
+<<<<<<< HEAD
 ** Conclusion **
 This sequence shows how a create-place request moves through the system.
 It helps ensure correct interaction between the API, business logic, and persistence layers. 
+=======
+### 3) Review Submission
+Lamyaa here
+
+### 4) Fetching a List of Places
+>>>>>>> df7a355e64b4337136b855e95272496a342aced8
