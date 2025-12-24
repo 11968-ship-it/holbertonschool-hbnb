@@ -131,4 +131,21 @@ This section describes how the system components interact for selected API calls
 
 
 ### 2) Place Creation
-here thikera
+Purpose of the Sequence Diagram: It illustrates how a request to create a new place flows through the system layers.
+
+It shows:
+* The interaction between the client and API
+* The role of the facade in orchestrating business logic
+* Validation and persistence responsibilities
+
+This diagram ensures clarity in how responsibilities are distributed across components.
+
+Actors
+* Client: A user or frontend application sending an HTTP request
+
+System Components
+* PlaceController (API Layer): Handles incoming HTTP requests
+* HBnBFacade (Business Logic Layer): Coordinates application logic
+* Place Entity: Represents the place being created
+* PlaceRepository (Persistence Layer): Manages data storage
+
