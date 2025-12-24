@@ -161,3 +161,7 @@ Purpose
 Shows how a client retrieves detailed information about a specific place.
 
 
+### 3) Review Submission
+Lamyaa here
+
+### 4) Fetching a List of Places
