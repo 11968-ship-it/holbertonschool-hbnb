@@ -138,7 +138,7 @@ It ensures proper validation, enforces business rules like email uniqueness and 
 ### 2) Place Creation
 This section explains how a Place is created in the HBnB application. When a user wants to create a new place listing, the process involves several steps: the API receives the request, the business logic validates and processes it, and the place data is finally stored in the database.
 
-<img width="1506" height="701" alt="image" src="https://github.com/user-attachments/assets/2a614747-3965-4d25-b559-fc135be4fc2c" />
+<img width="1128" height="646" alt="image" src="https://github.com/user-attachments/assets/c202a7ba-da32-45ea-a6cc-2f5bd9b73272" />
 
 It illustrates how the request flows through the system layers and how the different components interact:
 
