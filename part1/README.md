@@ -136,8 +136,9 @@ This sequence shows how a user registration request moves through the system.
 It ensures proper validation, enforces business rules like email uniqueness and password security, and clearly defines the interaction between the API, business logic, and persistence layers.
 
 ### 2) Place Creation
-This section explains how a Place is created in the HBnB application.
-It shows how the request flows through the system layers and how components interact:
+This section explains how a Place is created in the HBnB application. When a user wants to create a new place listing, the process involves several steps: the API receives the request, the business logic validates and processes it, and the place data is finally stored in the database.
+
+It illustrates how the request flows through the system layers and how the different components interact:
 
 * The interaction between the client and API
 * The role of the facade in orchestrating business logic
