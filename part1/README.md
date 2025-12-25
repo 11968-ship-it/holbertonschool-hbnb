@@ -178,9 +178,22 @@ It helps ensure correct interaction between the API, business logic, and persist
 
 =======
 ### 3) Review Submission
-Lamyaa ![Review Submission](https://github.com/user-attachments/assets/7cff1db1-dda3-4479-915b-42bf40f7f6dc)
-here
+**Purpose of the Diagram:**
+The following diagram shows exactly what happens when a user wants to write a review for a place. It helps us see how the information travels from the user's click all the way to being saved in our system. I created this to make sure the process is clear and follows a logical order.
+ ![Review Submission](https://github.com/user-attachments/assets/7cff1db1-dda3-4479-915b-42bf40f7f6dc)
+**Key Parts of the System:**
+* **User:** This is the person using the app who sends the review details (like the rating and comment).
+* **API:** This is the "front door" of our server. It receives the user's request first.
+* **BusinessLogic:** I think of this as the "brain" of the app. It checks the rules and makes sure everything is correct.
+* **Database:** This is our storage. It's where the review is kept forever if everything is right.
 
+**My Design Decisions(Why I did it this way):**
+* **Checking the data first:** I decided to let `the BusinessLogic` check if the review is valid before talking to the `Database`. This is better because we don't want to save empty or broken reviews.
+* **The "Alt" Box:** I used this box to show two paths. If the data is right, we save it. If the data is missing something (like the rating), we show an error message. This makes the app more "friendly" for the user.
+* **Waiting for Confirmation:** The `Database` sends a "Confirm Save" message back. I did this to make sure we only tell the user "Success" after we are 100% sure the data is actually saved.
+
+**How it fits the Architecture:**
+This design follows the "Layered" style we are learning. By keeping the `API`, `Logic`, and `Database` separate, our code stays organized. If we want to change how we save data later, we only need to change the `Database` part without breaking the rest of the app. This makes our project stronger and easier to fix.
 ### 4) Fetching a List of Places
 
 This sequence diagram illustrates how the system retrieves a list of places based on optional search criteria such as location, category, or rating. It demonstrates how filtering logic is handled in the Business Logic Layer while maintaining proper separation of concerns across the architecture.
