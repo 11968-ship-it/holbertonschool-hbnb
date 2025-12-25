@@ -136,32 +136,45 @@ This sequence shows how a user registration request moves through the system.
 It ensures proper validation, enforces business rules like email uniqueness and password security, and clearly defines the interaction between the API, business logic, and persistence layers.
 
 ### 2) Place Creation
-This section explains how a Place is created in the HBnB application. When a user wants to create a new place listing, the process involves several steps: the API receives the request, the business logic validates and processes it, and the place data is finally stored in the database.
+This section explains how a Place is created in the HBnB application. When a user wants to create a new place, the API receives the request, the business logic checks and processes the data, and the information is saved in the database
 
 <img width="1128" height="646" alt="image" src="https://github.com/user-attachments/assets/c202a7ba-da32-45ea-a6cc-2f5bd9b73272" />
 
-It illustrates how the request flows through the system layers and how the different components interact:
+This illustrates how a Place Creation request flows through the system layers and how the components interact:
 
-* The interaction between the client and API:
-  - User sends a request to create a new place (via API)
-* The role of the facade in orchestrating business logic
-* Validation and persistence responsibilities
+** Flow Overview: **
+
+* Client → API: User sends a request to create a new place.
+* API → Business Logic (Facade): The facade coordinates validation and creation logic.
+* Business Logic → Persistence: The Place data is saved in the database.
 
 ** Actors **
 * Client: A user or frontend application sending an HTTP request
 
 ** System Components **
 * PlaceController (API Layer): Handles incoming HTTP requests
-* HBnBFacade (Business Logic Layer): Coordinates application logic
+* HBnBFacade (Business Logic Layer):Coordinates application logic and validation.
 * Place Entity: Represents the place being created
 * PlaceRepository (Persistence Layer): Manages data storage
 
-** Key Notes **
+** Explanatory Notes **
 
-* User: Initiates the creation request.
-* API Layer: Handles authentication, request validation, and response formatting.
-* Business Logic Layer: Applies all business rules (e.g., required fields, owner verification) and prepares the object for storage.
-* Database Layer: Persists the data and confirms the operation.
+1. User Interaction
+
+* The user sends a POST /places request with the place data (name, description, price, location, etc.).
+* This starts the process through the system layers.
+
+2. API Layer
+
+* Checks that the user is logged in.
+* Sends the data to the business logic layer.
+* Returns success or error messages to the user.
+
+3. Business Logic Layer
+
+* Checks if the user has permission to create a place.
+* Validates the place data to make sure it’s correct.
+* Prepares the place to be saved in the database.
 
 The diagram clearly shows how information flows from the client to the database and back.
 
@@ -180,8 +193,7 @@ The diagram clearly shows how information flows from the client to the database 
 7. PlaceController responds with HTTP 201 Created to the client
 
 ** Conclusion **
-This sequence shows how a create-place request moves through the system.
-It helps ensure correct interaction between the API, business logic, and persistence layers. 
+This sequence shows how a create-place request moves through the system. It ensures correct interaction between the API, business logic, and persistence layers. 
 
 =======
 ### 3) Review Submission
