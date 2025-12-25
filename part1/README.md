@@ -1,7 +1,9 @@
 # HBnB Technical Documentation
 
 ## Introduction
-what this project about
+HBnB is a web application where users can list, find, and book places to stay. Hosts can create and manage property listings, while guests can search for accommodations by location, price, and other features.
+
+This document explains how HBnB works, including the system structure, the business logic, and how key API calls are handled. It serves as a guide for building the application and understanding how its parts interact.
 
 ## High-Level Architecture
 
