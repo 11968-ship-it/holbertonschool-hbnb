@@ -137,7 +137,7 @@ It ensures proper validation, enforces business rules like email uniqueness and 
 
 ### 2) Place Creation
 This section explains how a Place is created in the HBnB application.
-It shows how the request flows through the system layers and how components interact. It shows:
+It shows how the request flows through the system layers and how components interact:
 
 * The interaction between the client and API
 * The role of the facade in orchestrating business logic
