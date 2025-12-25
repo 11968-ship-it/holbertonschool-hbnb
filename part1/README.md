@@ -140,7 +140,8 @@ This section explains how a Place is created in the HBnB application. When a use
 
 It illustrates how the request flows through the system layers and how the different components interact:
 
-* The interaction between the client and API
+* The interaction between the client and API:
+  - User sends a request to create a new place (via API)
 * The role of the facade in orchestrating business logic
 * Validation and persistence responsibilities
 
