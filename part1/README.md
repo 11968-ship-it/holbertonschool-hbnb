@@ -156,9 +156,12 @@ It illustrates how the request flows through the system layers and how the diffe
 
 ** Key Notes **
 
-* Validation occurs in the Business Logic layer.
-* The controller does not interact directly with the database.
-* Persistence is handled exclusively by the repository.
+* User: Initiates the creation request.
+* API Layer: Handles authentication, request validation, and response formatting.
+* Business Logic Layer: Applies all business rules (e.g., required fields, owner verification) and prepares the object for storage.
+* Database Layer: Persists the data and confirms the operation.
+
+The diagram clearly shows how information flows from the client to the database and back.
 
 ** API Call: Create Place **
 * Endpoint: POST /places
