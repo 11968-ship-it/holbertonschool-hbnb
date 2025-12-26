@@ -87,10 +87,13 @@ The Persistence Layer is responsible for managing data persistence and retrieval
 This high-level architecture demonstrates how the system is structured around a clear separation of concerns. By organizing functionality into Presentation, Business Logic, and Persistence layers with well-defined responsibilities and controlled dependencies, the design promotes modularity, maintainability, and scalability, while keeping business rules and data access cleanly isolated from external interactions.
 
 ## Business Logic Layer
+
 1. **Purpose of the diagram**
 This diagram is like a map for our HBnB app. It shows the main parts we need, like users and places, and how they connect before we start writing the code.
+![class](https://github.com/user-attachments/assets/c1458e4f-7db9-4a5e-beb5-cbe4dd02a337)
 
-2. **Main Classes**
+
+3. **Main Classes**
 * **Users:** The people using the app (can be regular users or admins).
 * **Place:** The listings that people can book.
 * **Review:** Where users leave a rating and a comment about a place.
