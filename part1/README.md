@@ -315,3 +315,9 @@ Together, these sections establish a cohesive and well documented technical foun
 - 📘 [Technical Documentation (Markdown)](https://github.com/11968-ship-it/holbertonschool-hbnb/blob/main/part1/README.md)
 - 📄 [Technical Documentation (PDF)](https://github.com/user-attachments/files/24356381/README.pdf)
 - 📝 [Technical Documentation (Word)](https://github.com/user-attachments/files/24356437/README.docx)
+
+## Authors
+
+- Lamyaa Mohammed Alghaihab <11955@holbertonstudents.com> 💻✍️
+- Thekira A. Ahmed <11968@holbertonstudents.com> 💻✍️
+- Yara K. Alrasheed <11982@holbertonstudents.com> 💻✍️
