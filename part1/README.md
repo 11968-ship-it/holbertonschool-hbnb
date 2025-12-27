@@ -312,6 +312,6 @@ Together, these sections establish a cohesive and well documented technical foun
 
 ## Documentation
 
-- 📘 [Technical Documentation (Markdown)](https://github.com/11968-ship-it/holbertonschool-hbnb/blob/main/part1/README.md ))
+- 📘 [Technical Documentation (Markdown)](https://github.com/11968-ship-it/holbertonschool-hbnb/blob/main/part1/README.md )
 - 📄 [Technical Documentation (PDF)](https://github.com/user-attachments/files/24356381/README.pdf)
 - 📝 [Technical Documentation (Word)](https://github.com/user-attachments/files/24356382/README.docx)
