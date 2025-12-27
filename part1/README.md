@@ -90,8 +90,8 @@ This high-level architecture demonstrates how the system is structured around a 
 
 1. **Purpose of the diagram**
 This diagram is like a map for our HBnB app. It shows the main parts we need, like users and places, and how they connect before we start writing the code.
-![class](https://github.com/user-attachments/assets/c1458e4f-7db9-4a5e-beb5-cbe4dd02a337)
 
+![class](https://github.com/user-attachments/assets/c1458e4f-7db9-4a5e-beb5-cbe4dd02a337)
 
 3. **Main Classes**
 * **Users:** The people using the app (can be regular users or admins).
@@ -162,22 +162,22 @@ This section explains how a Place is created in the HBnB application. When a use
 
 This illustrates how a Place Creation request flows through the system layers and how the components interact:
 
-** Flow Overview: **
+**Flow Overview:**
 
 * Client → API: User sends a request to create a new place.
 * API → Business Logic (Facade): The facade coordinates validation and creation logic.
 * Business Logic → Persistence: The Place data is saved in the database.
 
-** Actors **
+**Actors**
 * Client: A user or frontend application sending an HTTP request
 
-** System Components **
+**System Components**
 * PlaceController (API Layer): Handles incoming HTTP requests
 * HBnBFacade (Business Logic Layer):Coordinates application logic and validation.
 * Place Entity: Represents the place being created
 * PlaceRepository (Persistence Layer): Manages data storage
 
-** Explanatory Notes **
+**Explanatory Notes**
 
 1. User Interaction
 
@@ -198,12 +198,12 @@ This illustrates how a Place Creation request flows through the system layers an
 
 The diagram clearly shows how information flows from the client to the database and back.
 
-** API Call: Create Place **
+**API Call: Create Place**
 * Endpoint: POST /places
 * Action: Create a new place listing
 * Result: A new place is saved and returned to the clint
 
-** Sequence Flow **
+**Sequence Flow**
 1. Client sends POST /places request with place data
 2. PlaceController receives the request and forwards it to HBnBFacade
 3. HBnBFacade validates the user and city
@@ -212,14 +212,16 @@ The diagram clearly shows how information flows from the client to the database 
 6. HBnBFacade returns the created Place to PlaceController
 7. PlaceController responds with HTTP 201 Created to the client
 
-** Conclusion **
+**Conclusion**
 This sequence shows how a create-place request moves through the system. It ensures correct interaction between the API, business logic, and persistence layers. 
 
 =======
 ### 3) Review Submission
 **Purpose of the Diagram:**
 The following diagram shows exactly what happens when a user wants to write a review for a place. It helps us see how the information travels from the user's click all the way to being saved in our system. I created this to make sure the process is clear and follows a logical order.
+
  ![Review Submission](https://github.com/user-attachments/assets/7cff1db1-dda3-4479-915b-42bf40f7f6dc)
+
 **Key Parts of the System:**
 * **User:** This is the person using the app who sends the review details (like the rating and comment).
 * **API:** This is the "front door" of our server. It receives the user's request first.
@@ -233,6 +235,7 @@ The following diagram shows exactly what happens when a user wants to write a re
 
 **How it fits the Architecture:**
 This design follows the "Layered" style we are learning. By keeping the `API`, `Logic`, and `Database` separate, our code stays organized. If we want to change how we save data later, we only need to change the `Database` part without breaking the rest of the app. This makes our project stronger and easier to fix.
+
 ### 4) Fetching a List of Places
 
 This sequence diagram illustrates how the system retrieves a list of places based on optional search criteria such as location, category, or rating. It demonstrates how filtering logic is handled in the Business Logic Layer while maintaining proper separation of concerns across the architecture.
