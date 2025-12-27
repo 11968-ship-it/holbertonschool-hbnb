@@ -9,7 +9,7 @@ This document explains how HBnB works, including the system structure, the busin
 
 This package diagram depicts the system's high-level architecture using a layered design. The architecture is divided into three main layers: Presentation Layer, Business Logic Layer, and Persistence Layer. Each layer has clearly defined responsibilities and communicates only with its adjacent layers, ensuring loose coupling and high cohesion.
 
-![PackageDiagram1](https://github.com/user-attachments/assets/54af4884-1032-42e9-9884-49f828d9797d)
+![PackageDiagram](https://github.com/user-attachments/assets/3c9da85e-c1c4-4b98-9d95-3f88f650362a)
 
 ### 1. PresentationLayer
 **Description**
@@ -117,7 +117,7 @@ This section describes how the system components interact for selected API calls
 
 **Goal**: Create a new user account while ensuring valid input and preventing duplicate registrations (email uniqueness).
 
-![SequenceDiagram4](https://github.com/user-attachments/assets/e3a8fdf2-d27b-4d10-8004-26bf109eb803)
+![UserRegistration](https://github.com/user-attachments/assets/10074dde-97dd-4709-8d73-3ca01e45d9a9)
 
 **Actors / Components**
 
