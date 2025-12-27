@@ -219,6 +219,7 @@ This sequence shows how a create-place request moves through the system. It ensu
 
 ### 3) Review Submission
 **Purpose of the Diagram:**
+
 The following diagram shows exactly what happens when a user wants to write a review for a place. It helps us see how the information travels from the user's click all the way to being saved in our system. I created this to make sure the process is clear and follows a logical order.
 
  ![Review Submission](https://github.com/user-attachments/assets/7cff1db1-dda3-4479-915b-42bf40f7f6dc)
@@ -229,12 +230,13 @@ The following diagram shows exactly what happens when a user wants to write a re
 * **BusinessLogic:** I think of this as the "brain" of the app. It checks the rules and makes sure everything is correct.
 * **Database:** This is our storage. It's where the review is kept forever if everything is right.
 
-**My Design Decisions(Why I did it this way):**
+**My Design Decisions (Why I did it this way):**
 * **Checking the data first:** I decided to let `the BusinessLogic` check if the review is valid before talking to the `Database`. This is better because we don't want to save empty or broken reviews.
 * **The "Alt" Box:** I used this box to show two paths. If the data is right, we save it. If the data is missing something (like the rating), we show an error message. This makes the app more "friendly" for the user.
 * **Waiting for Confirmation:** The `Database` sends a "Confirm Save" message back. I did this to make sure we only tell the user "Success" after we are 100% sure the data is actually saved.
 
 **How it fits the Architecture:**
+
 This design follows the "Layered" style we are learning. By keeping the `API`, `Logic`, and `Database` separate, our code stays organized. If we want to change how we save data later, we only need to change the `Database` part without breaking the rest of the app. This makes our project stronger and easier to fix.
 
 ### 4) Fetching a List of Places
@@ -295,3 +297,15 @@ This sequence diagram illustrates how the system retrieves a list of places base
 **Conclusion**
 
 This sequence diagram shows how the system retrieves place data through a well-defined flow across the Presentation, Business Logic, and Persistence layers. It ensures proper validation, centralized business rules, and efficient data access while returning consistent and user-friendly responses.
+
+## Overall Summary
+
+This technical document serves as a comprehensive blueprint for the HBnB application, detailing its architecture, core business logic, and key system interactions. It consolidates all major design artifacts including high level architecture diagrams, business logic class diagrams, and API interaction sequence diagrams into a single, well structured reference that supports both implementation and ongoing development.
+
+The document begins with an overview of the layered architecture, which consists of the Presentation Layer, Business Logic Layer, and Persistence Layer. This design enforces a clear separation of concerns, enhances maintainability, and promotes scalability. The use of the HBnBFacade as a central interface enables controlled communication between layers while shielding external clients from internal system complexity.
+
+The Business Logic Layer is described in detail through class diagrams that define the system’s core domain entities, such as Users, Places, Reviews, and Amenities. These entities encapsulate business rules, validation logic, and domain behavior, ensuring that application rules remain centralized and consistent.
+
+The API Interaction Flow section illustrates how real world use cases including user registration, place creation, review submission, and retrieving a list of places move through the system. The sequence diagrams clarify how requests are validated, processed, and persisted, emphasizing the responsibilities of each layer and reinforcing best practices such as data validation, security, and error handling.
+
+Together, these sections establish a cohesive and well documented technical foundation for HBnB. This document functions not only as an implementation guide but also as a long term reference that supports collaboration, onboarding, debugging, and future system evolution.
