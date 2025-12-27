@@ -89,6 +89,7 @@ This high-level architecture demonstrates how the system is structured around a 
 ## Business Logic Layer
 
 1. **Purpose of the diagram**
+
 This diagram is like a map for our HBnB app. It shows the main parts we need, like users and places, and how they connect before we start writing the code.
 
 ![class](https://github.com/user-attachments/assets/c1458e4f-7db9-4a5e-beb5-cbe4dd02a337)
@@ -104,7 +105,8 @@ This diagram is like a map for our HBnB app. It shows the main parts we need, li
 * **Dates:** Each part has a "created" and "updated" date so we can track when things change.
 * **Methods:** We added simple actions like create and delete to each class to keep the logic organized.
 
-4. **How it fits in the app** 
+4. **How it fits in the app**
+ 
 The Business Logic Layer is the middle part of the app. It takes information from the user, checks if it follows the rules, and then sends it to be saved in the database.
 
 ## API Interaction Flow
@@ -215,7 +217,6 @@ The diagram clearly shows how information flows from the client to the database 
 **Conclusion**
 This sequence shows how a create-place request moves through the system. It ensures correct interaction between the API, business logic, and persistence layers. 
 
-=======
 ### 3) Review Submission
 **Purpose of the Diagram:**
 The following diagram shows exactly what happens when a user wants to write a review for a place. It helps us see how the information travels from the user's click all the way to being saved in our system. I created this to make sure the process is clear and follows a logical order.
