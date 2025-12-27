@@ -309,3 +309,9 @@ The Business Logic Layer is described in detail through class diagrams that defi
 The API Interaction Flow section illustrates how real world use cases including user registration, place creation, review submission, and retrieving a list of places move through the system. The sequence diagrams clarify how requests are validated, processed, and persisted, emphasizing the responsibilities of each layer and reinforcing best practices such as data validation, security, and error handling.
 
 Together, these sections establish a cohesive and well documented technical foundation for HBnB. This document functions not only as an implementation guide but also as a long term reference that supports collaboration, onboarding, debugging, and future system evolution.
+
+## Documentation
+
+- 📘 [Technical Documentation (Markdown)](https://github.com/11968-ship-it/holbertonschool-hbnb/blob/main/part1/README.md ))
+- 📄 [Technical Documentation (PDF)](https://github.com/user-attachments/files/24356381/README.pdf)
+- 📝 [Technical Documentation (Word)](https://github.com/user-attachments/files/24356382/README.docx)
