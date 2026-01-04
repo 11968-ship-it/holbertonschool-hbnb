@@ -9,10 +9,10 @@ class Amenity(BaseModel):
     @staticmethod
     def _validate_name(value):
         if not isinstance(value, str):
-            raise TypeError "Name must be a string!"
+            raise TypeError("Name must be a string!")
         value = value.strip()
         if not value:
-            raise ValueError "Name is required!"
+            raise ValueError("Name is required!")
         if len(value) > 50:
-            raise ValueError "Name must be at most 50 characters!"
+            raise ValueError("Name must be at most 50 characters!")
         return value
