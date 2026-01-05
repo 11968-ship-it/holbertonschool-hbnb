@@ -13,10 +13,10 @@ class Review(BaseModel):
         if not isinstance(rating, int) or rating < 1 or rating > 5:
             raise ValueError("Rating must be an integer between 1 and 5")
 
-        if not place_id or not isinstance(place, Place):
+        if not place or not isinstance(place, Place):
             raise ValueError("place_id must be a valid string")
 
-        if not user_id or not isinstance(user, User):
+        if not user or not isinstance(user, User):
             raise ValueError("user_id must be a valid string")
 
         # Attributes
