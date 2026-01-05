@@ -8,6 +8,7 @@ class User(BaseModel):
         self.last_name = last_name
         self.email = email
         self.is_admin = is_admin
+        self.places = []
 
     # --- Getter & Setter for first_name ---
     @property
