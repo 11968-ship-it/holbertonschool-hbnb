@@ -2,7 +2,7 @@ from app.models.base_model import BaseModel
 
 
 class Review(BaseModel):
-    def __init__(self, text, rating, place_id, user_id):
+    def __init__(self, text: str, rating: int, place_id: str, user_id: str):
         super().__init__()
 
         # Validation
