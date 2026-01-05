@@ -72,7 +72,7 @@ class Place(BaseModel):
 
     @staticmethod
     def _validate_longitude(value):
-        if not isinstance(value, (int, float):
+        if not isinstance(value, (int, float)):
             raise TypeError("Longitude must be a number!")
         value = float(value)
         if value < -180.0 or value > 180.0:
