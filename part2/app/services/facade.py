@@ -29,7 +29,7 @@ class HBnBFacade:
         self.review_repo.add(review)
         return review
 
-    def get_review(self, review_id)
+    def get_review(self, review_id):
         return self.review_repo.add(review)
 
     def 
