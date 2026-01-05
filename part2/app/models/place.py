@@ -1,15 +1,16 @@
 from app.models.base_model import BaseModel
+from app.models.user import User
 
 
 class Place(BaseModel):
     def __init__(self, title, description, price, latitude, longitude, owner):
         super().__init__()
-        self.title = _validate_title(title)
-        self.description = _validate_description(description)
-        self.price = _validate_price(price)
-        self.latitude = _validate_latitude(latitude)
-        self.longitude = _validate_longitude(longitude)
-        self.owner = _validate_owner(owner)
+        self.title = self._validate_title(title)
+        self.description = self._validate_description(description)
+        self.price = self._validate_price(price)
+        self.latitude = self._validate_latitude(latitude)
+        self.longitude = self._validate_longitude(longitude)
+        self.owner = self._validate_owner(owner)
         self.reviews = []  # List to store related reviews
         self.amenities = []  # List to store related amenities
 
@@ -22,16 +23,21 @@ class Place(BaseModel):
 
         if not isinstance(review, Review):
             raise TypeError("review must be a Review instance")
-            if review.place is not self:
-                raise ValueError("review.place must reference this place")
-            if review not in self.reviews:
-                self.reviews.append(review)
-                self.save()
+        if review.place is not self:
+            raise ValueError("review.place must reference this place")
+        if review not in self.reviews:
+            self.reviews.append(review)
+            self.save()
 
     def add_amenity(self, amenity):
         """Add an amenity to the place."""
         from app.models.amenity import Amenity
-
+        
+        if not isinstance(amenity, Amenity):
+            raise TypeError("amenity must be an Amenity instance")
+        if amenity not in self.amenities:
+            self.amenities.append(amenity)
+            self.save()
 
     @staticmethod
     def _validate_title(value):
