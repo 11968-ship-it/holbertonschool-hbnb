@@ -24,14 +24,6 @@ class HBnBFacade:
         # Logic will be implemented in later tasks
         pass
 
-    def create_review(self, review_data):
-        review = Review(**review_data)
-        self.review_repo.add(review)
-        return review
-
     def get_review(self, review_id):
-        return self.review_repo.add(review)
-
-    def 
-
-
+        review = self.review_repo.get(review_id)
+        return review
