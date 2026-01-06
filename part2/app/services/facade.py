@@ -108,7 +108,7 @@ class HBnBFacade:
             for a in amenity_objs:
                 place.add_amenity(a)
 
-        self.place_repo.update(place)
+        self.place_repo.update(place_id, place_data)
         return place
         
     # --- Reviews ---
