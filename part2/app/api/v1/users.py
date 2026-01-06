@@ -49,7 +49,10 @@ class UserResource(Resource):
     @api.response(400, 'Invalid input data')
     def put(self, user_id):
         user_data = api.payload
-        updated_user = facade.update_user(user_id, user_data)
-        if not updated_user:
-            return {'error': 'User not found'}, 404
-        return {'message': 'User updated successfully'}, 200
+        try:
+            updated_user = facade.update_user(user_id, user_data)
+            if not updated_user:
+                return {'error': 'User not found'}, 404
+            return {'message': 'User updated successfully'}, 200
+        except ValueError as e:
+            return {'error': str(e)}, 400
