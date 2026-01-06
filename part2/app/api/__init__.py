@@ -15,7 +15,7 @@ api = Api(
 )
 
     # Register the users namespace
-    api.add_namespace(users_ns, path='/api/v1/users')
-    api.add_namespace(amenities_ns, path='/api/v1/amenities')
-    api.add_namespace(places_ns, path='/api/v1/places')
-    api.add_namespace(reviews_ns, path='/api/v1/reviews')
+api.add_namespace(users_ns, path='/api/v1/users')
+api.add_namespace(amenities_ns, path='/api/v1/amenities')
+api.add_namespace(places_ns, path='/api/v1/places')
+api.add_namespace(reviews_ns, path='/api/v1/reviews')
