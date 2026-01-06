@@ -183,29 +183,26 @@ class HBnBFacade:
         self.review_repo.delete(review_id)
         return True
 
+    # --- Amenities ---
+    def create_amenity(self, amenity_data):
+        name = amenity_data.get("name")
+        amenity = Amenity(name=name)
+        self.amenity_repo.add(amenity)
+        return amenity
 
+    def get_amenity(self, amenity_id):
+        return self.amenity_repo.get(amenity_id)
 
-   # --- Amenities ---
-def create_amenity(self, amenity_data):
-    name = amenity_data.get("name")
-    amenity = Amenity(name=name)
-    self.amenity_repo.add(amenity)
-    return amenity
+    def get_all_amenities(self):
+        return self.amenity_repo.get_all()
 
-def get_amenity(self, amenity_id):
-    return self.amenity_repo.get(amenity_id)
+    def update_amenity(self, amenity_id, amenity_data):
+        amenity = self.amenity_repo.get(amenity_id)
+        if not amenity:
+            return None
 
-def get_all_amenities(self):
-    return self.amenity_repo.get_all()
+        if "name" in amenity_data:
+            amenity.name = amenity_data["name"]
 
-def update_amenity(self, amenity_id, amenity_data):
-    amenity = self.amenity_repo.get(amenity_id)
-    if not amenity:
-        return None
-
-    if "name" in amenity_data:
-        amenity.name = amenity_data["name"]
-
-    # Pass both ID and data to match repository signature
-    self.amenity_repo.update(amenity_id, amenity_data)
-    return amenity
+        self.amenity_repo.update(amenity_id, amenity_data)
+        return amenity
