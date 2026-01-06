@@ -21,8 +21,13 @@ class HBnBFacade:
     
     # Placeholder method for fetching a place by ID
     def get_place(self, place_id):
-        # Logic will be implemented in later tasks
+       
         pass
+
+    # need to change it a bit !!!
+    
+    def create_review(self, review_data):
+        user = self.user_repo.get(review_data["user?"])
 
     def get_review(self, review_id):
         review = self.review_repo.get(review_id)
