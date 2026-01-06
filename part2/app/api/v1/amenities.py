@@ -1,7 +1,9 @@
 from flask_restx import Namespace, Resource, fields
-from app.services import facade
+from app.services.facade import HBnBFacade
 
 api = Namespace('amenities', description='Amenity operations')
+
+facade = HBnBFacade()
 
 # Define the model for validation and Swagger docs
 amenity_model = api.model('Amenity', {
