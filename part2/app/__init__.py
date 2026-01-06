@@ -20,3 +20,4 @@ def create_app():
     )
 
     return app
+api.init_app(app)
