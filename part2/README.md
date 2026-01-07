@@ -37,8 +37,10 @@ hbnb/
 │   │   ├── __init__.py
 │   │   ├── facade.py
 │   ├── persistence/
-│       ├── __init__.py
-│       ├── repository.py
+│   |   ├── __init__.py
+│   |   ├── repository.py
+|   ├── tests/
+|   |   ├── test_models.py
 ├── run.py
 ├── config.py
 ├── requirements.txt
