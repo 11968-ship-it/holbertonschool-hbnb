@@ -164,7 +164,7 @@ The Place Endpoints task focuses on implementing RESTful API endpoints to manage
 
 - **Register a New Place (POST/api/v1/places/):**
 
-  ```
+  ```json
   curl -i -X POST "http://127.0.0.1:5000/api/v1/places/" \
   -H "Content-Type: application/json" \
   -d '{
@@ -180,7 +180,7 @@ The Place Endpoints task focuses on implementing RESTful API endpoints to manage
 
 - **Expected Response (201 Created):**
   
-  ```
+  ```json
   {
   "id": "PLACE_ID_HERE",
   "title": "Cozy Apartment",
@@ -198,11 +198,13 @@ The Place Endpoints task focuses on implementing RESTful API endpoints to manage
 
 - **Retrieve All Places (GET /api/v1/places/):**
 
-```curl -i "http://127.0.0.1:5000/api/v1/places/"```
+```json
+curl -i "http://127.0.0.1:5000/api/v1/places/"
+```
 
 - **Expected Response (200 OK):**
 
-  ```
+  ```json
   [
   {
     "id": "PLACE_ID",
@@ -221,11 +223,13 @@ The Place Endpoints task focuses on implementing RESTful API endpoints to manage
 
 - **Retrieve Place Details (GET /api/v1/places/<place_id>):**
 
-```curl -i "http://127.0.0.1:5000/api/v1/places/PLACE_ID"```
+```json
+curl -i "http://127.0.0.1:5000/api/v1/places/PLACE_ID"
+```
 
 - **Expected Response (200 OK):**
   
-  ```
+  ```json
   {
   "id": "PLACE_ID",
   "title": "Cozy Apartment",
@@ -251,7 +255,7 @@ The Place Endpoints task focuses on implementing RESTful API endpoints to manage
 
 - **Update a Place (PUT /api/v1/places/<place_id>):**
   
-  ```
+  ```json
   curl -i -X PUT "http://127.0.0.1:5000/api/v1/places/PLACE_ID" \
   -H "Content-Type: application/json" \
   -d '{
@@ -263,7 +267,7 @@ The Place Endpoints task focuses on implementing RESTful API endpoints to manage
   
 - **Expected Response (200 OK):**
   
-  ```
+  ```json
   {
   "id": "PLACE_ID",
   "title": "Luxury Condo",
@@ -290,10 +294,12 @@ The Place Endpoints task focuses on implementing RESTful API endpoints to manage
 
 - **Retrieve All Reviews for a Specific Place (GET /api/v1/places/<place_id>/reviews):**
   
-```curl -i "http://127.0.0.1:5000/api/v1/places/PLACE_ID/reviews"```
+```json
+curl -i "http://127.0.0.1:5000/api/v1/places/PLACE_ID/reviews"
+```
 
 - **Expected Response (200 OK):**
-  ```
+  ```json
   [
   {
     "id": "REVIEW_ID",
@@ -326,7 +332,7 @@ The Review Endpoints task focuses on implementing RESTful API endpoints to manag
 * Implement POST, GET, PUT, and DELETE endpoints for reviews
   code exaplme to Register a New Review:
   
-     ```
+     ```json
       POST /api/v1/reviews/
      Content-Type: application/json
      {
@@ -338,7 +344,7 @@ The Review Endpoints task focuses on implementing RESTful API endpoints to manag
      ```
 and the expected response should be something like this:
 
-     ```
+```json
      {
      "id": "2fa85f64-5717-4562-b3fc-2c963f66afa6",
      "text": "Great place to stay!",
@@ -346,7 +352,7 @@ and the expected response should be something like this:
      "user_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
      "place_id": "1fa85f64-5717-4562-b3fc-2c963f66afa6"
      }
-     ```
+```
      
 Possible Status codes:
 
