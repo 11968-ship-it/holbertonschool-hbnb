@@ -132,28 +132,26 @@ The Review Endpoints task focuses on implementing RESTful API endpoints to manag
 
 * Implement POST, GET, PUT, and DELETE endpoints for reviews
   code exaplme to Register a New Review:
+  
      ```
       POST /api/v1/reviews/
-Content-Type: application/json
-
-{
+     Content-Type: application/json
+     {
   "text": "Great place to stay!",
   "rating": 5,
   "user_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
   "place_id": "1fa85f64-5717-4562-b3fc-2c963f66afa6"
-}
+     }
      ```
 and the expected response should be something like this:
      ```
      {
-  "id": "2fa85f64-5717-4562-b3fc-2c963f66afa6",
+     "id": "2fa85f64-5717-4562-b3fc-2c963f66afa6",
   "text": "Great place to stay!",
   "rating": 5,
   "user_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
   "place_id": "1fa85f64-5717-4562-b3fc-2c963f66afa6"
-}
-
-// 201 Created
+  }
      ```
 Possible Status codes:
 
