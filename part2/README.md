@@ -69,12 +69,8 @@ No API routes are fully implemented yet, but the server should start without err
 
 ## Future Development
 
-Implement full business logic in models and services
-
-Add functional API endpoints
-
-Replace the in-memory repository with a database-backed persistence layer
-
-Add authentication and authorization
-
-Improve validation and error handling
+* Implement full business logic in models and services
+* Add functional API endpoints
+* Replace the in-memory repository with a database-backed persistence layer
+* Add authentication and authorization
+* Improve validation and error handling
