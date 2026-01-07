@@ -162,7 +162,7 @@ The Place Endpoints task focuses on implementing RESTful API endpoints to manage
 * When retrieving a place, include related objects: owner, amenities, and reviews
 * Support retrieving all reviews for a specific place
 
-- **Register a New Place (POST/api/v1/places/):**
+### **Register a New Place (POST/api/v1/places/):**
 
   ```bash
   curl -i -X POST "http://127.0.0.1:5000/api/v1/places/" \
@@ -179,7 +179,7 @@ The Place Endpoints task focuses on implementing RESTful API endpoints to manage
   ```
 
 - **Expected Response (201 Created):**
-  
+
   ```json
   {
   "id": "PLACE_ID_HERE",
@@ -193,10 +193,10 @@ The Place Endpoints task focuses on implementing RESTful API endpoints to manage
   ```
 
 - **Possible Status Codes**:
-      - 201 Created: place successfully created
-      - 400 Bad Request: invalid input (missing fields, invalid coordinates, invalid price, owner not found, amenity not found)
+   - 201 Created: place successfully created
+   - 400 Bad Request: invalid input (missing fields, invalid coordinates, invalid price, owner not found, amenity not found)
 
-- **Retrieve All Places (GET /api/v1/places/):**
+### **Retrieve All Places (GET /api/v1/places/):**
 
 ```bash
 curl -i "http://127.0.0.1:5000/api/v1/places/"
@@ -221,7 +221,7 @@ curl -i "http://127.0.0.1:5000/api/v1/places/"
 - **Possible Status Codes:**
       - 200 OK: list retrieved successfully
 
-- **Retrieve Place Details (GET /api/v1/places/<place_id>):**
+### **Retrieve Place Details (GET /api/v1/places/<place_id>):**
 
    ```bash
    curl -i "http://127.0.0.1:5000/api/v1/places/PLACE_ID"
@@ -253,7 +253,7 @@ curl -i "http://127.0.0.1:5000/api/v1/places/"
       - 200 OK: place found and returned
       - 404 Not Found: place does not exist
 
-- **Update a Place (PUT /api/v1/places/<place_id>):**
+### **Update a Place (PUT /api/v1/places/<place_id>):**
   
   ```bash
   curl -i -X PUT "http://127.0.0.1:5000/api/v1/places/PLACE_ID" \
@@ -292,7 +292,7 @@ curl -i "http://127.0.0.1:5000/api/v1/places/"
       - 404 Not Found: place does not exist
       - 400 Bad Request: invalid update data (invalid price, invalid lat/long, owner not found, amenity not found)
 
-- **Retrieve All Reviews for a Specific Place (GET /api/v1/places/<place_id>/reviews):**
+### **Retrieve All Reviews for a Specific Place (GET /api/v1/places/<place_id>/reviews):**
   
    ```bash
    curl -i "http://127.0.0.1:5000/api/v1/places/PLACE_ID/reviews"
@@ -355,7 +355,7 @@ The Review Endpoints task focuses on implementing RESTful API endpoints to manag
    }
    ```
      
-Possible Status codes:
+- **Possible Status codes:**
       - 201 Created -> review is successfully created
       - 400 Bad Request -> input data is invalid
 
