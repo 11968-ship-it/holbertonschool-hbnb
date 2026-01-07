@@ -359,7 +359,7 @@ The Review Endpoints task focuses on implementing RESTful API endpoints to manag
 * 201 Created -> review is successfully created
 * 400 Bad Request -> input data is invalid
 
-
+**Summary**
 * Ensure reviews are correctly linked to both a user and a place
 * Validate review attributes such as text and rating (1–5)
 * Integrate the API layer with the Business Logic layer using the Facade pattern
