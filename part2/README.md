@@ -49,12 +49,12 @@ hbnb/
    ```bash
    git clone <repository-url>
    cd holbertonschool-hbnb
-
+   
 2. Install dependencies:
 
-```
-pip install -r requirements.txt
-```
+   ```
+   pip install -r requirements.txt
+   ```
 
 ## Running the Application
 
