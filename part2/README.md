@@ -164,7 +164,7 @@ The Place Endpoints task focuses on implementing RESTful API endpoints to manage
 
 - **Register a New Place (POST/api/v1/places/):**
 
-  ```json
+  ```http
   curl -i -X POST "http://127.0.0.1:5000/api/v1/places/" \
   -H "Content-Type: application/json" \
   -d '{
