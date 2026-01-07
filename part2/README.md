@@ -10,7 +10,7 @@ The application is organized into three main layers:
 - **Business Logic Layer**: Core models and services that define application behavior.
 - **Persistence Layer**: An in-memory repository used for object storage and validation (to be replaced by a database in later stages).
 
-At this stage, the application runs successfully but does not yet expose functional API endpoints.
+At this stage, the application runs successfully and exposes functional RESTful API endpoints for users, places, amenities, and reviews.
 
 ---
 
@@ -161,6 +161,7 @@ The Place Endpoints task focuses on implementing RESTful API endpoints to manage
 * Support associating amenities to a place (by amenity IDs)
 * When retrieving a place, include related objects: owner, amenities, and reviews
 * Support retrieving all reviews for a specific place
+* > DELETE operations are not supported for places at this stage.
 
 ### **Register a New Place (POST/api/v1/places/):**
 
@@ -330,10 +331,11 @@ The Review Endpoints task focuses on implementing RESTful API endpoints to manag
 ## Key objectives:
 
 * Implement POST, GET, PUT, and DELETE endpoints for reviews
-  code example to Register a New Review:
-  
-     ```bash
-     POST /api/v1/reviews/
+
+### **Create a Review (POST api/v1/reviews/)**
+
+```bash
+      POST /api/v1/reviews/
      Content-Type: application/json
      {
      "text": "Great place to stay!",
@@ -341,9 +343,9 @@ The Review Endpoints task focuses on implementing RESTful API endpoints to manag
      "user_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
      "place_id": "1fa85f64-5717-4562-b3fc-2c963f66afa6"
      }
-     ```
+```
 
-- and the expected response should be something like this:
+### **Expected Response (201 CREATED):**
 
    ```json
    {
@@ -354,10 +356,108 @@ The Review Endpoints task focuses on implementing RESTful API endpoints to manag
    "place_id": "1fa85f64-5717-4562-b3fc-2c963f66afa6"
    }
    ```
-     
+
 - **Possible Status codes:**
 * 201 Created -> review is successfully created
 * 400 Bad Request -> input data is invalid
+
+### **Retrieve All Reviews (GET /api/v1/reviews/)**
+
+```bash
+curl -i "http://127.0.0.1:5000/api/v1/reviews/"
+```
+
+### **Expected Response (200 OK):**
+
+```json
+   {
+   "id": "2fa85f64-5717-4562-b3fc-2c963f66afa6",
+   "text": "Great place to stay!",
+   "rating": 5,
+   "user_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+   "place_id": "1fa85f64-5717-4562-b3fc-2c963f66afa6"
+   }
+```
+
+- **Possible Status codes:**
+* 200 OK -> Review Details
+* 404 Not Found -> Review not found
+
+### Update a Review (PUT /api/v1/reviews/<review_id>)
+
+```bash
+curl -i -X PUT "http://127.0.0.1:5000/api/v1/reviews/REVIEW_ID" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "text": "Amazing stay!",
+    "rating": 4
+  }'
+```
+
+### **Expected Response (200 OK):**
+
+```json
+{ "message": "Review updated successfully" }
+```
+
+- **Possible Status codes:**
+* 200 OK -> { "message": "Review updated successfully" }
+* 400 Bad Request -> Invalid Rating
+* 404 Not found -> Rating not found
+
+### **Delete a Review (DELETE /api/v1/reviews/<review_id>)**
+
+```
+curl -i -X DELETE "http://127.0.0.1:5000/api/v1/reviews/REVIEW_ID"
+```
+
+### **Expected Response (200 OK):**
+
+```json
+{ "message": "Review deleted successfully" }
+```
+
+- **Possible Status codes:**
+* 200 OK -> { "message": "Review deleted successfully" }
+* 404 Not found -> Rating not found
+
+### **Retrieve All Reviews for a Place (GET /api/v1/places/<place_id>/reviews)**
+
+```
+curl -i "http://127.0.0.1:5000/api/v1/places/PLACE_ID/reviews"
+```
+
+- **Possible Status codes:**
+* 200 OK -> List of reviews for that place
+* 404 Not found -> Place not found
+
+## Negative Tests
+
+### **Create Review with invalid rating**
+
+```bash
+curl -i -X POST "http://127.0.0.1:5000/api/v1/reviews/" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "text": "Bad rating test",
+    "rating": 10,
+    "user_id": "USER_ID",
+    "place_id": "PLACE_ID"
+  }'
+```
+Expect: 400 Bad Request
+
+### **Create Review with missing text**
+```
+curl -i -X POST "http://127.0.0.1:5000/api/v1/reviews/" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "rating": 5,
+    "user_id": "USER_ID_HERE",
+    "place_id": "PLACE_ID_HERE"
+  }'
+```
+Expect: 400 Bad Request
 
 **Summary**
 * Ensure reviews are correctly linked to both a user and a place
@@ -369,8 +469,3 @@ The Review Endpoints task focuses on implementing RESTful API endpoints to manag
 This task ensures that review management is fully functional and properly integrated into the overall application architecture.
 
 # Testing and Validation
-
-
-
-
-
