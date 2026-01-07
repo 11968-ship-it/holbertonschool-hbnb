@@ -342,7 +342,8 @@ The Review Endpoints task focuses on implementing RESTful API endpoints to manag
      "place_id": "1fa85f64-5717-4562-b3fc-2c963f66afa6"
      }
      ```
-and the expected response should be something like this:
+
+- and the expected response should be something like this:
 
    ```json
    {
