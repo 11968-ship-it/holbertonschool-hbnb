@@ -19,7 +19,7 @@ At this stage, the application runs successfully but does not yet expose functio
 hbnb/
 ├── app/
 │   ├── __init__.py
-│   ├── api/ # API endpoints (versioned)
+│   ├── api/
 │   │   ├── __init__.py
 │   │   ├── v1/
 │   │       ├── __init__.py
@@ -27,21 +27,21 @@ hbnb/
 │   │       ├── places.py
 │   │       ├── reviews.py
 │   │       ├── amenities.py
-│   ├── models/ # Business logic models
+│   ├── models/
 │   │   ├── __init__.py
 │   │   ├── user.py
 │   │   ├── place.py
 │   │   ├── review.py
 │   │   ├── amenity.py
-│   ├── services/ # Facade for layer communication
+│   ├── services/
 │   │   ├── __init__.py
 │   │   ├── facade.py
-│   ├── persistence/ # In-memory repository
-│       ├── __init__.py # Flask application factory
+│   ├── persistence/
+│       ├── __init__.py
 │       ├── repository.py
-├── run.py # Application entry point
-├── config.py # Configuration settings
-├── requirements.txt # Project dependencies
+├── run.py
+├── config.py
+├── requirements.txt
 ├── README.md
 
 ```
