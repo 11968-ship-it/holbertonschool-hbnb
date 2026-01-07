@@ -79,9 +79,9 @@ part2/
 
 Start the Flask development server:
 
-```
-python run.py
-```
+   ```
+   python run.py
+   ```
 The application will run in debug mode.
 No API routes are fully implemented yet, but the server should start without errors.
 
@@ -223,9 +223,9 @@ curl -i "http://127.0.0.1:5000/api/v1/places/"
 
 - **Retrieve Place Details (GET /api/v1/places/<place_id>):**
 
-```bash
-curl -i "http://127.0.0.1:5000/api/v1/places/PLACE_ID"
-```
+   ```bash
+   curl -i "http://127.0.0.1:5000/api/v1/places/PLACE_ID"
+   ```
 
 - **Expected Response (200 OK):**
   
@@ -294,9 +294,9 @@ curl -i "http://127.0.0.1:5000/api/v1/places/PLACE_ID"
 
 - **Retrieve All Reviews for a Specific Place (GET /api/v1/places/<place_id>/reviews):**
   
-```bash
-curl -i "http://127.0.0.1:5000/api/v1/places/PLACE_ID/reviews"
-```
+   ```bash
+   curl -i "http://127.0.0.1:5000/api/v1/places/PLACE_ID/reviews"
+   ```
 
 - **Expected Response (200 OK):**
   ```json
@@ -330,16 +330,16 @@ The Review Endpoints task focuses on implementing RESTful API endpoints to manag
 ## Key objectives:
 
 * Implement POST, GET, PUT, and DELETE endpoints for reviews
-  code exaplme to Register a New Review:
+  code example to Register a New Review:
   
      ```bash
-      POST /api/v1/reviews/
+     POST /api/v1/reviews/
      Content-Type: application/json
      {
-  "text": "Great place to stay!",
-  "rating": 5,
-  "user_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-  "place_id": "1fa85f64-5717-4562-b3fc-2c963f66afa6"
+     "text": "Great place to stay!",
+     "rating": 5,
+     "user_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+     "place_id": "1fa85f64-5717-4562-b3fc-2c963f66afa6"
      }
      ```
 and the expected response should be something like this:
@@ -355,9 +355,8 @@ and the expected response should be something like this:
 ```
      
 Possible Status codes:
-
-* 201 Created -> review is successfully created
-* 400 Bad Request -> input data is invalid
+      - 201 Created -> review is successfully created
+      - 400 Bad Request -> input data is invalid
 
 
 * Ensure reviews are correctly linked to both a user and a place
