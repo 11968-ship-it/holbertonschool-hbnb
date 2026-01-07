@@ -123,6 +123,33 @@ Add unit tests and validate input data to ensure application correctness and sta
 
 # Amenity Endpoints
 
+This project is developed incrementally and is divided into the following subtasks:
+
+1. **Core Business Logic Classes**  
+   Define and manage the core models (User, Place, Review, Amenity) and their behaviors.
+
+2. **User Endpoints**  
+   Implement API endpoints to manage users and integrate them with the business logic layer.
+
+3. **Amenity Endpoints**  
+   Implement RESTful API endpoints to manage amenities:
+   - **POST**: Create a new amenity
+   - **GET**: Retrieve a list of all amenities or a single amenity by ID
+   - **PUT**: Update an existing amenity
+   - **DELETE** is **not implemented** at this stage  
+   Endpoints integrate with the Business Logic layer via the **Facade pattern**.
+
+
+4. **Place Endpoints**  
+   Implement endpoints for managing places, including relationships with owners, amenities, and reviews.
+
+5. **Review Endpoints**  
+   Implement full CRUD operations for reviews, ensuring proper integration with users and places via the Facade pattern.
+
+6. **Testing and Validation**  
+   Add unit tests and validate input data to ensure application correctness and stability.
+
+
 # Place Endpoints
 
 # Review Endpoints
@@ -154,6 +181,7 @@ and the expected response should be something like this:
      "place_id": "1fa85f64-5717-4562-b3fc-2c963f66afa6"
      }
      ```
+     
 Possible Status codes:
 
 * 201 Created -> review is successfully created
