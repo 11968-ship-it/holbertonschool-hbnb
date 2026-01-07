@@ -344,15 +344,15 @@ The Review Endpoints task focuses on implementing RESTful API endpoints to manag
      ```
 and the expected response should be something like this:
 
-```json
-     {
-     "id": "2fa85f64-5717-4562-b3fc-2c963f66afa6",
-     "text": "Great place to stay!",
-     "rating": 5,
-     "user_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-     "place_id": "1fa85f64-5717-4562-b3fc-2c963f66afa6"
-     }
-```
+   ```json
+   {
+   "id": "2fa85f64-5717-4562-b3fc-2c963f66afa6",
+   "text": "Great place to stay!",
+   "rating": 5,
+   "user_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+   "place_id": "1fa85f64-5717-4562-b3fc-2c963f66afa6"
+   }
+   ```
      
 Possible Status codes:
       - 201 Created -> review is successfully created
