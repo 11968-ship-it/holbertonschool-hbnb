@@ -356,8 +356,8 @@ The Review Endpoints task focuses on implementing RESTful API endpoints to manag
    ```
      
 - **Possible Status codes:**
-      - 201 Created -> review is successfully created
-      - 400 Bad Request -> input data is invalid
+* 201 Created -> review is successfully created
+* 400 Bad Request -> input data is invalid
 
 
 * Ensure reviews are correctly linked to both a user and a place
