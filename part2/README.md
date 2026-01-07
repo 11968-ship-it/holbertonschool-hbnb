@@ -49,12 +49,13 @@ hbnb/
    git clone <repository-url>
    cd holbertonschool-hbnb
 
-Install dependencies:
+2. Install dependencies:
 
+```
 pip install -r requirements.txt
+```
 
-
-Running the Application
+## Running the Application
 
 Start the Flask development server:
 
@@ -65,7 +66,7 @@ The application will run in debug mode.
 No API routes are fully implemented yet, but the server should start without errors.
 
 
-Future Development
+## Future Development
 
 Implement full business logic in models and services
 
