@@ -431,7 +431,7 @@ curl -i "http://127.0.0.1:5000/api/v1/places/PLACE_ID/reviews"
 * 200 OK -> List of reviews for that place
 * 404 Not found -> Place not found
 
-## Negative Tests
+### Negative Tests
 
 ### **Create Review with invalid rating**
 
