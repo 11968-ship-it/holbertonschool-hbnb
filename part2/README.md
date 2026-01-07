@@ -17,7 +17,7 @@ At this stage, the application runs successfully but does not yet expose functio
 ## Project Structure
 
 ```
-hbnb/
+part2/
 ├── app/
 │   ├── __init__.py
 │   ├── api/
@@ -48,7 +48,6 @@ hbnb/
 ├── README.md
 
 ```
-
 
 ### Directory Purpose
 
@@ -151,6 +150,173 @@ This project is developed incrementally and is divided into the following subtas
 
 
 # Place Endpoints
+
+
+The Place Endpoints task focuses on implementing RESTful API endpoints to manage places within the HBnB application.
+
+## Key objectives:
+
+* Implement POST, GET, and PUT endpoints for places
+* Ensure a place is linked to a valid owner (user)
+* Support associating amenities to a place (by amenity IDs)
+* When retrieving a place, include related objects: owner, amenities, and reviews
+* Support retrieving all reviews for a specific place
+
+- **Register a New Place (POST/api/v1/places/):**
+
+  ```
+  curl -i -X POST "http://127.0.0.1:5000/api/v1/places/" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Cozy Apartment",
+    "description": "A nice place to stay",
+    "price": 100.0,
+    "latitude": 37.7749,
+    "longitude": -122.4194,
+    "owner_id": "USER_ID",
+    "amenities": []
+  }'
+  ```
+
+- **Expected Response (201 Created):**
+  
+  ```
+  {
+  "id": "PLACE_ID_HERE",
+  "title": "Cozy Apartment",
+  "description": "A nice place to stay",
+  "price": 100.0,
+  "latitude": 37.7749,
+  "longitude": -122.4194,
+  "owner_id": "USER_ID_HERE"
+  }
+  ```
+
+- **Possible Status Codes**:
+      - 201 Created: place successfully created
+      - 400 Bad Request: invalid input (missing fields, invalid coordinates, invalid price, owner not found, amenity not found)
+
+- **Retrieve All Places (GET /api/v1/places/):**
+
+```curl -i "http://127.0.0.1:5000/api/v1/places/"```
+
+- **Expected Response (200 OK):**
+
+  ```
+  [
+  {
+    "id": "PLACE_ID",
+    "title": "Cozy Apartment",
+    "description": "A nice place to stay",
+    "price": 100.0,
+    "latitude": 37.7749,
+    "longitude": -122.4194,
+    "owner_id": "USER_ID"
+  }
+  ]
+  ```
+
+- **Possible Status Codes:**
+      - 200 OK: list retrieved successfully
+
+- **Retrieve Place Details (GET /api/v1/places/<place_id>):**
+
+```curl -i "http://127.0.0.1:5000/api/v1/places/PLACE_ID"```
+
+- **Expected Response (200 OK):**
+  
+  ```
+  {
+  "id": "PLACE_ID",
+  "title": "Cozy Apartment",
+  "description": "A nice place to stay",
+  "price": 100.0,
+  "latitude": 37.7749,
+  "longitude": -122.4194,
+  "owner_id": "USER_ID",
+  "owner": {
+    "id": "USER_ID",
+    "first_name": "John",
+    "last_name": "Doe",
+    "email": "john.doe@example.com"
+  },
+  "amenities": [],
+  "reviews": []
+  }
+  ```
+
+- **Possible Status Codes:**
+      - 200 OK: place found and returned
+      - 404 Not Found: place does not exist
+
+- **Update a Place (PUT /api/v1/places/<place_id>):**
+  
+  ```
+  curl -i -X PUT "http://127.0.0.1:5000/api/v1/places/PLACE_ID" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Luxury Condo",
+    "description": "An upscale place to stay",
+    "price": 200.0
+  }'
+  ```
+  
+- **Expected Response (200 OK):**
+  
+  ```
+  {
+  "id": "PLACE_ID",
+  "title": "Luxury Condo",
+  "description": "An upscale place to stay",
+  "price": 200.0,
+  "latitude": 37.7749,
+  "longitude": -122.4194,
+  "owner_id": "USER_ID",
+  "owner": {
+    "id": "USER_ID",
+    "first_name": "John",
+    "last_name": "Doe",
+    "email": "john.doe@example.com"
+  },
+  "amenities": [],
+  "reviews": []
+  }
+  ```
+
+- **Possible Status Codes:**
+      - 200 OK: place updated successfully
+      - 404 Not Found: place does not exist
+      - 400 Bad Request: invalid update data (invalid price, invalid lat/long, owner not found, amenity not found)
+
+- **Retrieve All Reviews for a Specific Place (GET /api/v1/places/<place_id>/reviews):**
+  
+```curl -i "http://127.0.0.1:5000/api/v1/places/PLACE_ID/reviews"```
+
+- **Expected Response (200 OK):**
+  ```
+  [
+  {
+    "id": "REVIEW_ID",
+    "text": "Great place to stay!",
+    "rating": 5,
+    "user_id": "USER_ID",
+    "place_id": "PLACE_ID"
+  }
+  ]
+  ```
+
+- **Possible Status Codes**
+      - 200 OK: list of reviews returned
+      - 404 Not Found: place does not exist
+
+**Summary**
+* Ensure each place is linked to a valid owner (User)
+* Validate place data (title, price, latitude, longitude)
+* Use the Facade pattern to connect API endpoints to business logic
+* Support associating and retrieving amenities for a place
+* Include related owner and reviews when retrieving place details
+
+This task ensures place management is correctly implemented and integrated into the application architecture.
 
 # Review Endpoints
 The Review Endpoints task focuses on implementing RESTful API endpoints to manage reviews within the HBnB application.
