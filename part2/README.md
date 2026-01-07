@@ -407,7 +407,7 @@ curl -i -X PUT "http://127.0.0.1:5000/api/v1/reviews/REVIEW_ID" \
 
 ### **Delete a Review (DELETE /api/v1/reviews/<review_id>)**
 
-```
+```bash
 curl -i -X DELETE "http://127.0.0.1:5000/api/v1/reviews/REVIEW_ID"
 ```
 
@@ -423,7 +423,7 @@ curl -i -X DELETE "http://127.0.0.1:5000/api/v1/reviews/REVIEW_ID"
 
 ### **Retrieve All Reviews for a Place (GET /api/v1/places/<place_id>/reviews)**
 
-```
+```bash
 curl -i "http://127.0.0.1:5000/api/v1/places/PLACE_ID/reviews"
 ```
 
@@ -448,7 +448,7 @@ curl -i -X POST "http://127.0.0.1:5000/api/v1/reviews/" \
 Expect: 400 Bad Request
 
 ### **Create Review with missing text**
-```
+```bash
 curl -i -X POST "http://127.0.0.1:5000/api/v1/reviews/" \
   -H "Content-Type: application/json" \
   -d '{
