@@ -164,7 +164,7 @@ The Place Endpoints task focuses on implementing RESTful API endpoints to manage
 
 - **Register a New Place (POST/api/v1/places/):**
 
-  ```http
+  ```bash
   curl -i -X POST "http://127.0.0.1:5000/api/v1/places/" \
   -H "Content-Type: application/json" \
   -d '{
@@ -198,7 +198,7 @@ The Place Endpoints task focuses on implementing RESTful API endpoints to manage
 
 - **Retrieve All Places (GET /api/v1/places/):**
 
-```json
+```bash
 curl -i "http://127.0.0.1:5000/api/v1/places/"
 ```
 
@@ -223,7 +223,7 @@ curl -i "http://127.0.0.1:5000/api/v1/places/"
 
 - **Retrieve Place Details (GET /api/v1/places/<place_id>):**
 
-```json
+```bash
 curl -i "http://127.0.0.1:5000/api/v1/places/PLACE_ID"
 ```
 
@@ -255,7 +255,7 @@ curl -i "http://127.0.0.1:5000/api/v1/places/PLACE_ID"
 
 - **Update a Place (PUT /api/v1/places/<place_id>):**
   
-  ```json
+  ```bash
   curl -i -X PUT "http://127.0.0.1:5000/api/v1/places/PLACE_ID" \
   -H "Content-Type: application/json" \
   -d '{
@@ -294,7 +294,7 @@ curl -i "http://127.0.0.1:5000/api/v1/places/PLACE_ID"
 
 - **Retrieve All Reviews for a Specific Place (GET /api/v1/places/<place_id>/reviews):**
   
-```json
+```bash
 curl -i "http://127.0.0.1:5000/api/v1/places/PLACE_ID/reviews"
 ```
 
@@ -332,7 +332,7 @@ The Review Endpoints task focuses on implementing RESTful API endpoints to manag
 * Implement POST, GET, PUT, and DELETE endpoints for reviews
   code exaplme to Register a New Review:
   
-     ```json
+     ```bash
       POST /api/v1/reviews/
      Content-Type: application/json
      {
