@@ -133,10 +133,12 @@ class HBnBFacade:
             raise ValueError("Place not found")
 
         # --- Create review ---
-        review = Review(text, rating, user_id, place_id)
+        review = Review(text=text, rating=rating, user=user, place=place)
         self.review_repo.add(review)
 
         # Attach review to place
+        if not hasattr(place, "reviews") or place.reviews is None:
+            place.reviews = []
         place.reviews.append(review)
 
         return review
@@ -175,8 +177,8 @@ class HBnBFacade:
             return False
 
         # Remove from place
-        place = self.place_repo.get(review.place_id)
-        if place:
+        place = getattr(review, "place", None)
+        if place and hasattr(place, "reviews"):
             place.reviews = [r for r in place.reviews if r.id != review_id]
 
         # Remove from repo
