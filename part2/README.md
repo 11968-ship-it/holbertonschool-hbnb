@@ -127,15 +127,47 @@ Implement full CRUD operations for reviews, ensuring proper integration with use
 6. Testing and Validation
 Add unit tests and validate input data to ensure application correctness and stability.
 
-**Endpoints Summary**:
-- Users:
+## Endpoints Summary
+- **Users**:
 
 |      Method     |     Endpoint    |  Description   |  
 |---------------- |-----------------|----------------|
 |       POST      |  /api/v1/users/ | Create a new user |
 |       GET       |  /api/v1/users/ | List all users |
-|       GET       |  /api/v1/users/ | Retrieve one user |
-|       PUT       |  /api/v1/users/ | Update a user  |
+|       GET       |  /api/v1/users/<user_id> | Retrieve one user |
+|       PUT       |  /api/v1/users/<user_id> | Update a user  |
+
+- **Amenities**:
+
+|      Method     |     Endpoint    |  Description   |  
+|---------------- |-----------------|----------------|
+|       POST      |  /api/v1/amenities/ | Create a new amenity |
+|       GET       |  /api/v1/amenities/ | List all amenities |
+|       GET       |  /api/v1/amenities/<amenity_id> | Retrieve one amenity |
+|       PUT       |  /api/v1/amenities/<amenity_id> | Update an amenity  |
+> Note: DELETE is not implemented for amenities at this stage.
+
+- **Places**:
+
+|      Method     |     Endpoint    |  Description   |  
+|---------------- |-----------------|----------------|
+|       POST      |  /api/v1/places/ | Create a new place |
+|       GET       |  /api/v1/places/ | List all places |
+|       GET       |  /api/v1/places/<place_id> | Retrieve place details (owner/amenities/reviews) |
+|       PUT       |  /api/v1/places/<places_id> | Update a place  |
+|       GET       |  /api/v1/places/<places_id>/reviews | List all reviews for a place  |
+> Note: DELETE is not implemented for places at this stage.
+
+- **Reviews**:
+
+|      Method     |     Endpoint    |  Description   |  
+|---------------- |-----------------|----------------|
+|       POST      |  /api/v1/reviews/ | Create a new review |
+|       GET       |  /api/v1/reviews/ | List all reviews |
+|       GET       |  /api/v1/reviews/<review_id> | Retrieve one review |
+|       PUT       |  /api/v1/reviews/<review_id> | Update a review |
+|       DELETE    |  /api/v1/reviews/<review_id> | Delete a review |
+
 
 # Core Business Logic Classes
 
