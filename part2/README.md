@@ -171,19 +171,10 @@ Add unit tests and validate input data to ensure application correctness and sta
 
 # Core Business Logic Classes
 
-# User Endpoints
+## User Endpoints
 
-# Amenity Endpoints
+## Amenity Endpoints
 
-This project is developed incrementally and is divided into the following subtasks:
-
-1. **Core Business Logic Classes**  
-   Define and manage the core models (User, Place, Review, Amenity) and their behaviors.
-
-2. **User Endpoints**  
-   Implement API endpoints to manage users and integrate them with the business logic layer.
-
-3. **Amenity Endpoints**  
    Implement RESTful API endpoints to manage amenities:
    - **POST**: Create a new amenity
    - **GET**: Retrieve a list of all amenities or a single amenity by ID
@@ -191,23 +182,11 @@ This project is developed incrementally and is divided into the following subtas
    - **DELETE** is **not implemented** at this stage  
    Endpoints integrate with the Business Logic layer via the **Facade pattern**.
 
-
-4. **Place Endpoints**  
-   Implement endpoints for managing places, including relationships with owners, amenities, and reviews.
-
-5. **Review Endpoints**  
-   Implement full CRUD operations for reviews, ensuring proper integration with users and places via the Facade pattern.
-
-6. **Testing and Validation**  
-   Add unit tests and validate input data to ensure application correctness and stability.
-
-
-# Place Endpoints
-
+## Place Endpoints
 
 The Place Endpoints task focuses on implementing RESTful API endpoints to manage places within the HBnB application.
 
-## Key objectives:
+### Key objectives:
 
 * Implement POST, GET, and PUT endpoints for places
 * Ensure a place is linked to a valid owner (user)
@@ -378,10 +357,10 @@ curl -i "http://127.0.0.1:5000/api/v1/places/"
 
 This task ensures place management is correctly implemented and integrated into the application architecture.
 
-# Review Endpoints
+## Review Endpoints
 The Review Endpoints task focuses on implementing RESTful API endpoints to manage reviews within the HBnB application.
 
-## Key objectives:
+### Key objectives:
 
 * Implement POST, GET, PUT, and DELETE endpoints for reviews
 
