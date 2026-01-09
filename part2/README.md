@@ -110,22 +110,22 @@ Base API prefix:
 This project is developed incrementally and is divided into the following subtasks:
 
 1. Core Business Logic Classes
-Define and manage the core models (User, Place, Review, Amenity) and their behaviors.
+* Define and manage the core models (User, Place, Review, Amenity) and their behaviors.
 
 2. User Endpoints
-Implement API endpoints to manage users and integrate them with the business logic layer.
+* Implement API endpoints to manage users and integrate them with the business logic layer.
 
 3. Amenity Endpoints
-Create endpoints to handle amenities and associate them with places.
+* Create endpoints to handle amenities and associate them with places.
 
 4. Place Endpoints
-Implement endpoints for managing places, including relationships with owners, amenities, and reviews.
+* Implement endpoints for managing places, including relationships with owners, amenities, and reviews.
 
 5. Review Endpoints
-Implement full CRUD operations for reviews, ensuring proper integration with users and places via the Facade pattern.
+* Implement full CRUD operations for reviews, ensuring proper integration with users and places via the Facade pattern.
 
 6. Testing and Validation
-Add unit tests and validate input data to ensure application correctness and stability.
+* Add unit tests and validate input data to ensure application correctness and stability.
 
 ## Endpoints Summary
 - **Users**:
