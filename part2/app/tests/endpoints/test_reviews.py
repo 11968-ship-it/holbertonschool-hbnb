@@ -65,9 +65,6 @@ class TestReviewEndpoints(unittest.TestCase):
         self.assertEqual(create.status_code, 201, msg=create.get_data(as_text=True))
         review_id = create.get_json()["id"]
 
-        # IMPORTANT:
-        # Your endpoint currently uses review_model on PUT (all fields required),
-        # so send all required fields unless you create a ReviewUpdate model.
         update = self.client.put(f'/api/v1/reviews/{review_id}', json={
             "text": "Updated",
             "rating": 4,
