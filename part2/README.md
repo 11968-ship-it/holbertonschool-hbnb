@@ -74,9 +74,9 @@ part2/
    ```bash
    git clone <repository-url>
    cd holbertonschool-hbnb
-   
+   ```
 2. Install dependencies:
-
+   
    ```
    pip install -r requirements.txt
    ```
@@ -88,9 +88,6 @@ Start the Flask development server:
    ```
    python run.py
    ```
-
-The application will run in debug mode.
-No API routes are fully implemented yet, but the server should start without errors.
 
 Default base URL:
 - ```http://127.0.0.1:5000```
@@ -171,11 +168,19 @@ This project is developed incrementally and is divided into the following subtas
 
 # Core Business Logic Classes
 
+**Core entities**:
+* ```User```
+* ```Place```
+* ```Amenity```
+* ```Review```
+
+The models are validated and stored using an in-memory repository. The Facade service coordinates interactions between API endpoints and the persistence layer.
+
 ## User Endpoints
 
 ## Amenity Endpoints
 
-   Implement RESTful API endpoints to manage amenities:
+The Amenity Endpoints task focuses on Implementing RESTful API endpoints to manage amenities within the HBnB application:
    - **POST**: Create a new amenity
    - **GET**: Retrieve a list of all amenities or a single amenity by ID
    - **PUT**: Update an existing amenity
@@ -215,13 +220,13 @@ The Place Endpoints task focuses on implementing RESTful API endpoints to manage
 
   ```json
   {
-  "id": "PLACE_ID_HERE",
+  "id": "PLACE_ID",
   "title": "Cozy Apartment",
   "description": "A nice place to stay",
   "price": 100.0,
   "latitude": 37.7749,
   "longitude": -122.4194,
-  "owner_id": "USER_ID_HERE"
+  "owner_id": "USER_ID"
   }
   ```
 
@@ -485,8 +490,8 @@ curl -i -X POST "http://127.0.0.1:5000/api/v1/reviews/" \
   -H "Content-Type: application/json" \
   -d '{
     "rating": 5,
-    "user_id": "USER_ID_HERE",
-    "place_id": "PLACE_ID_HERE"
+    "user_id": "USER_ID",
+    "place_id": "PLACE_ID"
   }'
 ```
 Expect: 400 Bad Request
