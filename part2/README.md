@@ -24,16 +24,17 @@ part2/
 │   │   ├── __init__.py
 │   │   ├── v1/
 │   │       ├── __init__.py
-│   │       ├── users.py
+│   │       ├── amenities.py
 │   │       ├── places.py
 │   │       ├── reviews.py
-│   │       ├── amenities.py
+│   │       ├── users.py
 │   ├── models/
 │   │   ├── __init__.py
-│   │   ├── user.py
+│   │   ├── amenity.py
+│   │   ├── base_model.py
 │   │   ├── place.py
 │   │   ├── review.py
-│   │   ├── amenity.py
+│   │   ├── user.py
 │   ├── services/
 │   │   ├── __init__.py
 │   │   ├── facade.py
@@ -42,22 +43,27 @@ part2/
 │   |   ├── repository.py
 |   ├── tests/
 |   |   ├── test_models.py
+|   |   ├── endpoints/
+|   |       ├── test_amenities.py
+|   |       ├── test_places.py
+|   |       ├── test_reviews.py
+|   |       ├── test_users.py
 ├── run.py
 ├── config.py
 ├── requirements.txt
-├── README.md
-
+└── README.md
 ```
 
 ### Directory Purpose
 
-- **api/**: Defines REST API endpoints (users, places, reviews, amenities).
-- **models/**: Contains core entity classes.
-- **services/**: Implements the Facade pattern to coordinate interactions between layers.
-- **persistence/**: Provides an in-memory repository implementing a common storage interface.
+- **app/api/**: Defines REST API endpoints (users, places, reviews, amenities).
+- **app/models/**: Contains core entity classes.
+- **app/services/**: Implements the Facade pattern to coordinate interactions between layers.
+- **app/persistence/**: Provides an in-memory repository implementing a common storage interface.
 - **run.py**: Starts the Flask application.
 - **config.py**: Holds environment-specific configuration.
 - **requirements.txt**: Lists required Python packages.
+- **app/tests/**: Unit tests.
 
 ---
 
@@ -82,9 +88,15 @@ Start the Flask development server:
    ```
    python run.py
    ```
+
 The application will run in debug mode.
 No API routes are fully implemented yet, but the server should start without errors.
 
+Default base URL:
+- ```http://127.0.0.1:5000```
+
+Base API prefix:
+- ```http://127.0.0.1:5000/api/v1```
 
 ## Future Development
 
@@ -115,6 +127,15 @@ Implement full CRUD operations for reviews, ensuring proper integration with use
 6. Testing and Validation
 Add unit tests and validate input data to ensure application correctness and stability.
 
+**Endpoints Summary**:
+- Users:
+
+|      Method     |     Endpoint    |  Description   |  
+|---------------- |-----------------|----------------|
+|       POST      |  /api/v1/users/ | Create a new user |
+|       GET       |  /api/v1/users/ | List all users |
+|       GET       |  /api/v1/users/ | Retrieve one user |
+|       PUT       |  /api/v1/users/ | Update a user  |
 
 # Core Business Logic Classes
 
