@@ -522,3 +522,46 @@ Expect: 400 Bad Request
 This task ensures that review management is fully functional and properly integrated into the overall application architecture.
 
 # Testing and Validation
+
+## Testing
+
+Run unit tests (example using unittest):
+
+```python -m unittest discover -s app/tests -p "test_*.py"```
+
+
+If you use pytest in your requirements, you can also run:
+
+```pytest -q```
+
+## Validation Rules
+
+These are the expected validation rules used across the API:
+
+- **User**:
+      - ```email``` must be valid format and unique
+      - ```first_name``` and ```last_name``` required
+
+- **Amenity**:
+      - ```name``` required and non-empty
+
+- **Place**:
+      - ```title``` required and non-empty
+      - ```price``` must be a number and non-negative
+      - ```latitude``` must be between ```-90``` and ```90```
+      - ```longitude``` must be between ```-180``` and ```180```
+      - ```owner_id``` must reference an existing user
+      - ```amenities``` must be a list of valid amenity IDs
+
+- **Review**:
+      - ```text``` required and non-empty
+      - ```rating``` must be an integer between 1 and 5
+      - ```user_id``` must reference an existing user
+      - ```place_id``` must reference an existing place
+
+
+## Authors
+
+- Lamyaa Mohammed Alghaihab <11955@holbertonstudents.com> 💻✍️
+- Thekira A. Ahmed <11968@holbertonstudents.com> 💻✍️
+- Yara K. Alrasheed <11982@holbertonstudents.com> 💻✍️
