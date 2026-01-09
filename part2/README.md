@@ -539,25 +539,25 @@ If you use pytest in your requirements, you can also run:
 These are the expected validation rules used across the API:
 
 - **User**:
-      - ```email``` must be valid format and unique
-      - ```first_name``` and ```last_name``` required
+         - ```email``` must be valid format and unique
+         - ```first_name``` and ```last_name``` required
 
 - **Amenity**:
-      - ```name``` required and non-empty
+         - ```name``` required and non-empty
 
 - **Place**:
-      - ```title``` required and non-empty
-      - ```price``` must be a number and non-negative
-      - ```latitude``` must be between ```-90``` and ```90```
-      - ```longitude``` must be between ```-180``` and ```180```
-      - ```owner_id``` must reference an existing user
-      - ```amenities``` must be a list of valid amenity IDs
+         - ```title``` required and non-empty
+         - ```price``` must be a number and non-negative
+         - ```latitude``` must be between ```-90``` and ```90```
+         - ```longitude``` must be between ```-180``` and ```180```
+         - ```owner_id``` must reference an existing user
+         - ```amenities``` must be a list of valid amenity IDs
 
 - **Review**:
-      - ```text``` required and non-empty
-      - ```rating``` must be an integer between 1 and 5
-      - ```user_id``` must reference an existing user
-      - ```place_id``` must reference an existing place
+         - ```text``` required and non-empty
+         - ```rating``` must be an integer between 1 and 5
+         - ```user_id``` must reference an existing user
+         - ```place_id``` must reference an existing place
 
 
 ## Authors
