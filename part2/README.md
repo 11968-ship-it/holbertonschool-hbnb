@@ -177,6 +177,158 @@ This project is developed incrementally and is divided into the following subtas
 The models are validated and stored using an in-memory repository. The Facade service coordinates interactions between API endpoints and the persistence layer.
 
 ## User Endpoints
+The User Endpoints task focuses on implementing RESTful API endpoints to manage users within the HBnB application.
+
+Users represent the core entity of the platform and can own places, write reviews, and interact with other features. These endpoints connect to the Business Logic layer through the **Facade pattern** and use the in-memory persistence layer for storage.
+
+   - **POST**: Create a new user
+   - **GET**: Retrieve a list of all users or a single user by ID
+   - **PUT**: Update an existing user
+   - **DELETE** is **not implemented** at this stage  
+   Endpoints integrate with the Business Logic layer via the **Facade pattern**.
+
+### Create a User (POST /api/v1/users/)
+Create a new user by providing **first name**, **last name**, and **email**.
+
+Request:
+```bash
+curl -i -X POST "http://127.0.0.1:5000/api/v1/users/" \
+-H "Content-Type: application/json" \
+-d '{
+  "first_name": "John",
+  "last_name": "Doe",
+  "email": "john.doe@example.com"
+}'
+```
+Expected Response (201 Created):
+```json
+{
+  "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "first_name": "John",
+  "last_name": "Doe",
+  "email": "john.doe@example.com"
+}
+```
+**Possible Status Codes**
+
+* ```201 Created```: user successfully created
+* ```400 Bad Request```: invalid input (missing fields, invalid ```email``` format, or ```email``` already registered)
+
+### Retrieve All Users (GET /api/v1/users/)
+**Retrieve a list of all stored users.**
+
+Request:
+```bash
+curl -i "http://127.0.0.1:5000/api/v1/users/"
+```
+Expected Response (200 OK):
+```json
+[
+  {
+    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "first_name": "John",
+    "last_name": "Doe",
+    "email": "john.doe@example.com"
+  },
+  {
+    "id": "7gb96g75-6828-5673-c4gd-3d074g77bgb7",
+    "first_name": "Jane",
+    "last_name": "Smith",
+    "email": "jane.smith@example.com"
+  }
+]
+```
+**Possible Status Codes**
+
+* ```200 OK```: list retrieved successfully
+
+### Retrieve a Single User (GET /api/v1/users/<user_id>)
+**Retrieve details for one user by their ID.**
+
+Request:
+```bash
+curl -i "http://127.0.0.1:5000/api/v1/users/USER_ID"
+```
+Expected Response (200 OK):
+```json
+{
+  "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "first_name": "John",
+  "last_name": "Doe",
+  "email": "john.doe@example.com"
+}
+```
+**Possible Status Codes:**
+
+* ```200 OK```: ```user``` found and returned.
+* ```404 Not Found```: ```user``` does not exist.
+
+### Update a User (PUT /api/v1/users/<user_id>)
+**Update the information of an existing user.**
+
+Request:
+```bash
+curl -i -X PUT "http://127.0.0.1:5000/api/v1/users/USER_ID" \
+-H "Content-Type: application/json" \
+-d '{
+  "first_name": "Jane",
+  "last_name": "Doe",
+  "email": "jane.doe@example.com"
+}'
+```
+Expected Response (200 OK):
+```json
+{
+  "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "first_name": "Jane",
+  "last_name": "Doe",
+  "email": "jane.doe@example.com"
+}
+```
+**Possible Status Codes:**
+
+* ```200 OK```: ```user``` updated successfully
+* ```400 Bad Request```: invalid input (missing/empty fields or ```email``` already registered)
+* ```404 Not Found```: ```user``` does not exist
+
+### Negative Tests (Examples):
+- **Create User with missing email:**
+  ```bash
+  curl -i -X POST "http://127.0.0.1:5000/api/v1/users/" \
+  -H "Content-Type: application/json" \
+   -d '{
+  "first_name": "John",
+  "last_name": "Doe"
+  }'
+  ```
+  Expected: ```400 Bad Request```
+  
+- **Update User with invalid email format:**
+  ```bash
+  curl -i -X PUT "http://127.0.0.1:5000/api/v1/users/USER_ID" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "first_name": "John",
+  "last_name": "Doe",
+  "email": "invalid-email"
+  }'
+  ```
+  Expected: ```400 Bad Request```
+
+- **Retrieve non-existent user:**
+  ```bash
+  curl -i "http://127.0.0.1:5000/api/v1/users/00000000-0000-0000-0000-000000000000"
+  ```
+  Expected: ```404 Not Found```
+
+### Summary
+
+* Users support ```create```, ```list```, ```retrieve```, and ```update```
+* ```Email``` uniqueness is enforced across all users
+* ```Users``` integrate with the Business Logic layer using the Facade pattern
+* ```Users``` are the foundation for ownership of places and authorship of reviews
+* DELETE is intentionally not supported at this stage
+
 
 ## Amenity Endpoints
 
