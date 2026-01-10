@@ -168,14 +168,101 @@ This project is developed incrementally and is divided into the following subtas
 
 
 # Core Business Logic Classes
+The Core Business Logic Classes form the foundation of the HBnB application. These classes define the essential entities and their behaviors, representing the domain model of the system.
 
 **Core entities**:
-* ```User```
-* ```Place```
-* ```Amenity```
-* ```Review```
+* ```User```: Represents users who can own places and write reviews
+* ```Place```: Represents properties available for booking
+* ```Amenity```: Represents features/services associated with places
+* ```Review```:  Represents user feedback on places
 
 The models are validated and stored using an in-memory repository. The Facade service coordinates interactions between API endpoints and the persistence layer.
+
+##Why UUIDs Are Used as Identifiers
+In the HBnB application, each object is identified by a universally unique identifier (UUID) instead of a sequential numeric ID. Here's why:
+
+1- **Global Uniqueness**: UUIDs are guaranteed to be unique across different systems and databases. This allows for distributed systems and ensures that IDs don't clash when combining data from multiple sources.
+
+2- **Security Considerations**: Sequential numeric IDs can reveal information about the system, such as the total number of users or entities. UUIDs are non-sequential and harder to predict, adding a layer of security by preventing malicious users from easily guessing valid IDs.
+
+3- **Scalability and Flexibility**: UUIDs support systems that need to scale across multiple servers or regions. The decentralized generation of UUIDs ensures no conflict when data is merged or moved across systems.
+
+##Entity Specifications
+
+### User Class
+The ```User``` class represents users of the platform who can own places and write reviews.
+**Attributes:**
+* ```id``` (String): Unique identifier for each user (UUID).
+* ```first_name``` (String): The first name of the user. Required, maximum length of 50 characters.
+* ```last_name``` (String): The last name of the user. Required, maximum length of 50 characters.
+* ```email``` (String): The email address of the user. Required, must be unique, and should follow standard email format validation.
+* ```is_admin``` (Boolean): Indicates whether the user has administrative privileges. Defaults to False.
+* ```created_at``` (DateTime): Timestamp when the user is created.
+* ```updated_at``` (DateTime): Timestamp when the user is last updated.
+  
+**Responsibilities:**
+
+* Validate user data (email format, required fields).
+* Manage user information updates.
+* Maintain user identity and authentication status.
+
+### Place Class
+The Place class represents properties available for rental on the platform.
+
+**Attributes:**
+* ```id``` (String): Unique identifier for each place (UUID)
+* ```title``` (String): The title of the place. Required, maximum length of 100 characters
+* ```description``` (String): Detailed description of the place. Optional
+* ```price``` (Float): The price per night for the place. Must be a positive value
+* ```latitude``` (Float): Latitude coordinate for the place location. Must be within the range of -90.0 to 90.0
+* ```longitude``` (Float): Longitude coordinate for the place location. Must be within the range of -180.0 to 180.0
+* ```owner``` (User): User instance of who owns the place. This should be validated to ensure the owner exists
+* ```amenities``` (List): List of amenities associated with the place
+* ```reviews``` (List): List of reviews for the place
+* ```created_at``` (DateTime): Timestamp when the place is created
+* ```updated_at``` (DateTime): Timestamp when the place is last updated
+  
+**Responsibilities:**
+* Validate place data (price, coordinates, title)
+* Manage relationships with owners, amenities, and reviews
+* Provide methods to add/remove amenities and reviews
+* Ensure data integrity for location coordinates
+
+### Review Class
+The Review class represents user feedback and ratings for places.
+
+**Attributes:**
+* ```id``` (String): Unique identifier for each review (UUID)
+* ```text``` (String): The content of the review. Required
+* ```rating``` (Integer): Rating given to the place, must be between 1 and 5
+* ```place``` (Place): Place instance being reviewed. Must be validated to ensure the place exists
+* ```user``` (User): User instance of who wrote the review. Must be validated to ensure the user exists
+* ```created_at``` (DateTime): Timestamp when the review is created
+* ```updated_at``` (DateTime): Timestamp when the review is last updated
+
+**Responsibilities:**
+* Validate review content and rating range (1-5)
+* Maintain relationship with user and place
+* Ensure users cannot review the same place multiple times (business rule)
+* Provide feedback mechanism for place quality
+
+### Amenity Class
+The Amenity class represents features or services associated with places (e.g., WiFi, Parking, Pool).
+
+**Attributes:**
+* ```id``` (String): Unique identifier for each amenity (UUID)
+* ```name``` (String): The name of the amenity. Required, maximum length of 50 characters
+* ```created_at``` (DateTime): Timestamp when the amenity is created
+* ```updated_at``` (DateTime): Timestamp when the amenity is last updated
+  
+**Responsibilities:**
+* Validate amenity name
+* Provide reusable amenity definitions across multiple places
+* Support many-to-many relationship with places
+
+## Entity Relationships
+The core entities are interconnected through the following relationships:
+
 
 ## User Endpoints
 The User Endpoints task focuses on implementing RESTful API endpoints to manage users within the HBnB application.
