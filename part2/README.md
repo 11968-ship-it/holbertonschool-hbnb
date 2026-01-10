@@ -133,6 +133,7 @@ This project is developed incrementally and is divided into the following subtas
 |       GET       |  /api/v1/users/ | List all users |
 |       GET       |  /api/v1/users/<user_id> | Retrieve one user |
 |       PUT       |  /api/v1/users/<user_id> | Update a user  |
+> Note: DELETE is not implemented for users at this stage.
 
 - **Amenities**:
 
