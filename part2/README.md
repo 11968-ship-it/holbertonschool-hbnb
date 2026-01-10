@@ -178,7 +178,8 @@ The Core Business Logic Classes form the foundation of the HBnB application. The
 
 The models are validated and stored using an in-memory repository. The Facade service coordinates interactions between API endpoints and the persistence layer.
 
-##Why UUIDs Are Used as Identifiers
+## Why UUIDs Are Used as Identifiers
+
 In the HBnB application, each object is identified by a universally unique identifier (UUID) instead of a sequential numeric ID. Here's why:
 
 1- **Global Uniqueness**: UUIDs are guaranteed to be unique across different systems and databases. This allows for distributed systems and ensures that IDs don't clash when combining data from multiple sources.
