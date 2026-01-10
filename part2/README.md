@@ -263,9 +263,6 @@ The Amenity class represents features or services associated with places (e.g., 
 * Provide reusable amenity definitions across multiple places
 * Support many-to-many relationship with places
 
-## Entity Relationships
-The core entities are interconnected through the following relationships:
-
 
 ## User Endpoints
 The User Endpoints task focuses on implementing RESTful API endpoints to manage users within the HBnB application.
