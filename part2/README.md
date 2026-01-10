@@ -188,7 +188,7 @@ In the HBnB application, each object is identified by a universally unique ident
 
 3- **Scalability and Flexibility**: UUIDs support systems that need to scale across multiple servers or regions. The decentralized generation of UUIDs ensures no conflict when data is merged or moved across systems.
 
-##Entity Specifications
+## Entity Specifications
 
 ### User Class
 The ```User``` class represents users of the platform who can own places and write reviews.
