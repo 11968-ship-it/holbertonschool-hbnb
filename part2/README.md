@@ -180,12 +180,147 @@ The models are validated and stored using an in-memory repository. The Facade se
 
 ## Amenity Endpoints
 
-The Amenity Endpoints task focuses on Implementing RESTful API endpoints to manage amenities within the HBnB application:
+The Amenity Endpoints task focuses on Implementing RESTful API endpoints to manage amenities within the HBnB application.
+
+Amenities represent features that can be associated with places (e.g., WiFi, Parking, Pool). These endpoints connect to the Business Logic layer through the **Facade pattern** and use the in-memory persistence layer for storage.
+
    - **POST**: Create a new amenity
    - **GET**: Retrieve a list of all amenities or a single amenity by ID
    - **PUT**: Update an existing amenity
    - **DELETE** is **not implemented** at this stage  
    Endpoints integrate with the Business Logic layer via the **Facade pattern**.
+
+### Create an Amenity (POST `/api/v1/amenities/`)
+
+**Create a new amenity by providing its name.**
+
+Request:
+
+```bash
+curl -i -X POST "http://127.0.0.1:5000/api/v1/amenities/" \
+-H "Content-Type: application/json" \
+-d '{
+  "name": "WiFi"
+}'
+```
+
+Expected Response (201 Created):
+
+```json
+{
+  "id": "AMENITY_ID",
+  "name": "WiFi"
+}
+```
+
+**Possible Status Codes**
+* ```201 Created```: amenity successfully created
+* ```400 Bad Request```: invalid input (missing or empty ```name```)
+
+### Retrieve All Amenities (GET /api/v1/amenities/)
+
+**Retrieve a list of all stored amenities.**
+
+Request:
+
+```bash
+curl -i "http://127.0.0.1:5000/api/v1/amenities/"
+```
+
+Expected Response (200 OK):
+
+```json
+[
+  {
+    "id": "AMENITY_ID",
+    "name": "WiFi"
+  },
+  {
+    "id": "AMENITY_ID_2",
+    "name": "Parking"
+  }
+]
+```
+
+**Possible Status Codes**
+* 200 OK: list retrieved successfully
+
+### Retrieve a Single Amenity (GET /api/v1/amenities/<amenity_id>)
+
+**Retrieve details for one amenity by its ID.**
+
+Request:
+
+```bash
+curl -i "http://127.0.0.1:5000/api/v1/amenities/AMENITY_ID"
+```
+
+Expected Response (200 OK):
+
+```json
+{
+  "id": "AMENITY_ID",
+  "name": "WiFi"
+}
+```
+
+**Possible Status Codes**:
+* ```200 OK```: amenity found and returned
+* ```404 Not Found```: amenity does not exist
+
+### Update an Amenity (PUT /api/v1/amenities/<amenity_id>)
+
+**Update the name of an existing amenity.**
+
+Request:
+
+```bash
+curl -i -X PUT "http://127.0.0.1:5000/api/v1/amenities/AMENITY_ID" \
+-H "Content-Type: application/json" \
+-d '{
+  "name": "Free WiFi"
+}'
+```
+
+Expected Response (200 OK):
+
+```json
+{
+  "id": "AMENITY_ID",
+  "name": "Free WiFi"
+}
+```
+
+**Possible Status Codes**:
+* ```200 OK```: amenity updated successfully
+* ```400 Bad Request```: invalid input (missing/empty name)
+* ```404 Not Found```: amenity does not exist
+
+### Negative Tests (Examples):
+
+**- Create Amenity with missing name:**
+
+```bash
+curl -i -X POST "http://127.0.0.1:5000/api/v1/amenities/" \
+-H "Content-Type: application/json" \
+-d '{}'
+```
+Expected: ```400 Bad Request```
+
+**- Update Amenity with empty name:**
+
+```bash
+curl -i -X PUT "http://127.0.0.1:5000/api/v1/amenities/AMENITY_ID" \
+-H "Content-Type: application/json" \
+-d '{ "name": "" }'
+```
+Expected: ```400 Bad Request```
+
+**Summary**
+* Amenities support **create**, **list**, **retrieve**, and **update**
+* Amenities integrate with the Business Logic layer using the **Facade pattern**
+* Amenities are designed to be associated with places later
+* **DELETE** is intentionally not supported at this stage
 
 ## Place Endpoints
 
@@ -202,6 +337,8 @@ The Place Endpoints task focuses on implementing RESTful API endpoints to manage
 
 ### **Register a New Place (POST/api/v1/places/):**
 
+- Request:
+
   ```bash
   curl -i -X POST "http://127.0.0.1:5000/api/v1/places/" \
   -H "Content-Type: application/json" \
@@ -216,7 +353,7 @@ The Place Endpoints task focuses on implementing RESTful API endpoints to manage
   }'
   ```
 
-- **Expected Response (201 Created):**
+- Expected Response (201 Created):
 
   ```json
   {
@@ -230,17 +367,19 @@ The Place Endpoints task focuses on implementing RESTful API endpoints to manage
   }
   ```
 
-- **Possible Status Codes**:
-   - 201 Created: place successfully created
-   - 400 Bad Request: invalid input (missing fields, invalid coordinates, invalid price, owner not found, amenity not found)
+**Possible Status Codes**:
+* ```201 Created```: place successfully created
+* ```400 Bad Request```: invalid input (missing fields, invalid coordinates, invalid price, owner not found, amenity not found)
 
 ### **Retrieve All Places (GET /api/v1/places/):**
+
+* Request:
 
 ```bash
 curl -i "http://127.0.0.1:5000/api/v1/places/"
 ```
 
-- **Expected Response (200 OK):**
+* Expected Response (200 OK):
 
   ```json
   [
@@ -256,16 +395,18 @@ curl -i "http://127.0.0.1:5000/api/v1/places/"
   ]
   ```
 
-- **Possible Status Codes:**
-      - 200 OK: list retrieved successfully
+**Possible Status Codes:**
+* ```200 OK```: list retrieved successfully
 
 ### **Retrieve Place Details (GET /api/v1/places/<place_id>):**
+
+* Request:
 
    ```bash
    curl -i "http://127.0.0.1:5000/api/v1/places/PLACE_ID"
    ```
 
-- **Expected Response (200 OK):**
+* Expected Response (200 OK):
   
   ```json
   {
@@ -288,11 +429,13 @@ curl -i "http://127.0.0.1:5000/api/v1/places/"
   ```
 
 - **Possible Status Codes:**
-      - 200 OK: place found and returned
-      - 404 Not Found: place does not exist
+* ```200 OK```: place found and returned
+* ```404 Not Found```: place does not exist
 
 ### **Update a Place (PUT /api/v1/places/<place_id>):**
-  
+
+* Request:
+
   ```bash
   curl -i -X PUT "http://127.0.0.1:5000/api/v1/places/PLACE_ID" \
   -H "Content-Type: application/json" \
@@ -302,8 +445,8 @@ curl -i "http://127.0.0.1:5000/api/v1/places/"
     "price": 200.0
   }'
   ```
-  
-- **Expected Response (200 OK):**
+
+* Expected Response (200 OK):
   
   ```json
   {
@@ -326,17 +469,20 @@ curl -i "http://127.0.0.1:5000/api/v1/places/"
   ```
 
 - **Possible Status Codes:**
-      - 200 OK: place updated successfully
-      - 404 Not Found: place does not exist
-      - 400 Bad Request: invalid update data (invalid price, invalid lat/long, owner not found, amenity not found)
+* ```200 OK```: place updated successfully
+* ```404 Not Found```: place does not exist
+* ```400 Bad Request```: invalid update data (invalid price, invalid lat/long, owner not found, amenity not found)
 
 ### **Retrieve All Reviews for a Specific Place (GET /api/v1/places/<place_id>/reviews):**
-  
+
+* Request:
+
    ```bash
    curl -i "http://127.0.0.1:5000/api/v1/places/PLACE_ID/reviews"
    ```
 
-- **Expected Response (200 OK):**
+* Expected Response (200 OK):
+
   ```json
   [
   {
@@ -350,8 +496,8 @@ curl -i "http://127.0.0.1:5000/api/v1/places/"
   ```
 
 - **Possible Status Codes**
-      - 200 OK: list of reviews returned
-      - 404 Not Found: place does not exist
+* ```200 OK```: list of reviews returned
+* ```404 Not Found```: place does not exist
 
 **Summary**
 * Ensure each place is linked to a valid owner (User)
@@ -371,6 +517,8 @@ The Review Endpoints task focuses on implementing RESTful API endpoints to manag
 
 ### **Create a Review (POST api/v1/reviews/)**
 
+* Request:
+
 ```bash
       POST /api/v1/reviews/
      Content-Type: application/json
@@ -382,7 +530,7 @@ The Review Endpoints task focuses on implementing RESTful API endpoints to manag
      }
 ```
 
-### **Expected Response (201 CREATED):**
+* Expected Response (201 CREATED):
 
    ```json
    {
@@ -395,16 +543,18 @@ The Review Endpoints task focuses on implementing RESTful API endpoints to manag
    ```
 
 - **Possible Status codes:**
-* 201 Created -> review is successfully created
-* 400 Bad Request -> input data is invalid
+* ```201 Created``` -> review is successfully created
+* ```400 Bad Request``` -> input data is invalid
 
 ### **Retrieve All Reviews (GET /api/v1/reviews/)**
+
+* Request:
 
 ```bash
 curl -i "http://127.0.0.1:5000/api/v1/reviews/"
 ```
 
-### **Expected Response (200 OK):**
+* Expected Response (200 OK):
 
 ```json
    {
@@ -417,10 +567,12 @@ curl -i "http://127.0.0.1:5000/api/v1/reviews/"
 ```
 
 - **Possible Status codes:**
-* 200 OK -> Review Details
-* 404 Not Found -> Review not found
+* ```200 OK``` -> Review Details
+* ```404 Not Found``` -> Review not found
 
 ### Update a Review (PUT /api/v1/reviews/<review_id>)
+
+* Request:
 
 ```bash
 curl -i -X PUT "http://127.0.0.1:5000/api/v1/reviews/REVIEW_ID" \
@@ -431,46 +583,52 @@ curl -i -X PUT "http://127.0.0.1:5000/api/v1/reviews/REVIEW_ID" \
   }'
 ```
 
-### **Expected Response (200 OK):**
+* Expected Response (200 OK):
 
 ```json
 { "message": "Review updated successfully" }
 ```
 
 - **Possible Status codes:**
-* 200 OK -> { "message": "Review updated successfully" }
-* 400 Bad Request -> Invalid Rating
-* 404 Not found -> Rating not found
+* ```200 OK``` -> { "message": "Review updated successfully" }
+* ```400 Bad Request``` -> Invalid Rating
+* ```404 Not found``` -> Rating not found
 
 ### **Delete a Review (DELETE /api/v1/reviews/<review_id>)**
+
+* Request:
 
 ```bash
 curl -i -X DELETE "http://127.0.0.1:5000/api/v1/reviews/REVIEW_ID"
 ```
 
-### **Expected Response (200 OK):**
+* Expected Response (200 OK):
 
 ```json
 { "message": "Review deleted successfully" }
 ```
 
 - **Possible Status codes:**
-* 200 OK -> { "message": "Review deleted successfully" }
-* 404 Not found -> Rating not found
+* ```200 OK``` -> { "message": "Review deleted successfully" }
+* ```404 Not found``` -> Rating not found
 
 ### **Retrieve All Reviews for a Place (GET /api/v1/places/<place_id>/reviews)**
+
+Request:
 
 ```bash
 curl -i "http://127.0.0.1:5000/api/v1/places/PLACE_ID/reviews"
 ```
 
 - **Possible Status codes:**
-* 200 OK -> List of reviews for that place
-* 404 Not found -> Place not found
+* ```200 OK``` -> List of reviews for that place
+* ```404 Not found``` -> Place not found
 
 ### Negative Tests
 
 ### **Create Review with invalid rating**
+
+Request:
 
 ```bash
 curl -i -X POST "http://127.0.0.1:5000/api/v1/reviews/" \
@@ -482,9 +640,12 @@ curl -i -X POST "http://127.0.0.1:5000/api/v1/reviews/" \
     "place_id": "PLACE_ID"
   }'
 ```
-Expect: 400 Bad Request
+Expected: ```400 Bad Request```
 
 ### **Create Review with missing text**
+
+Request:
+
 ```bash
 curl -i -X POST "http://127.0.0.1:5000/api/v1/reviews/" \
   -H "Content-Type: application/json" \
@@ -494,7 +655,7 @@ curl -i -X POST "http://127.0.0.1:5000/api/v1/reviews/" \
     "place_id": "PLACE_ID"
   }'
 ```
-Expect: 400 Bad Request
+Expected: ```400 Bad Request```
 
 **Summary**
 * Ensure reviews are correctly linked to both a user and a place
