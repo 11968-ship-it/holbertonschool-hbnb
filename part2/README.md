@@ -192,7 +192,9 @@ In the HBnB application, each object is identified by a universally unique ident
 
 ### User Class
 The ```User``` class represents users of the platform who can own places and write reviews.
+
 **Attributes:**
+
 * ```id``` (String): Unique identifier for each user (UUID).
 * ```first_name``` (String): The first name of the user. Required, maximum length of 50 characters.
 * ```last_name``` (String): The last name of the user. Required, maximum length of 50 characters.
