@@ -3,12 +3,20 @@ from app.services import facade
 
 api = Namespace('users', description='User operations')
 
-# Define the user model for input validation and documentation
-user_model = api.model('User', {
+# POST
+user_model = api.model('UserCreate', {
     'first_name': fields.String(required=True, description='First name of the user'),
     'last_name': fields.String(required=True, description='Last name of the user'),
     'email': fields.String(required=True, description='Email of the user'),
     'password': fields.String(required=True, description='User password')
+})
+
+# PUT
+user_update_model = api.model('UserUpdate', {
+    'first_name': fields.String(description='First name of the user'),
+    'last_name': fields.String(description='Last name of the user'),
+    'email': fields.String(description='Email of the user'),
+    'password': fields.String(description='User password')
 })
 
 @api.route('/')
@@ -48,16 +56,13 @@ class UserResource(Resource):
             return {'error': 'User not found'}, 404
         return {'id': user.id, 'first_name': user.first_name, 'last_name': user.last_name, 'email': user.email}, 200
         
-    @api.expect(user_model, validate=True)
+    @api.expect(user_update_model, validate=True)
     @api.response(200, 'User updated successfully')
     @api.response(404, 'User not found')
     @api.response(400, 'Invalid input data')
     def put(self, user_id):
         user_data = api.payload
         try:
-            if 'password' in user_data and user_data['password']:
-                user_data['password'] = hash_password(user_data['password'])
-            
             updated_user = facade.update_user(user_id, user_data)
             if not updated_user:
                 return {'error': 'User not found'}, 404
