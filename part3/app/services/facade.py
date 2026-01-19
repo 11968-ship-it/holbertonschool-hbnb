@@ -40,7 +40,9 @@ class HBnBFacade:
             password = user_data.pop("password")
             if not password or not str(password).strip():
                 raise ValueError("Password is required")
+
             user.hash_password(password)
+            print("HASHED PASSWORD:", user.password)  # 👈 TEMPORARY
         
         return self.user_repo.update(user_id, user_data)
         
