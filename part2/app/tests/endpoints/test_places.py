@@ -1,23 +1,26 @@
 import unittest
+import uuid
 from app import create_app
 
 class TestPlaceEndpoints(unittest.TestCase):
 
     def setUp(self):
         self.app = create_app()
+        self.app.config["TESTING"] = True
         self.client = self.app.test_client()
 
-        # Create a user to act as owner
+        unique_email = f"john.{uuid.uuid4()}@example.com"
+
         user_resp = self.client.post('/api/v1/users/', json={
             "first_name": "John",
             "last_name": "Doe",
-            "email": "john.doe@example.com"
+            "email": unique_email
         })
-        self.assertEqual(user_resp.status_code, 201)
+        self.assertEqual(user_resp.status_code, 201, msg=user_resp.get_data(as_text=True))
         self.user_id = user_resp.get_json()["id"]
 
     def test_create_place(self):
-        response = self.client.post('/api/v1/places/', json={
+        resp = self.client.post('/api/v1/places/', json={
             "title": "Cozy Apartment",
             "description": "Nice place",
             "price": 100.0,
@@ -26,10 +29,10 @@ class TestPlaceEndpoints(unittest.TestCase):
             "owner_id": self.user_id,
             "amenities": []
         })
-        self.assertEqual(response.status_code, 201)
+        self.assertEqual(resp.status_code, 201, msg=resp.get_data(as_text=True))
 
     def test_create_place_invalid_owner(self):
-        response = self.client.post('/api/v1/places/', json={
+        resp = self.client.post('/api/v1/places/', json={
             "title": "Invalid Place",
             "price": 100.0,
             "latitude": 0.0,
@@ -37,14 +40,13 @@ class TestPlaceEndpoints(unittest.TestCase):
             "owner_id": "invalid-id",
             "amenities": []
         })
-        self.assertEqual(response.status_code, 400)
+        self.assertEqual(resp.status_code, 400, msg=resp.get_data(as_text=True))
 
     def test_get_all_places(self):
-        response = self.client.get('/api/v1/places/')
-        self.assertEqual(response.status_code, 200)
+        resp = self.client.get('/api/v1/places/')
+        self.assertEqual(resp.status_code, 200, msg=resp.get_data(as_text=True))
 
     def test_get_place_by_id(self):
-        # Create place first
         place_resp = self.client.post('/api/v1/places/', json={
             "title": "Test Place",
             "price": 50.0,
@@ -53,13 +55,13 @@ class TestPlaceEndpoints(unittest.TestCase):
             "owner_id": self.user_id,
             "amenities": []
         })
+        self.assertEqual(place_resp.status_code, 201, msg=place_resp.get_data(as_text=True))
         place_id = place_resp.get_json()["id"]
 
-        response = self.client.get(f'/api/v1/places/{place_id}')
-        self.assertEqual(response.status_code, 200)
+        resp = self.client.get(f'/api/v1/places/{place_id}')
+        self.assertEqual(resp.status_code, 200, msg=resp.get_data(as_text=True))
 
     def test_update_place(self):
-        # Create place
         place_resp = self.client.post('/api/v1/places/', json={
             "title": "Old Title",
             "price": 80.0,
@@ -68,15 +70,18 @@ class TestPlaceEndpoints(unittest.TestCase):
             "owner_id": self.user_id,
             "amenities": []
         })
+        self.assertEqual(place_resp.status_code, 201, msg=place_resp.get_data(as_text=True))
         place_id = place_resp.get_json()["id"]
 
-        # Update place
-        response = self.client.put(f'/api/v1/places/{place_id}', json={
+        resp = self.client.put(f'/api/v1/places/{place_id}', json={
             "title": "New Title",
             "price": 120.0
         })
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(resp.status_code, 200, msg=resp.get_data(as_text=True))
 
     def test_get_place_not_found(self):
-        response = self.client.get('/api/v1/places/non-existent-id')
-        self.assertEqual(response.status_code, 404)
+        resp = self.client.get('/api/v1/places/non-existent-id')
+        self.assertEqual(resp.status_code, 404, msg=resp.get_data(as_text=True))
+
+if __name__ == "__main__":
+    unittest.main()

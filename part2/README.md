@@ -24,16 +24,17 @@ part2/
 │   │   ├── __init__.py
 │   │   ├── v1/
 │   │       ├── __init__.py
-│   │       ├── users.py
+│   │       ├── amenities.py
 │   │       ├── places.py
 │   │       ├── reviews.py
-│   │       ├── amenities.py
+│   │       ├── users.py
 │   ├── models/
 │   │   ├── __init__.py
-│   │   ├── user.py
+│   │   ├── amenity.py
+│   │   ├── base_model.py
 │   │   ├── place.py
 │   │   ├── review.py
-│   │   ├── amenity.py
+│   │   ├── user.py
 │   ├── services/
 │   │   ├── __init__.py
 │   │   ├── facade.py
@@ -42,22 +43,27 @@ part2/
 │   |   ├── repository.py
 |   ├── tests/
 |   |   ├── test_models.py
+|   |   ├── endpoints/
+|   |       ├── test_amenities.py
+|   |       ├── test_places.py
+|   |       ├── test_reviews.py
+|   |       ├── test_users.py
 ├── run.py
 ├── config.py
 ├── requirements.txt
-├── README.md
-
+└── README.md
 ```
 
 ### Directory Purpose
 
-- **api/**: Defines REST API endpoints (users, places, reviews, amenities).
-- **models/**: Contains core entity classes.
-- **services/**: Implements the Facade pattern to coordinate interactions between layers.
-- **persistence/**: Provides an in-memory repository implementing a common storage interface.
+- **app/api/**: Defines REST API endpoints (users, places, reviews, amenities).
+- **app/models/**: Contains core entity classes.
+- **app/services/**: Implements the Facade pattern to coordinate interactions between layers.
+- **app/persistence/**: Provides an in-memory repository implementing a common storage interface.
 - **run.py**: Starts the Flask application.
 - **config.py**: Holds environment-specific configuration.
 - **requirements.txt**: Lists required Python packages.
+- **app/tests/**: Unit tests.
 
 ---
 
@@ -68,9 +74,9 @@ part2/
    ```bash
    git clone <repository-url>
    cd holbertonschool-hbnb
-   
+   ```
 2. Install dependencies:
-
+   
    ```
    pip install -r requirements.txt
    ```
@@ -82,9 +88,12 @@ Start the Flask development server:
    ```
    python run.py
    ```
-The application will run in debug mode.
-No API routes are fully implemented yet, but the server should start without errors.
 
+Default base URL:
+- ```http://127.0.0.1:5000```
+
+Base API prefix:
+- ```http://127.0.0.1:5000/api/v1```
 
 ## Future Development
 
@@ -98,63 +107,466 @@ No API routes are fully implemented yet, but the server should start without err
 This project is developed incrementally and is divided into the following subtasks:
 
 1. Core Business Logic Classes
-Define and manage the core models (User, Place, Review, Amenity) and their behaviors.
+* Define and manage the core models (User, Place, Review, Amenity) and their behaviors.
 
 2. User Endpoints
-Implement API endpoints to manage users and integrate them with the business logic layer.
+* Implement API endpoints to manage users and integrate them with the business logic layer.
 
 3. Amenity Endpoints
-Create endpoints to handle amenities and associate them with places.
+* Create endpoints to handle amenities and associate them with places.
 
 4. Place Endpoints
-Implement endpoints for managing places, including relationships with owners, amenities, and reviews.
+* Implement endpoints for managing places, including relationships with owners, amenities, and reviews.
 
 5. Review Endpoints
-Implement full CRUD operations for reviews, ensuring proper integration with users and places via the Facade pattern.
+* Implement full CRUD operations for reviews, ensuring proper integration with users and places via the Facade pattern.
 
 6. Testing and Validation
-Add unit tests and validate input data to ensure application correctness and stability.
+* Add unit tests and validate input data to ensure application correctness and stability.
+
+## Endpoints Summary
+- **Users**:
+
+|      Method     |     Endpoint    |  Description   |  
+|---------------- |-----------------|----------------|
+|       POST      |  /api/v1/users/ | Create a new user |
+|       GET       |  /api/v1/users/ | List all users |
+|       GET       |  /api/v1/users/<user_id> | Retrieve one user |
+|       PUT       |  /api/v1/users/<user_id> | Update a user  |
+> Note: DELETE is not implemented for users at this stage.
+
+- **Amenities**:
+
+|      Method     |     Endpoint    |  Description   |  
+|---------------- |-----------------|----------------|
+|       POST      |  /api/v1/amenities/ | Create a new amenity |
+|       GET       |  /api/v1/amenities/ | List all amenities |
+|       GET       |  /api/v1/amenities/<amenity_id> | Retrieve one amenity |
+|       PUT       |  /api/v1/amenities/<amenity_id> | Update an amenity  |
+> Note: DELETE is not implemented for amenities at this stage.
+
+- **Places**:
+
+|      Method     |     Endpoint    |  Description   |  
+|---------------- |-----------------|----------------|
+|       POST      |  /api/v1/places/ | Create a new place |
+|       GET       |  /api/v1/places/ | List all places |
+|       GET       |  /api/v1/places/<place_id> | Retrieve place details (owner/amenities/reviews) |
+|       PUT       |  /api/v1/places/<places_id> | Update a place  |
+|       GET       |  /api/v1/places/<places_id>/reviews | List all reviews for a place  |
+> Note: DELETE is not implemented for places at this stage.
+
+- **Reviews**:
+
+|      Method     |     Endpoint    |  Description   |  
+|---------------- |-----------------|----------------|
+|       POST      |  /api/v1/reviews/ | Create a new review |
+|       GET       |  /api/v1/reviews/ | List all reviews |
+|       GET       |  /api/v1/reviews/<review_id> | Retrieve one review |
+|       PUT       |  /api/v1/reviews/<review_id> | Update a review |
+|       DELETE    |  /api/v1/reviews/<review_id> | Delete a review |
 
 
 # Core Business Logic Classes
+The Core Business Logic Classes form the foundation of the HBnB application. These classes define the essential entities and their behaviors, representing the domain model of the system.
 
-# User Endpoints
+**Core entities**:
+* ```User```: Represents users who can own places and write reviews
+* ```Place```: Represents properties available for booking
+* ```Amenity```: Represents features/services associated with places
+* ```Review```:  Represents user feedback on places
 
-# Amenity Endpoints
+The models are validated and stored using an in-memory repository. The Facade service coordinates interactions between API endpoints and the persistence layer.
 
-This project is developed incrementally and is divided into the following subtasks:
+## Why UUIDs Are Used as Identifiers
 
-1. **Core Business Logic Classes**  
-   Define and manage the core models (User, Place, Review, Amenity) and their behaviors.
+In the HBnB application, each object is identified by a universally unique identifier (UUID) instead of a sequential numeric ID. Here's why:
 
-2. **User Endpoints**  
-   Implement API endpoints to manage users and integrate them with the business logic layer.
+1- **Global Uniqueness**: UUIDs are guaranteed to be unique across different systems and databases. This allows for distributed systems and ensures that IDs don't clash when combining data from multiple sources.
 
-3. **Amenity Endpoints**  
-   Implement RESTful API endpoints to manage amenities:
+2- **Security Considerations**: Sequential numeric IDs can reveal information about the system, such as the total number of users or entities. UUIDs are non-sequential and harder to predict, adding a layer of security by preventing malicious users from easily guessing valid IDs.
+
+3- **Scalability and Flexibility**: UUIDs support systems that need to scale across multiple servers or regions. The decentralized generation of UUIDs ensures no conflict when data is merged or moved across systems.
+
+## Entity Specifications
+
+### User Class
+The ```User``` class represents users of the platform who can own places and write reviews.
+
+**Attributes:**
+
+* ```id``` (String): Unique identifier for each user (UUID).
+* ```first_name``` (String): The first name of the user. Required, maximum length of 50 characters.
+* ```last_name``` (String): The last name of the user. Required, maximum length of 50 characters.
+* ```email``` (String): The email address of the user. Required, must be unique, and should follow standard email format validation.
+* ```is_admin``` (Boolean): Indicates whether the user has administrative privileges. Defaults to False.
+* ```created_at``` (DateTime): Timestamp when the user is created.
+* ```updated_at``` (DateTime): Timestamp when the user is last updated.
+  
+**Responsibilities:**
+
+* Validate user data (email format, required fields).
+* Manage user information updates.
+* Maintain user identity and authentication status.
+
+### Place Class
+The Place class represents properties available for rental on the platform.
+
+**Attributes:**
+* ```id``` (String): Unique identifier for each place (UUID)
+* ```title``` (String): The title of the place. Required, maximum length of 100 characters
+* ```description``` (String): Detailed description of the place. Optional
+* ```price``` (Float): The price per night for the place. Must be a positive value
+* ```latitude``` (Float): Latitude coordinate for the place location. Must be within the range of -90.0 to 90.0
+* ```longitude``` (Float): Longitude coordinate for the place location. Must be within the range of -180.0 to 180.0
+* ```owner``` (User): User instance of who owns the place. This should be validated to ensure the owner exists
+* ```amenities``` (List): List of amenities associated with the place
+* ```reviews``` (List): List of reviews for the place
+* ```created_at``` (DateTime): Timestamp when the place is created
+* ```updated_at``` (DateTime): Timestamp when the place is last updated
+  
+**Responsibilities:**
+* Validate place data (price, coordinates, title)
+* Manage relationships with owners, amenities, and reviews
+* Provide methods to add/remove amenities and reviews
+* Ensure data integrity for location coordinates
+
+### Review Class
+The Review class represents user feedback and ratings for places.
+
+**Attributes:**
+* ```id``` (String): Unique identifier for each review (UUID)
+* ```text``` (String): The content of the review. Required
+* ```rating``` (Integer): Rating given to the place, must be between 1 and 5
+* ```place``` (Place): Place instance being reviewed. Must be validated to ensure the place exists
+* ```user``` (User): User instance of who wrote the review. Must be validated to ensure the user exists
+* ```created_at``` (DateTime): Timestamp when the review is created
+* ```updated_at``` (DateTime): Timestamp when the review is last updated
+
+**Responsibilities:**
+* Validate review content and rating range (1-5)
+* Maintain relationship with user and place
+* Ensure users cannot review the same place multiple times (business rule)
+* Provide feedback mechanism for place quality
+
+### Amenity Class
+The Amenity class represents features or services associated with places (e.g., WiFi, Parking, Pool).
+
+**Attributes:**
+* ```id``` (String): Unique identifier for each amenity (UUID)
+* ```name``` (String): The name of the amenity. Required, maximum length of 50 characters
+* ```created_at``` (DateTime): Timestamp when the amenity is created
+* ```updated_at``` (DateTime): Timestamp when the amenity is last updated
+  
+**Responsibilities:**
+* Validate amenity name
+* Provide reusable amenity definitions across multiple places
+* Support many-to-many relationship with places
+
+
+## User Endpoints
+The User Endpoints task focuses on implementing RESTful API endpoints to manage users within the HBnB application.
+
+Users represent the core entity of the platform and can own places, write reviews, and interact with other features. These endpoints connect to the Business Logic layer through the **Facade pattern** and use the in-memory persistence layer for storage.
+
+   - **POST**: Create a new user
+   - **GET**: Retrieve a list of all users or a single user by ID
+   - **PUT**: Update an existing user
+   - **DELETE** is **not implemented** at this stage  
+   Endpoints integrate with the Business Logic layer via the **Facade pattern**.
+
+### Create a User (POST /api/v1/users/)
+Create a new user by providing **first name**, **last name**, and **email**.
+
+Request:
+```bash
+curl -i -X POST "http://127.0.0.1:5000/api/v1/users/" \
+-H "Content-Type: application/json" \
+-d '{
+  "first_name": "John",
+  "last_name": "Doe",
+  "email": "john.doe@example.com"
+}'
+```
+Expected Response (201 Created):
+```json
+{
+  "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "first_name": "John",
+  "last_name": "Doe",
+  "email": "john.doe@example.com"
+}
+```
+**Possible Status Codes**
+
+* ```201 Created```: user successfully created
+* ```400 Bad Request```: invalid input (missing fields, invalid ```email``` format, or ```email``` already registered)
+
+### Retrieve All Users (GET /api/v1/users/)
+**Retrieve a list of all stored users.**
+
+Request:
+```bash
+curl -i "http://127.0.0.1:5000/api/v1/users/"
+```
+Expected Response (200 OK):
+```json
+[
+  {
+    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "first_name": "John",
+    "last_name": "Doe",
+    "email": "john.doe@example.com"
+  },
+  {
+    "id": "7gb96g75-6828-5673-c4gd-3d074g77bgb7",
+    "first_name": "Jane",
+    "last_name": "Smith",
+    "email": "jane.smith@example.com"
+  }
+]
+```
+**Possible Status Codes**
+
+* ```200 OK```: list retrieved successfully
+
+### Retrieve a Single User (GET /api/v1/users/<user_id>)
+**Retrieve details for one user by their ID.**
+
+Request:
+```bash
+curl -i "http://127.0.0.1:5000/api/v1/users/USER_ID"
+```
+Expected Response (200 OK):
+```json
+{
+  "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "first_name": "John",
+  "last_name": "Doe",
+  "email": "john.doe@example.com"
+}
+```
+**Possible Status Codes:**
+
+* ```200 OK```: ```user``` found and returned.
+* ```404 Not Found```: ```user``` does not exist.
+
+### Update a User (PUT /api/v1/users/<user_id>)
+**Update the information of an existing user.**
+
+Request:
+```bash
+curl -i -X PUT "http://127.0.0.1:5000/api/v1/users/USER_ID" \
+-H "Content-Type: application/json" \
+-d '{
+  "first_name": "Jane",
+  "last_name": "Doe",
+  "email": "jane.doe@example.com"
+}'
+```
+Expected Response (200 OK):
+```json
+{
+  "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "first_name": "Jane",
+  "last_name": "Doe",
+  "email": "jane.doe@example.com"
+}
+```
+**Possible Status Codes:**
+
+* ```200 OK```: ```user``` updated successfully
+* ```400 Bad Request```: invalid input (missing/empty fields or ```email``` already registered)
+* ```404 Not Found```: ```user``` does not exist
+
+### Negative Tests (Examples):
+- **Create User with missing email:**
+  ```bash
+  curl -i -X POST "http://127.0.0.1:5000/api/v1/users/" \
+  -H "Content-Type: application/json" \
+   -d '{
+  "first_name": "John",
+  "last_name": "Doe"
+  }'
+  ```
+  Expected: ```400 Bad Request```
+  
+- **Update User with invalid email format:**
+  ```bash
+  curl -i -X PUT "http://127.0.0.1:5000/api/v1/users/USER_ID" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "first_name": "John",
+  "last_name": "Doe",
+  "email": "invalid-email"
+  }'
+  ```
+  Expected: ```400 Bad Request```
+
+- **Retrieve non-existent user:**
+  ```bash
+  curl -i "http://127.0.0.1:5000/api/v1/users/00000000-0000-0000-0000-000000000000"
+  ```
+  Expected: ```404 Not Found```
+
+### Summary
+
+* Users support ```create```, ```list```, ```retrieve```, and ```update```
+* ```Email``` uniqueness is enforced across all users
+* ```Users``` integrate with the Business Logic layer using the Facade pattern
+* ```Users``` are the foundation for ownership of places and authorship of reviews
+* DELETE is intentionally not supported at this stage
+
+
+## Amenity Endpoints
+
+The Amenity Endpoints task focuses on Implementing RESTful API endpoints to manage amenities within the HBnB application.
+
+Amenities represent features that can be associated with places (e.g., WiFi, Parking, Pool). These endpoints connect to the Business Logic layer through the **Facade pattern** and use the in-memory persistence layer for storage.
+
    - **POST**: Create a new amenity
    - **GET**: Retrieve a list of all amenities or a single amenity by ID
    - **PUT**: Update an existing amenity
    - **DELETE** is **not implemented** at this stage  
    Endpoints integrate with the Business Logic layer via the **Facade pattern**.
 
+### Create an Amenity (POST `/api/v1/amenities/`)
 
-4. **Place Endpoints**  
-   Implement endpoints for managing places, including relationships with owners, amenities, and reviews.
+**Create a new amenity by providing its name.**
 
-5. **Review Endpoints**  
-   Implement full CRUD operations for reviews, ensuring proper integration with users and places via the Facade pattern.
+Request:
 
-6. **Testing and Validation**  
-   Add unit tests and validate input data to ensure application correctness and stability.
+```bash
+curl -i -X POST "http://127.0.0.1:5000/api/v1/amenities/" \
+-H "Content-Type: application/json" \
+-d '{
+  "name": "WiFi"
+}'
+```
 
+Expected Response (201 Created):
 
-# Place Endpoints
+```json
+{
+  "id": "AMENITY_ID",
+  "name": "WiFi"
+}
+```
 
+**Possible Status Codes**
+* ```201 Created```: amenity successfully created
+* ```400 Bad Request```: invalid input (missing or empty ```name```)
+
+### Retrieve All Amenities (GET /api/v1/amenities/)
+
+**Retrieve a list of all stored amenities.**
+
+Request:
+
+```bash
+curl -i "http://127.0.0.1:5000/api/v1/amenities/"
+```
+
+Expected Response (200 OK):
+
+```json
+[
+  {
+    "id": "AMENITY_ID",
+    "name": "WiFi"
+  },
+  {
+    "id": "AMENITY_ID_2",
+    "name": "Parking"
+  }
+]
+```
+
+**Possible Status Codes**
+* 200 OK: list retrieved successfully
+
+### Retrieve a Single Amenity (GET /api/v1/amenities/<amenity_id>)
+
+**Retrieve details for one amenity by its ID.**
+
+Request:
+
+```bash
+curl -i "http://127.0.0.1:5000/api/v1/amenities/AMENITY_ID"
+```
+
+Expected Response (200 OK):
+
+```json
+{
+  "id": "AMENITY_ID",
+  "name": "WiFi"
+}
+```
+
+**Possible Status Codes**:
+* ```200 OK```: amenity found and returned
+* ```404 Not Found```: amenity does not exist
+
+### Update an Amenity (PUT /api/v1/amenities/<amenity_id>)
+
+**Update the name of an existing amenity.**
+
+Request:
+
+```bash
+curl -i -X PUT "http://127.0.0.1:5000/api/v1/amenities/AMENITY_ID" \
+-H "Content-Type: application/json" \
+-d '{
+  "name": "Free WiFi"
+}'
+```
+
+Expected Response (200 OK):
+
+```json
+{
+  "id": "AMENITY_ID",
+  "name": "Free WiFi"
+}
+```
+
+**Possible Status Codes**:
+* ```200 OK```: amenity updated successfully
+* ```400 Bad Request```: invalid input (missing/empty name)
+* ```404 Not Found```: amenity does not exist
+
+### Negative Tests (Examples):
+
+**- Create Amenity with missing name:**
+
+```bash
+curl -i -X POST "http://127.0.0.1:5000/api/v1/amenities/" \
+-H "Content-Type: application/json" \
+-d '{}'
+```
+Expected: ```400 Bad Request```
+
+**- Update Amenity with empty name:**
+
+```bash
+curl -i -X PUT "http://127.0.0.1:5000/api/v1/amenities/AMENITY_ID" \
+-H "Content-Type: application/json" \
+-d '{ "name": "" }'
+```
+Expected: ```400 Bad Request```
+
+**Summary**
+* Amenities support **create**, **list**, **retrieve**, and **update**
+* Amenities integrate with the Business Logic layer using the **Facade pattern**
+* Amenities are designed to be associated with places later
+* **DELETE** is intentionally not supported at this stage
+
+## Place Endpoints
 
 The Place Endpoints task focuses on implementing RESTful API endpoints to manage places within the HBnB application.
 
-## Key objectives:
+### Key objectives:
 
 * Implement POST, GET, and PUT endpoints for places
 * Ensure a place is linked to a valid owner (user)
@@ -164,6 +576,8 @@ The Place Endpoints task focuses on implementing RESTful API endpoints to manage
 * > DELETE operations are not supported for places at this stage.
 
 ### **Register a New Place (POST/api/v1/places/):**
+
+- Request:
 
   ```bash
   curl -i -X POST "http://127.0.0.1:5000/api/v1/places/" \
@@ -179,31 +593,33 @@ The Place Endpoints task focuses on implementing RESTful API endpoints to manage
   }'
   ```
 
-- **Expected Response (201 Created):**
+- Expected Response (201 Created):
 
   ```json
   {
-  "id": "PLACE_ID_HERE",
+  "id": "PLACE_ID",
   "title": "Cozy Apartment",
   "description": "A nice place to stay",
   "price": 100.0,
   "latitude": 37.7749,
   "longitude": -122.4194,
-  "owner_id": "USER_ID_HERE"
+  "owner_id": "USER_ID"
   }
   ```
 
-- **Possible Status Codes**:
-   - 201 Created: place successfully created
-   - 400 Bad Request: invalid input (missing fields, invalid coordinates, invalid price, owner not found, amenity not found)
+**Possible Status Codes**:
+* ```201 Created```: place successfully created
+* ```400 Bad Request```: invalid input (missing fields, invalid coordinates, invalid price, owner not found, amenity not found)
 
 ### **Retrieve All Places (GET /api/v1/places/):**
+
+* Request:
 
 ```bash
 curl -i "http://127.0.0.1:5000/api/v1/places/"
 ```
 
-- **Expected Response (200 OK):**
+* Expected Response (200 OK):
 
   ```json
   [
@@ -219,16 +635,18 @@ curl -i "http://127.0.0.1:5000/api/v1/places/"
   ]
   ```
 
-- **Possible Status Codes:**
-      - 200 OK: list retrieved successfully
+**Possible Status Codes:**
+* ```200 OK```: list retrieved successfully
 
 ### **Retrieve Place Details (GET /api/v1/places/<place_id>):**
+
+* Request:
 
    ```bash
    curl -i "http://127.0.0.1:5000/api/v1/places/PLACE_ID"
    ```
 
-- **Expected Response (200 OK):**
+* Expected Response (200 OK):
   
   ```json
   {
@@ -251,11 +669,13 @@ curl -i "http://127.0.0.1:5000/api/v1/places/"
   ```
 
 - **Possible Status Codes:**
-      - 200 OK: place found and returned
-      - 404 Not Found: place does not exist
+* ```200 OK```: place found and returned
+* ```404 Not Found```: place does not exist
 
 ### **Update a Place (PUT /api/v1/places/<place_id>):**
-  
+
+* Request:
+
   ```bash
   curl -i -X PUT "http://127.0.0.1:5000/api/v1/places/PLACE_ID" \
   -H "Content-Type: application/json" \
@@ -265,8 +685,8 @@ curl -i "http://127.0.0.1:5000/api/v1/places/"
     "price": 200.0
   }'
   ```
-  
-- **Expected Response (200 OK):**
+
+* Expected Response (200 OK):
   
   ```json
   {
@@ -289,17 +709,20 @@ curl -i "http://127.0.0.1:5000/api/v1/places/"
   ```
 
 - **Possible Status Codes:**
-      - 200 OK: place updated successfully
-      - 404 Not Found: place does not exist
-      - 400 Bad Request: invalid update data (invalid price, invalid lat/long, owner not found, amenity not found)
+* ```200 OK```: place updated successfully
+* ```404 Not Found```: place does not exist
+* ```400 Bad Request```: invalid update data (invalid price, invalid lat/long, owner not found, amenity not found)
 
 ### **Retrieve All Reviews for a Specific Place (GET /api/v1/places/<place_id>/reviews):**
-  
+
+* Request:
+
    ```bash
    curl -i "http://127.0.0.1:5000/api/v1/places/PLACE_ID/reviews"
    ```
 
-- **Expected Response (200 OK):**
+* Expected Response (200 OK):
+
   ```json
   [
   {
@@ -313,8 +736,8 @@ curl -i "http://127.0.0.1:5000/api/v1/places/"
   ```
 
 - **Possible Status Codes**
-      - 200 OK: list of reviews returned
-      - 404 Not Found: place does not exist
+* ```200 OK```: list of reviews returned
+* ```404 Not Found```: place does not exist
 
 **Summary**
 * Ensure each place is linked to a valid owner (User)
@@ -325,14 +748,16 @@ curl -i "http://127.0.0.1:5000/api/v1/places/"
 
 This task ensures place management is correctly implemented and integrated into the application architecture.
 
-# Review Endpoints
+## Review Endpoints
 The Review Endpoints task focuses on implementing RESTful API endpoints to manage reviews within the HBnB application.
 
-## Key objectives:
+### Key objectives:
 
 * Implement POST, GET, PUT, and DELETE endpoints for reviews
 
 ### **Create a Review (POST api/v1/reviews/)**
+
+* Request:
 
 ```bash
       POST /api/v1/reviews/
@@ -345,7 +770,7 @@ The Review Endpoints task focuses on implementing RESTful API endpoints to manag
      }
 ```
 
-### **Expected Response (201 CREATED):**
+* Expected Response (201 CREATED):
 
    ```json
    {
@@ -358,16 +783,18 @@ The Review Endpoints task focuses on implementing RESTful API endpoints to manag
    ```
 
 - **Possible Status codes:**
-* 201 Created -> review is successfully created
-* 400 Bad Request -> input data is invalid
+* ```201 Created``` -> review is successfully created
+* ```400 Bad Request``` -> input data is invalid
 
 ### **Retrieve All Reviews (GET /api/v1/reviews/)**
+
+* Request:
 
 ```bash
 curl -i "http://127.0.0.1:5000/api/v1/reviews/"
 ```
 
-### **Expected Response (200 OK):**
+* Expected Response (200 OK):
 
 ```json
    {
@@ -380,10 +807,12 @@ curl -i "http://127.0.0.1:5000/api/v1/reviews/"
 ```
 
 - **Possible Status codes:**
-* 200 OK -> Review Details
-* 404 Not Found -> Review not found
+* ```200 OK``` -> Review Details
+* ```404 Not Found``` -> Review not found
 
 ### Update a Review (PUT /api/v1/reviews/<review_id>)
+
+* Request:
 
 ```bash
 curl -i -X PUT "http://127.0.0.1:5000/api/v1/reviews/REVIEW_ID" \
@@ -394,46 +823,52 @@ curl -i -X PUT "http://127.0.0.1:5000/api/v1/reviews/REVIEW_ID" \
   }'
 ```
 
-### **Expected Response (200 OK):**
+* Expected Response (200 OK):
 
 ```json
 { "message": "Review updated successfully" }
 ```
 
 - **Possible Status codes:**
-* 200 OK -> { "message": "Review updated successfully" }
-* 400 Bad Request -> Invalid Rating
-* 404 Not found -> Rating not found
+* ```200 OK``` -> { "message": "Review updated successfully" }
+* ```400 Bad Request``` -> Invalid Rating
+* ```404 Not found``` -> Rating not found
 
 ### **Delete a Review (DELETE /api/v1/reviews/<review_id>)**
+
+* Request:
 
 ```bash
 curl -i -X DELETE "http://127.0.0.1:5000/api/v1/reviews/REVIEW_ID"
 ```
 
-### **Expected Response (200 OK):**
+* Expected Response (200 OK):
 
 ```json
 { "message": "Review deleted successfully" }
 ```
 
 - **Possible Status codes:**
-* 200 OK -> { "message": "Review deleted successfully" }
-* 404 Not found -> Rating not found
+* ```200 OK``` -> { "message": "Review deleted successfully" }
+* ```404 Not found``` -> Rating not found
 
 ### **Retrieve All Reviews for a Place (GET /api/v1/places/<place_id>/reviews)**
+
+Request:
 
 ```bash
 curl -i "http://127.0.0.1:5000/api/v1/places/PLACE_ID/reviews"
 ```
 
 - **Possible Status codes:**
-* 200 OK -> List of reviews for that place
-* 404 Not found -> Place not found
+* ```200 OK``` -> List of reviews for that place
+* ```404 Not found``` -> Place not found
 
 ### Negative Tests
 
 ### **Create Review with invalid rating**
+
+Request:
 
 ```bash
 curl -i -X POST "http://127.0.0.1:5000/api/v1/reviews/" \
@@ -445,19 +880,22 @@ curl -i -X POST "http://127.0.0.1:5000/api/v1/reviews/" \
     "place_id": "PLACE_ID"
   }'
 ```
-Expect: 400 Bad Request
+Expected: ```400 Bad Request```
 
 ### **Create Review with missing text**
+
+Request:
+
 ```bash
 curl -i -X POST "http://127.0.0.1:5000/api/v1/reviews/" \
   -H "Content-Type: application/json" \
   -d '{
     "rating": 5,
-    "user_id": "USER_ID_HERE",
-    "place_id": "PLACE_ID_HERE"
+    "user_id": "USER_ID",
+    "place_id": "PLACE_ID"
   }'
 ```
-Expect: 400 Bad Request
+Expected: ```400 Bad Request```
 
 **Summary**
 * Ensure reviews are correctly linked to both a user and a place
@@ -469,3 +907,46 @@ Expect: 400 Bad Request
 This task ensures that review management is fully functional and properly integrated into the overall application architecture.
 
 # Testing and Validation
+
+## Testing
+
+Run unit tests (example using unittest):
+
+```python -m unittest discover -s app/tests -p "test_*.py"```
+
+
+If you use pytest in your requirements, you can also run:
+
+```pytest -q```
+
+## Validation Rules
+
+These are the expected validation rules used across the API:
+
+1. **User**:
+* ```email``` must be valid format and unique
+* ```first_name``` and ```last_name``` required
+
+2. **Amenity**:
+* ```name``` required and non-empty
+
+3. **Place**:
+* ```title``` required and non-empty
+* ```price``` must be a number and non-negative
+* ```latitude``` must be between ```-90``` and ```90```
+* ```longitude``` must be between ```-180``` and ```180```
+* ```owner_id``` must reference an existing user
+* ```amenities``` must be a list of valid amenity IDs
+
+4. **Review**:
+* ```text``` required and non-empty
+* ```rating``` must be an integer between 1 and 5
+* ```user_id``` must reference an existing user
+* ```place_id``` must reference an existing place
+
+
+## Authors
+
+- Lamyaa Mohammed Alghaihab <11955@holbertonstudents.com> 💻✍️
+- Thekira A. Ahmed <11968@holbertonstudents.com> 💻✍️
+- Yara K. Alrasheed <11982@holbertonstudents.com> 💻✍️
