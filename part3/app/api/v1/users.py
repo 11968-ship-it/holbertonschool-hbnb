@@ -1,6 +1,5 @@
 from flask_restx import Namespace, Resource, fields
 from app.services import facade
-from app.models import hash_password
 
 api = Namespace('users', description='User operations')
 
@@ -25,7 +24,6 @@ class UserList(Resource):
         if existing_user:
             return {'error': 'Email already registered'}, 400
         try:
-            user_data['password'] = hash_password(user_data['password'])
             new_user = facade.create_user(user_data)
             return {
                 'id': new_user.id,
