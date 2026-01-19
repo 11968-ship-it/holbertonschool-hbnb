@@ -16,6 +16,9 @@ class HBnBFacade:
         password = user_data.pop("password")
         user = User(**user_data)
         user.hash_password(password)
+
+        print("HASHED PASSWORD:", user.password)  # 👈 TEMPORARY
+
         self.user_repo.add(user)
         return user
 
