@@ -1,6 +1,5 @@
 from app.models.base_model import BaseModel
 import re
-from app import bcrypt
 
 class User(BaseModel):
     def __init__(self, first_name, last_name, email, password=None, is_admin=False):
