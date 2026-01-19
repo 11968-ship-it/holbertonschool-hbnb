@@ -29,18 +29,18 @@ class HBnBFacade:
         return self.user_repo.get_all()
 
     def update_user(self, user_id, user_data):
-        user = self.user_repo.get(user.id)
+        user = self.user_repo.get(user_id)
         if not user:
             return None
         
         if "password" in user_data:
             password = user_data.pop("password")
-            if password:
-                user.hash_password(password)
-            else:
+            if not password or not str(password).strip():
                 raise ValueError("Password is required")
+            user.hash_password(password)
         
         return self.user_repo.update(user_id, user_data)
+        
         return user
 
     # --- Places ---
