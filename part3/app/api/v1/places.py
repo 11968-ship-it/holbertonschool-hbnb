@@ -81,13 +81,17 @@ def serialize_place(place, include_owner=True, include_amenities=True, include_r
 
 @api.route('/')
 class PlaceList(Resource):
-    @api.expect(place_model)
+    @jwt_required()
+    @api.expect(place_model, validate=True)
     @api.response(201, 'Place successfully created')
     @api.response(400, 'Invalid input data')
     def post(self):
         """Register a new place"""
+        current_user = get_jwt_identity()
+        payload = request.get_json(silent=True) or {}
+        payload["owner_id"] = current_user
+        
         try:
-            payload = request.get_json(force=True) or {}
             place = facade.create_place(payload)
             return serialize_place(place, include_owner=False, include_amenities=False, include_reviews=False), 201
         except (ValueError, TypeError) as e:
@@ -113,21 +117,30 @@ class PlaceResource(Resource):
         if not place:
             return {"error": "Place not found"}, 404
         return serialize_place(place, include_owner=True, include_amenities=True, include_reviews=True), 200
-
-    @api.expect(place_model)
+    
+    @jwt_required()
+    @api.expect(place_model, validate=True)
     @api.response(200, 'Place updated successfully')
     @api.response(404, 'Place not found')
+    @api.response(403, 'Unauthorized action')
     @api.response(400, 'Invalid input data')
+
     def put(self, place_id):
         """Update a place's information"""
-        try:
-            payload = request.get_json(force=True) or {}
-            updated = facade.update_place(place_id, payload)
-            if not updated:
-                return {"error": "Place not found"}, 404
-            return serialize_place(updated, include_owner=True, include_amenities=True, include_reviews=True), 200
-        except (ValueError, TypeError) as e:
-            return {"error": str(e)}, 400
+        current_user = get_jwt_identity()
+        place = facade.get_place(place_id)
+        
+        if not place:
+             return {"error": "Place not found"}, 404
+        if place.owner_id != current_user:
+            return {'error': 'Unauthorized action'}, 403
+
+        payload = request.get_json(silent=True) or {}
+    try:
+        updated = facade.update_place(place_id, payload)
+        return serialize_place(updated, include_owner=True, include_amenities=True, include_reviews=True), 200
+    except (ValueError, TypeError) as e:
+        return {"error": str(e)}, 400
 
 
 @api.route('/<place_id>/reviews')
