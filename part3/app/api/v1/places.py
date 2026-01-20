@@ -101,6 +101,9 @@ class PlaceList(Resource):
         payload = request.get_json(silent=True) or {}
         payload["owner_id"] = current_user  # enforce ownership
 
+        if "amenities" not in payload:
+            payload["amenities"] = []
+
         try:
             place = facade.create_place(payload)
             return serialize_place(place, include_owner=False, include_amenities=False, include_reviews=False), 201
@@ -140,10 +143,13 @@ class PlaceResource(Resource):
 
         if not place:
             return {"error": "Place not found"}, 404
-        if place.owner_id != current_user:
+        
+        if place.owner or str(place.owner.id) != str(current_user):
             return {"error": "Unauthorized action"}, 403
 
         payload = request.get_json(silent=True) or {}
+
+        payload.pop("owner_id", None)
         try:
             updated = facade.update_place(place_id, payload)
             return serialize_place(updated, include_owner=True, include_amenities=True, include_reviews=True), 200
