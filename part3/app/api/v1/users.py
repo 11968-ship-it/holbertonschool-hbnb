@@ -60,6 +60,7 @@ class UserResource(Resource):
     @api.response(200, 'User updated successfully')
     @api.response(404, 'User not found')
     @api.response(400, 'Invalid input data')
+    @jwt_required() #Secure the user info with JWT Authentication
     def put(self, user_id):
         user_data = api.payload
         try:
