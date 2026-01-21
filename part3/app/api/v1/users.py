@@ -1,24 +1,27 @@
 from flask_restx import Namespace, Resource, fields
+from flask import request
 from app.services import facade
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
 
 api = Namespace('users', description='User operations')
 
-# POST
+# POST (admin only)
 user_model = api.model('UserCreate', {
     'first_name': fields.String(required=True, description='First name of the user'),
     'last_name': fields.String(required=True, description='Last name of the user'),
     'email': fields.String(required=True, description='Email of the user'),
-    'password': fields.String(required=True, description='User password')
+    'password': fields.String(required=True, description='User password'),
+    'is_admin': fields.Boolean(required=False, description='Admin flag (admin only)')
 })
 
-# PUT
+# PUT (admin can update anything, normal user can update only name fields)
 user_update_model = api.model('UserUpdate', {
-    'first_name': fields.String(description='First name of the user'),
-    'last_name': fields.String(description='Last name of the user'),
-    'email': fields.String(description='Email of the user'),
-    'password': fields.String(description='User password')
+    'first_name': fields.String(required=False, description='First name of the user'),
+    'last_name': fields.String(required=False, description='Last name of the user'),
+    'email': fields.String(required=False, description='Email of the user'),
+    'password': fields.String(required=False, description='User password'),
+    'is_admin': fields.Boolean(required=False, description='Admin flag (admin only)')
 })
 
 @api.route('/')
@@ -80,3 +83,65 @@ class UserResource(Resource):
             return {'message': 'User updated successfully'}, 200
         except ValueError as e:
             return {'error': str(e)}, 400
+
+api = Namespace('admin', description='Admin operations')
+
+@api.route('/users/<user_id>')
+class AdminUserResource(Resource):
+    @jwt_required()
+    def put(self, user_id):
+        current_user = get_jwt()
+        
+        # If 'is_admin' is part of the identity payload
+        if not current_user.get('is_admin'):
+            return {'error': 'Admin privileges required'}, 403
+
+        data = request.json
+        email = data.get('email')
+
+        if email:
+            # Check if email is already in use
+            existing_user = facade.get_user_by_email(email)
+            if existing_user and existing_user.id != user_id:
+                return {'error': 'Email is already in use'}, 400
+
+        # Logic to update user details, including email and password
+        pass
+
+@api.route('/users/')
+class AdminUserCreate(Resource):
+    @jwt_required()
+    def post(self):
+        current_user = get_jwt_identity()
+        if not current_user.get('is_admin'):
+            return {'error': 'Admin privileges required'}, 403
+
+        user_data = request.json
+        email = user_data.get('email')
+
+        # Check if email is already in use
+        if facade.get_user_by_email(email):
+            return {'error': 'Email already registered'}, 400
+
+        # Logic to create a new user
+        pass
+
+@api.route('/users/<user_id>')
+class AdminUserModify(Resource):
+    @jwt_required()
+    def put(self, user_id):
+        current_user = get_jwt()
+        if not current_user.get('is_admin'):
+            return {'error': 'Admin privileges required'}, 403
+
+        data = request.json
+        email = data.get('email')
+
+        # Ensure email uniqueness
+        if email:
+            existing_user = facade.get_user_by_email(email)
+            if existing_user and existing_user.id != user_id:
+                return {'error': 'Email already in use'}, 400
+
+        # Logic to update user details
+        pass
