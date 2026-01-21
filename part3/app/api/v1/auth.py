@@ -2,7 +2,7 @@ from flask_restx import Namespace, Resource, fields
 from flask_jwt_extended import create_access_token
 from app.services import facade
 from flask_jwt_extended import jwt_required, get_jwt_identity
-import os
+from flask import current_app
 
 api = Namespace('auth', description='Authentication operations')
 
@@ -53,7 +53,7 @@ class AdminRegistration(Resource):
     def post(self):
         """TEMPORARY: Create admin user - DISABLE IN PRODUCTION"""
         # Add environment check
-        if os.getenv('FLASK_ENV') != 'development':
+        if not current_app.debug:
             return {'error': 'Endpoint disabled'}, 403
         
         admin_data = api.payload
