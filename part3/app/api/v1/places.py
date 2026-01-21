@@ -1,11 +1,11 @@
 from flask_restx import Namespace, Resource, fields
 from flask import request
 from app.services import facade
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended import jwt_required, get_jwt
 
 api = Namespace('places', description='Place operations')
 
-# Models
+# --- Models ---
 amenity_model = api.model('PlaceAmenity', {
     'id': fields.String(description='Amenity ID'),
     'name': fields.String(description='Name of the amenity')
@@ -25,7 +25,6 @@ review_model = api.model('PlaceReview', {
     'user_id': fields.String(description='ID of the user')
 })
 
-# Input model for creating/updating a place
 place_input_model = api.model('PlaceInput', {
     'title': fields.String(required=True, description='Title of the place'),
     'description': fields.String(description='Description of the place'),
@@ -34,7 +33,6 @@ place_input_model = api.model('PlaceInput', {
     'longitude': fields.Float(required=True, description='Longitude of the place')
 })
 
-# Response model for full place details
 place_model = api.model('Place', {
     'id': fields.String(description='Place ID'),
     'title': fields.String(required=True, description='Title of the place'),
@@ -48,7 +46,7 @@ place_model = api.model('Place', {
     'reviews': fields.List(fields.Nested(review_model), description='List of reviews')
 })
 
-# Serializer
+# --- Serializer ---
 def serialize_place(place, include_owner=True, include_amenities=True, include_reviews=False):
     data = {
         "id": place.id,
@@ -88,7 +86,7 @@ def serialize_place(place, include_owner=True, include_amenities=True, include_r
 
     return data
 
-# Endpoints
+# --- Endpoints ---
 @api.route('/')
 class PlaceList(Resource):
     @jwt_required()
@@ -97,9 +95,11 @@ class PlaceList(Resource):
     @api.response(400, 'Invalid input data')
     def post(self):
         """Create a new place"""
-        current_user = get_jwt_identity()
+        current_user = get_jwt()
+        user_id = current_user.get('id')
+
         payload = request.get_json(silent=True) or {}
-        payload["owner_id"] = current_user  # enforce ownership
+        payload["owner_id"] = user_id
 
         if "amenities" not in payload:
             payload["amenities"] = []
@@ -137,24 +137,47 @@ class PlaceResource(Resource):
     @api.response(403, 'Unauthorized action')
     @api.response(400, 'Invalid input data')
     def put(self, place_id):
-        """Update a place"""
-        current_user = get_jwt_identity()
-        place = facade.get_place(place_id)
+        """Update a place (admin bypass allowed)"""
+        current_user = get_jwt()
+        user_id = str(current_user.get('id'))
+        is_admin = current_user.get('is_admin', False)
 
+        place = facade.get_place(place_id)
         if not place:
             return {"error": "Place not found"}, 404
-        
-        if place.owner and str(place.owner.id) != str(current_user):
+
+        # Admins can bypass ownership
+        if not is_admin and (not place.owner or str(place.owner.id) != user_id):
             return {"error": "Unauthorized action"}, 403
 
         payload = request.get_json(silent=True) or {}
-
         payload.pop("owner_id", None)
+
         try:
             updated = facade.update_place(place_id, payload)
             return serialize_place(updated, include_owner=True, include_amenities=True, include_reviews=True), 200
         except (ValueError, TypeError) as e:
             return {"error": str(e)}, 400
+
+    @jwt_required()
+    @api.response(200, 'Place deleted successfully')
+    @api.response(404, 'Place not found')
+    @api.response(403, 'Unauthorized action')
+    def delete(self, place_id):
+        """Delete a place (admin bypass allowed)"""
+        current_user = get_jwt()
+        user_id = str(current_user.get('id'))
+        is_admin = current_user.get('is_admin', False)
+
+        place = facade.get_place(place_id)
+        if not place:
+            return {"error": "Place not found"}, 404
+
+        if not is_admin and (not place.owner or str(place.owner.id) != user_id):
+            return {"error": "Unauthorized action"}, 403
+
+        facade.delete_place(place_id)
+        return {"message": "Place deleted successfully"}, 200
 
 @api.route('/<place_id>/reviews')
 class PlaceReviewList(Resource):
@@ -177,3 +200,25 @@ class PlaceReviewList(Resource):
             }
             for r in (reviews or [])
         ], 200
+
+@api.route('/<place_id>/reviews/<review_id>')
+class PlaceReviewResource(Resource):
+    @jwt_required()
+    @api.response(200, 'Review deleted successfully')
+    @api.response(404, 'Review not found')
+    @api.response(403, 'Unauthorized action')
+    def delete(self, place_id, review_id):
+        """Delete a review (admin bypass allowed)"""
+        current_user = get_jwt()
+        user_id = str(current_user.get('id'))
+        is_admin = current_user.get('is_admin', False)
+
+        review = facade.get_review(review_id)
+        if not review or str(review.place.id) != str(place_id):
+            return {"error": "Review not found"}, 404
+
+        if not is_admin and (not review.user or str(review.user.id) != user_id):
+            return {"error": "Unauthorized action"}, 403
+
+        facade.delete_review(review_id)
+        return {"message": "Review deleted successfully"}, 200
