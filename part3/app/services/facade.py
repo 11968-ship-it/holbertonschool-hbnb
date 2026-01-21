@@ -204,6 +204,16 @@ class HBnBFacade:
         self.review_repo.delete(review_id)
         return True
 
+    def get_review_by_user_and_place(self, user_id, place_id):
+        """
+        Return the first review found for (user_id, place_id), else None.
+        """
+        reviews = self.get_all_reviews()
+        for r in reviews:
+            if str(getattr(r, "user_id", None)) == str(user_id) and str(getattr(r, "place_id", None)) == str(place_id):
+                return r
+        return None
+
     # --- Amenities ---
     def create_amenity(self, amenity_data):
         name = amenity_data.get("name")
