@@ -1,5 +1,7 @@
 from flask_restx import Namespace, Resource, fields
 from app.services import facade
+from flask_jwt_extended import jwt_required, get_jwt_identity
+
 
 api = Namespace('users', description='User operations')
 
@@ -62,7 +64,15 @@ class UserResource(Resource):
     @api.response(400, 'Invalid input data')
     @jwt_required() #Secure the user info with JWT Authentication
     def put(self, user_id):
+        """Update user information (users can only modify their own data)"""
+        current_user_id = get_jwt_identity()
+        if current_user_id != user_id: # Check if the authenticated user is trying to modify their own data
+            return {'error': 'Unauthorized to modify this user'}, 403
         user_data = api.payload
+        # ensure email and password are not in the payload
+        if 'email' in user_data or 'password' in user_data:
+            return {'error': 'Email and password cannot be modified'}, 400
+    
         try:
             updated_user = facade.update_user(user_id, user_data)
             if not updated_user:
