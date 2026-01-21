@@ -144,7 +144,7 @@ class PlaceResource(Resource):
         if not place:
             return {"error": "Place not found"}, 404
         
-        if place.owner or str(place.owner.id) != str(current_user):
+        if place.owner and str(place.owner.id) != str(current_user):
             return {"error": "Unauthorized action"}, 403
 
         payload = request.get_json(silent=True) or {}
