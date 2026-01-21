@@ -38,7 +38,16 @@ class ReviewList(Resource):
             if not place:
                 return {"error": "Invalid input data."}, 400
 
-            if str(place.owner_id) == str(current_user):
+            owner_value = None
+            for attr in ("owner_id", "user_id", "host_id", "owner"):
+                if hasattr(place, attr):
+                    owner_value = getattr(place, attr)
+                    break
+                    
+            if owner_value is not None and hasattr(owner_value, "id"):
+                owner_value = owner_value.id
+                
+            if owner_value is not None and str(owner_value) == str(current_user):
                 return {"error": "You cannot review your own place."}, 400
 
             existing = facade.get_review_by_user_and_place(current_user, place_id)
@@ -85,7 +94,16 @@ class ReviewResource(Resource):
             if not review:
                 return {"error": "Review not found"}, 404
 
-            if str(review.user_id) != str(current_user):
+            review_owner = None
+            for attr in ("user_id", "author_id", "owner_id", "user", "author"):
+                if hasattr(review, attr):
+                    review_owner = getattr(review, attr)
+                    break
+
+            if review_owner is not None and hasattr(review_owner, "id"):
+                review_owner = review_owner.id
+            
+            if review_owner is None or str(review_owner) != str(current_user):
                 return {"error": "Unauthorized action"}, 403
 
             payload = request.json or {}
@@ -109,7 +127,19 @@ class ReviewResource(Resource):
         if not review:
             return {"error": "Review not found"}, 404
 
-        if str(review.user_id) != str(current_user):
+        review_owner = None
+        for attr in ("user_id", "author_id", "owner_id", "user", "author"):
+            if hasattr(review, attr):
+                review_owner = getattr(review, attr)
+                break
+
+        if review_owner is not None and hasattr(review_owner, "id"):
+            review_owner = review_owner.id
+
+        if review_owner is None:
+            return {"error": "Unauthorized action"}, 403
+        
+        if str(review_owner) != str(current_user):
             return {"error": "Unauthorized action"}, 403
 
         success = facade.delete_review(review_id)

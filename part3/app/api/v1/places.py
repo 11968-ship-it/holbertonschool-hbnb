@@ -57,7 +57,7 @@ def serialize_place(place, include_owner=True, include_amenities=True, include_r
         "price": place.price,
         "latitude": place.latitude,
         "longitude": place.longitude,
-        "owner_id": place.owner.id if place.owner else None,
+        "owner_id": place.owner.id if place.owner else None
     }
 
     if include_owner and place.owner:
@@ -81,7 +81,7 @@ def serialize_place(place, include_owner=True, include_amenities=True, include_r
                 "id": r.id,
                 "text": r.text,
                 "rating": r.rating,
-                "user_id": r.user.id if getattr(r, "user", None) else getattr(r, "user_id", None),
+                "user_id": r.user.id if getattr(r, "user", None) else getattr(r, "user_id", None)
             }
             for r in (reviews or [])
         ]
@@ -144,7 +144,7 @@ class PlaceResource(Resource):
         if not place:
             return {"error": "Place not found"}, 404
         
-        if place.owner or str(place.owner.id) != str(current_user):
+        if place.owner and str(place.owner.id) != str(current_user):
             return {"error": "Unauthorized action"}, 403
 
         payload = request.get_json(silent=True) or {}
