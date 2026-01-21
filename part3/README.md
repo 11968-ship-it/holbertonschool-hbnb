@@ -25,6 +25,7 @@ part2/
 │   │       ├── __init__.py
 │   │       ├── users.py
 │   │       ├── places.py
+│   │       ├── auth.py
 │   │       ├── reviews.py
 │   │       ├── amenities.py
 │   ├── models/
@@ -111,7 +112,7 @@ curl -X POST "http://127.0.0.1:5000/api/v1/auth/login" \
      }'
 ```
 
-3. **Gnerate a token**
+3. **Access a Protected Endpoint**
 
 ```bash
 curl -X GET "http://127.0.0.1:5000/api/v1/auth/protected" -H "Authorization: Bearer your_generated_jwt_token"
