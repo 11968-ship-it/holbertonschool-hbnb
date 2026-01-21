@@ -2,6 +2,7 @@ from flask_restx import Namespace, Resource, fields
 from flask_jwt_extended import create_access_token
 from app.services import facade
 from flask_jwt_extended import jwt_required, get_jwt_identity
+import os
 
 api = Namespace('auth', description='Authentication operations')
 
@@ -46,3 +47,18 @@ class ProtectedResource(Resource):
          # addtional claims = get_jwt()
          #additional claims["is_admin"] -> True or False
          return {'message': f'Hello, user {current_user}'}, 200
+        
+@api.route('/register-admin')
+class AdminRegistration(Resource):
+    def post(self):
+        """TEMPORARY: Create admin user - DISABLE IN PRODUCTION"""
+        # Add environment check
+        if os.getenv('FLASK_ENV') != 'development':
+            return {'error': 'Endpoint disabled'}, 403
+        
+        admin_data = api.payload
+        admin_data['is_admin'] = True
+        
+        # Create admin user
+        admin = facade.create_user(admin_data)
+        return {'message': 'Admin created', 'id': str(admin.id)}, 201
