@@ -150,3 +150,87 @@ curl -X PUT "http://127.0.0.1:5000/api/v1/places/4fbefac0-906e-453e-a160-a63d811
     "amenities": []
   }'
 ```
+
+
+
+
+## Table
+
+
+| left | Center | Right |
+|:-----|:------:|------:|
+| A    |    B   |   C   |
+
+## Task: Implement Administrator Access Endpoints
+Create Admin 
+```bash
+curl -X POST "http://127.0.0.1:5000/api/v1/auth/register-admin" \
+     -H "Content-Type: application/json" \
+     -d '{
+       "email": "admin@example.com",
+       "password": "admin123",
+       "first_name": "Admin",
+       "last_name": "User"
+     }'
+
+```
+Login as Admin to Get JWT Token
+
+```bash
+curl -X POST "http://127.0.0.1:5000/api/v1/auth/login" \
+     -H "Content-Type: application/json" \
+     -d '{
+       "email": "admin@example.com",
+       "password": "admin123"
+     }'
+```
+Test Creating an Amenity (Admin Only)
+Replace <admin_token> with the actual token you received:
+
+```bash
+curl -X POST "http://127.0.0.1:5000/api/v1/amenities/" \
+     -H "Authorization: Bearer <admin_token>" \
+     -H "Content-Type: application/json" \
+     -d '{"name": "Swimming Pool"}'
+```
+ Get All Amenities (Verify Creation)
+
+ ```bash
+curl -X GET "http://127.0.0.1:5000/api/v1/amenities/"
+```
+Update an Amenity (Admin Only)
+```bash
+curl -X PUT "http://127.0.0.1:5000/api/v1/amenities/<amenity_id>" \
+     -H "Authorization: Bearer <admin_token>" \
+     -H "Content-Type: application/json" \
+     -d '{"name": "Updated Swimming Pool"}'
+```
+Test Non-Admin User (Optional - to verify access control)
+```bash
+# Register regular user
+curl -X POST "http://127.0.0.1:5000/api/v1/users/" \
+     -H "Content-Type: application/json" \
+     -d '{
+       "email": "user@example.com",
+       "password": "user123",
+       "first_name": "Regular",
+       "last_name": "User"
+     }'
+
+# Login as regular user
+curl -X POST "http://127.0.0.1:5000/api/v1/auth/login" \
+     -H "Content-Type: application/json" \
+     -d '{
+       "email": "user@example.com",
+       "password": "user123"
+     }'
+
+# Try to create amenity with regular user token (should fail)
+curl -X POST "http://127.0.0.1:5000/api/v1/amenities/" \
+     -H "Authorization: Bearer <regular_user_token>" \
+     -H "Content-Type: application/json" \
+     -d '{"name": "Gym"}'
+
+```
+
+
