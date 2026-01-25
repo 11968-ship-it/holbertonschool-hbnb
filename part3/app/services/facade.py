@@ -1,4 +1,4 @@
-from app.persistence.repository import InMemoryRepository
+from app.persistence.repository import SQLAlchemyRepository
 from app.models.user import User
 from app.models.place import Place
 from app.models.review import Review
@@ -6,18 +6,16 @@ from app.models.amenity import Amenity
 
 class HBnBFacade:
     def __init__(self):
-        self.user_repo = InMemoryRepository()
-        self.place_repo = InMemoryRepository()
-        self.review_repo = InMemoryRepository()
-        self.amenity_repo = InMemoryRepository()
-
+        self.user_repo = SQLAlchemyRepository(User)
+        self.place_repo = SQLAlchemyRepository(Place)
+        self.review_repo = SQLAlchemyRepository(Review)
+        self.amenity_repo = SQLAlchemyRepository(Amenity)
+    
     # --- Users ---
     def create_user(self, user_data):
         password = user_data.pop("password")
         user = User(**user_data)
         user.hash_password(password)
-
-        print("HASHED PASSWORD:", user.password)  # 👈 TEMPORARY
 
         self.user_repo.add(user)
         return user
@@ -40,13 +38,10 @@ class HBnBFacade:
             password = user_data.pop("password")
             if not password or not str(password).strip():
                 raise ValueError("Password is required")
-
             user.hash_password(password)
-            print("HASHED PASSWORD:", user.password)  # 👈 TEMPORARY
         
-        return self.user_repo.update(user_id, user_data)
-        
-        return user
+        updated = self.user_repo.update(user_id, user_data)
+        return updated if updated is not None else user
 
     # --- Places ---
     def create_place(self, place_data):
@@ -127,8 +122,8 @@ class HBnBFacade:
             for a in amenity_objs:
                 place.add_amenity(a)
 
-        self.place_repo.update(place_id, place_data)
-        return place
+        updated = self.place_repo.update(place_id, place_data)
+        return updated if updated is not None else place
         
     # --- Reviews ---
     def create_review(self, review_data):
@@ -188,7 +183,8 @@ class HBnBFacade:
                 raise ValueError("Rating must be 1-5")
             review.rating = rating
 
-        return review
+        updated = self.review_repo.update(review_id, review_data)
+        return updated if updated is not None else review
 
     def delete_review(self, review_id):
         review = self.review_repo.get(review_id)
