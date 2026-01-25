@@ -16,7 +16,7 @@ The application is organized into three main layers:
 ## Project Structure
 
 ```
-part2/
+part3/
 ├── app/
 │   ├── __init__.py
 │   ├── api/
