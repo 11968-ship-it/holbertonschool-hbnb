@@ -160,3 +160,17 @@ curl -X PUT "http://127.0.0.1:5000/api/v1/places/4fbefac0-906e-453e-a160-a63d811
 | left | Center | Right |
 |:-----|:------:|------:|
 | A    |    B   |   C   |
+
+## Task: Implement Administrator Access Endpoints
+Create Admin 
+```bash
+curl -X POST "http://127.0.0.1:5000/api/v1/auth/register-admin" \
+     -H "Content-Type: application/json" \
+     -d '{
+       "email": "admin@example.com",
+       "password": "admin123",
+       "first_name": "Admin",
+       "last_name": "User"
+     }'
+
+```
