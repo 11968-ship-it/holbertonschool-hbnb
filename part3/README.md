@@ -150,3 +150,13 @@ curl -X PUT "http://127.0.0.1:5000/api/v1/places/4fbefac0-906e-453e-a160-a63d811
     "amenities": []
   }'
 ```
+
+
+
+
+## Table
+
+
+| left | Center | Right |
+|:-----|:------:|------:|
+| A    |    B   |   C   |
