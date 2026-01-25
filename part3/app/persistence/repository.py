@@ -1,5 +1,31 @@
 from app import db  # Assuming you have set up SQLAlchemy in your Flask app
 from app.models import User, Place, Review, Amenity  # Import your models
+from abc import ABC, abstractmethod
+
+class Repository(ABC):
+    @abstractmethod
+    def add(self, obj):
+        pass
+
+    @abstractmethod
+    def get(self, obj_id):
+        pass
+
+    @abstractmethod
+    def get_all(self):
+        pass
+
+    @abstractmethod
+    def update(self, obj_id, data):
+        pass
+
+    @abstractmethod
+    def delete(self, obj_id):
+        pass
+
+    @abstractmethod
+    def get_by_attribute(self, attr_name, attr_value):
+        pass
 
 class SQLAlchemyRepository(Repository):
     def __init__(self, model):
