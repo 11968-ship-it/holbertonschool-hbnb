@@ -15,6 +15,11 @@ def create_app(config_class="config.DevelopmentConfig"):
     jwt.init_app(app)
     db.init_app(app)
 
+    from app.models.user import User
+    from app.models.place import Place
+    from app.models.review import Review
+    from app.models.amenity import Amenity
+
     from app.api import api
     api.init_app(app)
     
