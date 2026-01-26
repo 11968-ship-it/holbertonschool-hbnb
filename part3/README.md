@@ -80,7 +80,7 @@ part3/
 Start the Flask development server:
 
    ```
-   python run.py
+   python3 run.py
    ```
 The application will run in debug mode.
 No API routes are fully implemented yet, but the server should start without errors.
