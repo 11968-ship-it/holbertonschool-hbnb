@@ -1,24 +1,26 @@
-from app.persistence.repository import InMemoryRepository
 from app.models.user import User
+from app.persistence.repository import SQLAlchemyRepository
 from app.models.place import Place
 from app.models.review import Review
 from app.models.amenity import Amenity
+from app.persistence.repositories.user_repository import UserRepository
+from app.persistence.repositories.place_repository import PlaceRepository
+from app.persistence.repositories.review_repository import ReviewRepository
+from app.persistence.repositories.amenity_repository import AmenityRepository
 
 class HBnBFacade:
     def __init__(self):
-        self.user_repo = InMemoryRepository()
-        self.place_repo = InMemoryRepository()
-        self.review_repo = InMemoryRepository()
-        self.amenity_repo = InMemoryRepository()
+        self.user_repo = UserRepository()
+        self.place_repo =  SQLAlchemyRepository(Place)
+        self.review_repo =  SQLAlchemyRepository(Review)
+        self.amenity_repo = SQLAlchemyRepository(Amenity)
 
+        
+    
     # --- Users ---
     def create_user(self, user_data):
-        password = user_data.pop("password")
         user = User(**user_data)
-        user.hash_password(password)
-
-        print("HASHED PASSWORD:", user.password)  # 👈 TEMPORARY
-
+        user.hash_password(user_data['password'])
         self.user_repo.add(user)
         return user
 
@@ -26,7 +28,7 @@ class HBnBFacade:
         return self.user_repo.get(user_id)
 
     def get_user_by_email(self, email):
-        return self.user_repo.get_by_attribute("email", email)
+        return self.user_repo.get_user_by_email(email)
 
     def get_all_users(self):
         return self.user_repo.get_all()
@@ -40,12 +42,12 @@ class HBnBFacade:
             password = user_data.pop("password")
             if not password or not str(password).strip():
                 raise ValueError("Password is required")
-
             user.hash_password(password)
-            print("HASHED PASSWORD:", user.password)  # 👈 TEMPORARY
-        
-        return self.user_repo.update(user_id, user_data)
-        
+
+        for key, value in user_data.items():
+            setattr(user, key, value)
+
+        self.user_repo.update(user_id, user)
         return user
 
     # --- Places ---
@@ -127,39 +129,23 @@ class HBnBFacade:
             for a in amenity_objs:
                 place.add_amenity(a)
 
-        self.place_repo.update(place_id, place_data)
-        return place
+        updated = self.place_repo.update(place_id, place_data)
+        return updated if updated is not None else place
         
     # --- Reviews ---
     def create_review(self, review_data):
         text = review_data.get("text")
         rating = review_data.get("rating")
-        user_id = review_data.get("user_id")
-        place_id = review_data.get("place_id")
 
         # --- Validation ---
-        if not text or not isinstance(rating, int):
-            raise ValueError("Invalid review data")
-        if rating < 1 or rating > 5:
+        if not isinstance(text, str) or not text.strip():
+            raise ValueError("Review text must be a non-empty string")
+        if not isinstance(rating, int) or rating < 1 or rating > 5:
             raise ValueError("Rating must be 1-5")
-
-        user = self.user_repo.get(user_id)
-        if not user:
-            raise ValueError("User not found")
-
-        place = self.place_repo.get(place_id)
-        if not place:
-            raise ValueError("Place not found")
-
+        
         # --- Create review ---
-        review = Review(text=text, rating=rating, user=user, place=place)
+        review = Review(text=text.strip(), rating=rating)
         self.review_repo.add(review)
-
-        # Attach review to place
-        if not hasattr(place, "reviews") or place.reviews is None:
-            place.reviews = []
-        place.reviews.append(review)
-
         return review
 
     def get_review(self, review_id):
@@ -168,56 +154,40 @@ class HBnBFacade:
     def get_all_reviews(self):
         return self.review_repo.get_all()
 
-    def get_reviews_by_place(self, place_id):
-        place = self.place_repo.get(place_id)
-        if not place:
-            return None
-        return place.reviews
-
     def update_review(self, review_id, review_data):
         review = self.review_repo.get(review_id)
         if not review:
             return None
 
         if "text" in review_data:
-            review.text = review_data["text"]
+            if not isinstance(review_data["text"], str) or not review_data["text"].strip():
+                raise ValueError("Review text must be a non-empty string")
 
         if "rating" in review_data:
             rating = review_data["rating"]
-            if rating < 1 or rating > 5:
+            if not isinstance(rating, int) or rating < 1 or rating > 5:
                 raise ValueError("Rating must be 1-5")
-            review.rating = rating
-
-        return review
+        
+        updated = self.review_repo.update(review_id, review_data)
+        return updated if updated is not None else review
 
     def delete_review(self, review_id):
-        review = self.review_repo.get(review_id)
-        if not review:
-            return False
-
-        # Remove from place
-        place = getattr(review, "place", None)
-        if place and hasattr(place, "reviews"):
-            place.reviews = [r for r in place.reviews if r.id != review_id]
-
-        # Remove from repo
-        self.review_repo.delete(review_id)
-        return True
-
-    def get_review_by_user_and_place(self, user_id, place_id):
-        """
-        Return the first review found for (user_id, place_id), else None.
-        """
-        reviews = self.get_all_reviews()
-        for r in reviews:
-            if str(getattr(r, "user_id", None)) == str(user_id) and str(getattr(r, "place_id", None)) == str(place_id):
-                return r
-        return None
+        return self.review_repo.delete(review_id)
 
     # --- Amenities ---
     def create_amenity(self, amenity_data):
         name = amenity_data.get("name")
-        amenity = Amenity(name=name)
+
+        if not isinstance(name, str) or not name.strip():
+            raise ValueError("Name is required")
+        if len(name.strip()) > 50:
+            raise ValueError("Name must be under 50 characters")
+
+        # optional duplicate guard
+        if self.amenity_repo.get_by_name(name):
+            raise ValueError("Amenity already exists")
+
+        amenity = Amenity(name=name.strip())
         self.amenity_repo.add(amenity)
         return amenity
 
@@ -233,7 +203,14 @@ class HBnBFacade:
             return None
 
         if "name" in amenity_data:
-            amenity.name = amenity_data["name"]
+            name = amenity_data["name"]
+            if not isinstance(name, str) or not name.strip():
+                raise ValueError("Name is required")
+            if len(name.strip()) > 50:
+                raise ValueError("Name must be under 50 characters")
 
-        self.amenity_repo.update(amenity_id, amenity_data)
-        return amenity
+        updated = self.amenity_repo.update(amenity_id, amenity_data)
+        return updated if updated is not None else amenity
+
+    def delete_amenity(self, amenity_id):
+        return self.amenity_repo.delete(amenity_id)
