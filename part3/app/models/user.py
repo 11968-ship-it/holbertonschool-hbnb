@@ -1,23 +1,38 @@
 from app.models.base_model import BaseModel
+from app import db, bcrypt
+from uuid
+
 import re
 
 class User(BaseModel):
-    def __init__(self, first_name, last_name, email, password=None, is_admin=False):
+        __tablename__ = 'users'
         super().__init__()
         self.first_name = first_name
         self.last_name = last_name
         self.email = email
         self.is_admin = is_admin
-        self.places = []
 
         self.password = None
         if password is not None:
             self.hash_password(password)
+            
+    first_name = db.Column(db.String(50), nullable=False)
+    last_name = db.Column(db.String(50), nullable=False)
+    email = db.Column(db.String(120), nullable=False, unique=True)
+    password = db.Column(db.String(128), nullable=False)
+    is_admin = db.Column(db.Boolean, default=False)
+
+
+    def hash_password(self, password):
+        """Hash the password before storing it."""
+        self.password = bcrypt.generate_password_hash(password).decode('utf-8')
+
+    def verify_password(self, password):
+        """Verify the hashed password."""
+        return bcrypt.check_password_hash(self.password, password)
+
 
     # --- Getter & Setter for first_name ---
-    @property
-    def first_name(self):
-        return self._first_name
 
     @first_name.setter
     def first_name(self, value):
@@ -28,7 +43,7 @@ class User(BaseModel):
     # --- Getter & Setter for last_name ---
     @property
     def last_name(self):
-        return self._last_name
+        return self.last_name
 
     @last_name.setter
     def last_name(self, value):
@@ -39,7 +54,7 @@ class User(BaseModel):
     # --- Getter & Setter for email ---
     @property
     def email(self):
-        return self._email
+        return self.email
 
     @email.setter
     def email(self, value):
@@ -52,12 +67,10 @@ class User(BaseModel):
         """Hashes the password before storing it."""
         if not isinstance(password, str) or not password.strip():
             raise ValueError("Password is required")
-        from app import bcrypt
         self.password = bcrypt.generate_password_hash(password).decode('utf-8')
 
     def verify_password(self, password):
         """Verifies if the provided password matches the hashed password."""
         if not self.password:
             return False
-        from app import bcrypt
         return bcrypt.check_password_hash(self.password, password)
