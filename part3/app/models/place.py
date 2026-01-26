@@ -1,18 +1,15 @@
 from app.models.base_model import BaseModel
-from app.models.user import User
+from app import db, bcrypt
+import uuid
 
 
 class Place(BaseModel):
-    def __init__(self, title, description, price, latitude, longitude, owner):
-        super().__init__()
-        self.title = self._validate_title(title)
-        self.description = self._validate_description(description)
-        self.price = self._validate_price(price)
-        self.latitude = self._validate_latitude(latitude)
-        self.longitude = self._validate_longitude(longitude)
-        self.owner = self._validate_owner(owner)
-        self.reviews = []  # List to store related reviews
-        self.amenities = []  # List to store related amenities
+    __tablename__ = 'place'
+    title = db.column(db.String(50), nullable=False) #Title of the place.
+    description = db.column(db.Text, nullable=False) # Description of the place.
+    price = db.column(db.Float, nullable=False) # Price per night.
+    latitude = db.column(db.Float, nullable=False) # Latitude of the place.
+    longitude = db.column(db.Float, nullable=False) # Longitude of the place.
 
         if self not in self.owner.places:
             self.owner.places.append(self)
