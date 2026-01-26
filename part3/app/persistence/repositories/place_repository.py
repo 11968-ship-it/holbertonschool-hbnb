@@ -22,7 +22,7 @@ class PlaceRepository(SQLAlchemyRepository):
         """Search places with titles containing the keyword."""
         return self.model.query.filter(
             self.model.title.ilike(f'%{keyword}%')
-        ).all()
+		).all()
 
 
 
