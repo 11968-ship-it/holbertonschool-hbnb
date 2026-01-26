@@ -4,9 +4,9 @@ from app.models.place import Place
 from app.models.review import Review
 from app.models.amenity import Amenity
 from app.persistence.repositories.user_repository import UserRepository
-from app.services.repositories.place_repository import PlaceRepository
-from app.services.repositories.review_repository import ReviewRepository
-from app.services.repositories.amenity_repository import AmenityRepository
+from app.persistence.repositories.place_repository import PlaceRepository
+from app.persistence.repositories.review_repository import ReviewRepository
+from app.persistence.repositories.amenity_repository import AmenityRepository
 
 class HBnBFacade:
     def __init__(self):
