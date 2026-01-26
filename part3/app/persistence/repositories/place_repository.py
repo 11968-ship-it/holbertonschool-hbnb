@@ -4,6 +4,7 @@ from app.persistence.repository import SQLAlchemyRepository
 
 class PlaceRepository(SQLAlchemyRepository):
     """Repository for Place entity with place-specific operations."""
+	
 	def __init__(self):
 		super().__init__(Place)
 		
