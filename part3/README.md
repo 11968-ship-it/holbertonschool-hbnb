@@ -76,11 +76,15 @@ part3/
    ```
 3. Install the ```flask-bcrypt``` plugin:
 
-   ```pip install flask-bcrypt```
+   ```
+   pip install flask-bcrypt
+   ```
    
 5. Install ```flask-jwt-extended``` Library:
 
-   ```pip install flask-jwt-extended```
+   ```
+   pip install flask-jwt-extended
+   ```
 
 ## Running the Application
 
