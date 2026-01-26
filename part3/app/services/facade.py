@@ -172,7 +172,7 @@ class HBnBFacade:
         return updated if updated is not None else review
 
     def delete_review(self, review_id):
-        review self.review_repo.delete(review_id)
+        review = self.review_repo.delete(review_id)
 
     # --- Amenities ---
     def create_amenity(self, amenity_data):
