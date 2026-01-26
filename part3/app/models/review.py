@@ -5,16 +5,16 @@ from app.models.base_model import BaseModel
 class Review(BaseModel):
     __tablename__ = 'reviews'
 
-    text = db.column(db.Text, nullable=False)
-    rating = db.column(db.Integer, nullable=False)
+    text = db.Column(db.Text, nullable=False)
+    rating = db.Column(db.Integer, nullable=False)
     
-    @validate("text")
+    @validates("text")
     def validate_text(self, key, value):
         if not isinstance(value, str) or not value.strip():
             raise ValueError("Review text must be a non-empty string")
         return value.strip()
 
-    @validate("rating")
+    @validates("rating")
     def validate_rating(self, key, value):
         if not isinstance(value, int) or rating < 1 or rating > 5:
             raise ValueError("Rating must be an integer between 1 and 5")
