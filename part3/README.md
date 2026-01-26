@@ -74,7 +74,11 @@ part3/
    ```
    pip install -r requirements.txt
    ```
-3. Install the ```flask-bcrypt``` plugin:
+
+The application will run in debug mode.
+No API routes are fully implemented yet, but the server should start without errors.
+
+4. Install the ```flask-bcrypt``` plugin:
 
    ```
    pip install flask-bcrypt
@@ -86,6 +90,13 @@ part3/
    pip install flask-jwt-extended
    ```
 
+6. To initialize the database and create the table, run:
+
+   ```
+   flask shell
+   >>> from app import db
+   >>> db.create_all()
+   ```
 ## Running the Application
 
 Start the Flask development server:
@@ -93,8 +104,6 @@ Start the Flask development server:
    ```
    python3 run.py
    ```
-The application will run in debug mode.
-No API routes are fully implemented yet, but the server should start without errors.
 
 # Core Business Logic Classes
 
