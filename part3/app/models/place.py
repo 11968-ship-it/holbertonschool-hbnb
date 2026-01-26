@@ -1,5 +1,6 @@
 from app.models.base_model import BaseModel
 from app import db, bcrypt
+from sqlalchemy.orm import validates
 
 
 class Place(BaseModel):
