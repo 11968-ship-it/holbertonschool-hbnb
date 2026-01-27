@@ -89,12 +89,30 @@ def serialize_place(place, include_owner=True, include_amenities=True, include_r
 # --- Endpoints ---
 @api.route('/')
 class PlaceList(Resource):
-    @jwt_required()
+    # @jwt_required()
     @api.expect(place_input_model, validate=True)
     @api.response(201, 'Place successfully created')
     @api.response(400, 'Invalid input data')
     def post(self):
         """Create a new place"""
+        
+        place_data = api.payload
+        
+        try:
+            new_place = facade.create_place(place_data)
+            return {
+                'id': new_place.id,
+                'title': new_place.title,
+                'description': new_place.description,
+                'price': new_place.price,
+                'latitude': new_place.latitude,
+                'longitude': new_place.longitude,
+                'created_at': new_place.created_at.isoformat() if new_place.created_at else None,
+                'updated_at': new_place.updated_at.isoformat() if new_place.updated_at else None
+            }, 201
+        except (ValueError, TypeError) as e:
+            return {'error': str(e)}, 400
+        """
         current_user = get_jwt()
         user_id = current_user.get('id')
 
@@ -109,7 +127,7 @@ class PlaceList(Resource):
             return serialize_place(place, include_owner=False, include_amenities=False, include_reviews=False), 201
         except (ValueError, TypeError) as e:
             return {"error": str(e)}, 400
-
+"""
     @api.response(200, 'List of places retrieved successfully')
     def get(self):
         """Retrieve all places"""
