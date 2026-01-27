@@ -16,8 +16,8 @@ class User(BaseModel):
     is_admin = db.Column(db.Boolean, default=False)
 
     # Relationships between Places and Reviews
-    places = db.relationship('Place', backref='owner', lazy=True, cascade='all, delete-orphan')
-    reviews = db.relationship('Review', backref='author', lazy=True, cascade='all, delete-orphan')
+    places = db.relationship('Place', back_populates='owner', lazy=True, cascade='all, delete-orphan')
+    reviews = db.relationship('Review', back_populates='author', lazy=True, cascade='all, delete-orphan')
 
     @validates("first_name")
     def validate_first_name(self, key, value):
