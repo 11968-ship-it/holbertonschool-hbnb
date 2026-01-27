@@ -7,6 +7,16 @@ class Amenity(BaseModel):
 
     name = db.Column(db.String(50), nullable=False)
 
+    # -----------------------
+    # relationship (M2M)
+    # -----------------------
+    places = db.relationship(
+        "Place",
+        secondary=place_amenity,
+        back_populates="amenities",
+        lazy="subquery"
+    )
+
     @validates("name")
     def validate_name(self, key, value):
         if not isinstance(value, str) or not value.strip():
