@@ -361,3 +361,75 @@ Expected Response:
 }
 ```
 
+7. Create a review:
+```bash
+curl -X POST http://127.0.0.1:5000/api/v1/reviews/ \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <TOKEN>" \
+  -d '{"text":"This is a test review","rating":5}'
+```
+
+Expected Response:
+```bash
+{
+    "id": "REVIEW_ID",
+    "text": "This is a test review",
+    "rating": 5,
+    "created_at": "2026-01-27T14:13:10.838734",
+    "updated_at": "2026-01-27T14:13:10.838736"
+}
+```
+
+8. Retrieve all reviews:
+```bash
+curl -X GET http://127.0.0.1:5000/api/v1/reviews/
+```
+
+Expected Response:
+```bash
+    {
+        "id": "REVIEW_ID",
+        "text": "This is a test review",
+        "rating": 5,
+        "created_at": "2026-01-27T14:13:10.838734",
+        "updated_at": "2026-01-27T14:13:10.838736"
+    }
+```
+
+9. Retrieve review by review id:
+```bash
+{
+    "id": "REVIEW_ID",
+    "text": "This is a test review",
+    "rating": 5,
+    "created_at": "2026-01-27T14:22:49.749971",
+    "updated_at": "2026-01-27T14:22:49.749973"
+}
+```
+
+10. Update a review:
+```bash
+curl -X PUT http://127.0.0.1:5000/api/v1/reviews/REVIEW_ID \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <TOKEN>" \
+  -d '{"text":"Updated review text"}'
+```
+Expected Response:
+```bash
+{
+    "message": "Review updated successfully"
+}
+```
+
+11. Delete a review:
+```bash
+curl -X DELETE http://127.0.0.1:5000/api/v1/reviews/REVIEW_ID \
+  -H "Authorization: Bearer <TOKEN>"
+```
+
+Expected Response:
+```bash
+{
+    "message": "Review deleted successfully"
+}
+```
