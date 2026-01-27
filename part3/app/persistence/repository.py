@@ -73,8 +73,8 @@ class SQLAlchemyRepository(Repository):
             db.session.commit()
             return True
         except Exception as e:
-        db.session.rollback()
-        raise e
+            db.session.rollback()
+            raise e
 
     def get_by_attribute(self, attr_name, attr_value):
         return self.model.query.filter(getattr(self.model, attr_name) == attr_value).first()
