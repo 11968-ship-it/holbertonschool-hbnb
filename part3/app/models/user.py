@@ -1,6 +1,6 @@
 from app.models.base_model import BaseModel
 from app import db, bcrypt
-from sqlalchemy.orm import validates
+from sqlalchemy.orm import validates, relationship
 import uuid
 
 import re
@@ -15,7 +15,7 @@ class User(BaseModel):
     password = db.Column(db.String(128), nullable=False)
     is_admin = db.Column(db.Boolean, default=False)
 
-    # Relationships bewteen Places and Reviews
+    # Relationships between Places and Reviews
     places = db.relationship('Place', backref='owner', lazy=True, cascade='all, delete-orphan')
     reviews = db.relationship('Review', backref='author', lazy=True, cascade='all, delete-orphan')
 
@@ -49,3 +49,7 @@ class User(BaseModel):
         if not self.password:
             return False
         return bcrypt.check_password_hash(self.password, password)
+
+   # debugging stuff
+    def __repr__(self):
+        return f"<User {self.email}>"
