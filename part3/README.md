@@ -132,6 +132,28 @@ curl -X POST "http://127.0.0.1:5000/api/v1/auth/login" \
      }'
 ```
 
+3. Create a New User as an Admin:
+
+```
+curl -X POST "http://127.0.0.1:5000/api/v1/users/"
+     -d '{"email": "newuser@example.com", "first_name": "Admin", "last_name": "User"}'
+     -H "Authorization: Bearer <admin_token>"
+     -H "Content-Type: application/json"
+```
+
+
+4. Modify as an Admin:
+
+```
+curl -X PUT "http://127.0.0.1:5000/api/v1/users/<user_id>"
+     -d '{"<first_name>": "mary"}'
+     -H "Authorization: Bearer <admin_token>"
+     -H "Content-Type: application/json"
+```
+
+At this point the ```User``` can't change the email or pawssord!
+
+
 3. **Access a Protected Endpoint**
 
 ```bash
@@ -176,6 +198,7 @@ curl -X PUT "http://127.0.0.1:5000/api/v1/places/4fbefac0-906e-453e-a160-a63d811
 
 ## Table
 
+The test for each as follow?
 
 | left | Center | Right |
 |:-----|:------:|------:|
