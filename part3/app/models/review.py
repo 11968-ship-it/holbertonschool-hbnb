@@ -7,6 +7,14 @@ class Review(BaseModel):
 
     text = db.Column(db.Text, nullable=False)
     rating = db.Column(db.Integer, nullable=False)
+
+    #FK columns
+    place_id = db.column(db.String(36), db.ForeignKey("places.id"), nullable=False)
+    user_id = db.Column(db.String(36), db.ForeignKey("users.id"), nullable=False)
+
+    # relationships
+    place = db.relationship("Place", back_populates="reviews", lazy=True)
+    author = db.relationship("User", back_populates="reviews", lazy=True)
     
     @validates("text")
     def validate_text(self, key, value):
@@ -25,6 +33,8 @@ class Review(BaseModel):
             "id": self.id,
             "text": self.text,
             "rating": self.rating,
+            "place_id": self.place_id,
+            "user_id": self.user_id,
             "created_at": self.created_at.isoformat() if self.created_at else None,
             "updated_at": self.updated_at.isoformat() if self.updated_at else None,
         }
