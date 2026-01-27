@@ -1,3 +1,4 @@
+# Place↔Amenity join table
 from app import db
 
 place_amenity = db.Table(
