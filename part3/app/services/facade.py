@@ -33,23 +33,29 @@ class HBnBFacade:
     def get_all_users(self):
         return self.user_repo.get_all()
 
+
+    # update the user
     def update_user(self, user_id, user_data):
+        # get the user from the repo
         user = self.user_repo.get(user_id)
         if not user:
             return None
-        
+
+        # Handle password separately
         if "password" in user_data:
             password = user_data.pop("password")
             if not password or not str(password).strip():
                 raise ValueError("Password is required")
             user.hash_password(password)
-
+            
         for key, value in user_data.items():
             setattr(user, key, value)
 
-        self.user_repo.update(user_id, user)
-        return user
-
+        # Update using repository
+        # pass dictionary
+        updated_user = self.user_repo.update(user_id, user_data)
+        return updated_user
+    
     # --- Places ---
     def create_place(self, place_data):
         """ Create a new place"""
