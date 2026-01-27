@@ -12,6 +12,14 @@ class Place(BaseModel):
     latitude = db.Column(db.Float, nullable=False) # Latitude of the place.
     longitude = db.Column(db.Float, nullable=False) # Longitude of the place.
 
+    # Foreign key to User
+    owner_id = db.Column(db.String(36), db.ForeignKey('users.id'), nullable=False)
+    
+    # Relationships
+    owner = relationship('User', back_populates='places')
+    reviews = relationship('Review', back_populates='place', lazy=True, cascade='all, delete-orphan')
+    amenities = relationship('Amenity', secondary=place_amenity, back_populates='places')
+
     # Validators
     @validates('title')
     def validate_title(self, key, value):

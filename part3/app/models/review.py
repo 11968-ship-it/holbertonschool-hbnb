@@ -9,7 +9,7 @@ class Review(BaseModel):
     rating = db.Column(db.Integer, nullable=False)
 
     #FK columns
-    place_id = db.column(db.String(36), db.ForeignKey("places.id"), nullable=False)
+    place_id = db.Column(db.String(36), db.ForeignKey("places.id"), nullable=False)
     user_id = db.Column(db.String(36), db.ForeignKey("users.id"), nullable=False)
 
     # relationships
