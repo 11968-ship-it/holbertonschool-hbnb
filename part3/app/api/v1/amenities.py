@@ -79,12 +79,8 @@ class AmenityResource(Resource):
             if not amenity:
                 return {"error": "Amenity not found"}, 404
                 
-            return {
-                "id": amenity.id,
-                "name": amenity.name,
-                "created_at": amenity.created_at.isoformat(),
-                "updated_at": amenity.updated_at.isoformat()
-            }, 200
+            return {"message": "Amenity updated successfully"}, 200
+            
         except ValueError as e:
             return {"error": str(e)}, 400
 
