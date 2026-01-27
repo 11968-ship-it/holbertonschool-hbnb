@@ -85,6 +85,9 @@ class HBnBFacade:
 
     def delete_place(self, place_id):
         """Delete a place."""
+        place = self.place_repo.get(place_id)
+        if not place:
+            return False
         return self.place_repo.delete(place_id)
 
     def get_places_by_price_range(self, min_price, max_price):
