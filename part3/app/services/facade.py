@@ -52,85 +52,48 @@ class HBnBFacade:
 
     # --- Places ---
     def create_place(self, place_data):
-        required = ["title", "price", "latitude", "longitude", "owner_id", "amenities"]
-        for key in required:
-            if key not in place_data:
-                raise ValueError(f"Missing required field: {key}")
+        """ Create a new place"""
 
-        owner = self.user_repo.get(place_data["owner_id"])
-        if not owner:
-            raise ValueError("Owner not found")
+        place_data_clean = {
+            'title': place_data['title'],
+            'description': place_data.get('description', ''),
+            'price': place_data['price'],
+            'latitude': place_data['latitude'],
+            'longitude': place_data['longitude']
+        }
 
-        title = Place._validate_title(place_data["title"])
-        description = Place._validate_description(place_data.get("description", ""))
-        price = Place._validate_price(place_data["price"])
-        latitude = Place._validate_latitude(place_data["latitude"])
-        longitude = Place._validate_longitude(place_data["longitude"])
-
-        amenity_objs = []
-        for amenity_id in place_data.get("amenities", []):
-            amenity = self.amenity_repo.get(amenity_id)
-            if not amenity:
-                raise ValueError(f"Amenity not found: {amenity_id}")
-            amenity_objs.append(amenity)
-
-        place = Place(
-            title=title,
-            description=description,
-            price=price,
-            latitude=latitude,
-            longitude=longitude,
-            owner=owner
-        )
-
-        for a in amenity_objs:
-            place.add_amenity(a)
-
+        place = Place(**place_data_clean)
         self.place_repo.add(place)
         return place
         
     def get_place(self, place_id):
+        """get place by id"""
         return self.place_repo.get(place_id)
 
     def get_all_places(self):
+        """get all place"""
         return self.place_repo.get_all()
 
     def update_place(self, place_id, place_data):
+        """update place data"""
         place = self.place_repo.get(place_id)
         if not place:
             return None
 
-        if "owner_id" in place_data:
-            owner = self.user_repo.get(place_data["owner_id"])
-            if not owner:
-                raise ValueError("Owner not found")
-            place.owner = Place._validate_owner(owner)
-
-        if "title" in place_data:
-            place.title = Place._validate_title(place_data["title"])
-        if "description" in place_data:
-            place.description = Place._validate_description(place_data["description"])
-        if "price" in place_data:
-            place.price = Place._validate_price(place_data["price"])
-        if "latitude" in place_data:
-            place.latitude = Place._validate_latitude(place_data["latitude"])
-        if "longitude" in place_data:
-            place.longitude = Place._validate_longitude(place_data["longitude"])
-
-        if "amenities" in place_data:
-            amenity_objs = []
-            for amenity_id in place_data["amenities"]:
-                amenity = self.amenity_repo.get(amenity_id)
-                if not amenity:
-                    raise ValueError(f"Amenity not found: {amenity_id}")
-                amenity_objs.append(amenity)
-
-            place.amenities = []
-            for a in amenity_objs:
-                place.add_amenity(a)
-
         updated = self.place_repo.update(place_id, place_data)
         return updated if updated is not None else place
+
+    def delete_place(self, place_id):
+        """Delete a place."""
+        return self.place_repo.delete(place_id)
+
+    def get_places_by_price_range(self, min_price, max_price):
+        """Get places within price range."""
+        return self.place_repo.get_by_price_range(min_price, max_price)
+
+    def search_places_by_title(self, keyword):
+        """Search places by title keyword."""
+        return self.place_repo.search_by_title(keyword)
         
     # --- Reviews ---
     def create_review(self, review_data):

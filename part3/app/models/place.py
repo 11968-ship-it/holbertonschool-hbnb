@@ -12,6 +12,29 @@ class Place(BaseModel):
     latitude = db.Column(db.Float, nullable=False) # Latitude of the place.
     longitude = db.Column(db.Float, nullable=False) # Longitude of the place.
 
+    # Validators
+    @validates('title')
+    def validate_title(self, key, value):
+        """Validate title is not empty and within length."""
+        if not isinstance(value, str):
+            raise TypeError("Title must be a string")
+        value = value.strip()
+        if not value:
+            raise ValueError("Title cannot be empty")
+        if len(value) > 100:
+            raise ValueError("Title must be at most 100 characters")
+        return value
+
+    @validates('price')
+    def validate_price(self, key, value):
+        """Validate price is positive."""
+        if not isinstance(value, (int, float)):
+            raise TypeError("Price must be a number")
+        value = float(value)
+        if value <= 0:
+            raise ValueError("Price must be positive")
+        return value
+
     @validates('latitude')
     def validate_latitude(self, key, value):
         if not isinstance(value, (int, float)):
@@ -24,8 +47,11 @@ class Place(BaseModel):
     @validates('longitude')
     def validate_longitude(self, key, value):
         if not isinstance(value, (int, float)):
-            raise TypeError("Longitude must be a number!")
+            raise TypeError("Longitude must be a number")
         value = float(value)
         if not -180.0 <= value <= 180.0:
             raise ValueError("Longitude must be within -180.0 to 180.0")
         return value
+
+    def __repr__(self):
+        return f"<Place '{self.title}' - ${self.price}/night>"
