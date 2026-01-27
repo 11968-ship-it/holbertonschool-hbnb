@@ -433,17 +433,17 @@ Expected Response:
 }
 ```
 
-Get All Amenities:
+13. Get All Amenities:
 ```bash
 curl -X GET http://127.0.0.1:5000/api/v1/amenities/
 ```
 
-Get Amenity by ID:
+14. Get Amenity by ID:
 ```bash
 curl -X GET http://127.0.0.1:5000/api/v1/amenities/AMENITY_ID
 ```
 
-Update Amenity:
+15. Update Amenity:
 ```bash
 curl -X PUT http://127.0.0.1:5000/api/v1/amenities/AMENITY_ID \
   -H "Content-Type: application/json" \
@@ -456,7 +456,7 @@ Expected Response:
 { "message": "Amenity updated successfully" }
 ```
 
-Delete Amenity:
+16. Delete Amenity:
 ```bash
 curl -X DELETE http://127.0.0.1:5000/api/v1/amenities/AMENITY_ID \
   -H "Authorization: Bearer $ADMIN_TOKEN"
