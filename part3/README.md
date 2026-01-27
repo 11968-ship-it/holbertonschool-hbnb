@@ -253,4 +253,111 @@ curl -X POST "http://127.0.0.1:5000/api/v1/amenities/" \
 
 ```
 
+## Task: Map the User Entity to SQLAlchemy Model
+
+## Task: Map the Place, Review, and Amenity Entities
+
+### Test CRUL for place
+1. Start your Flask app:
+   ``` bash
+   python3 run.py
+   ```
+2.  Create a place:
+   ``` bash
+curl -X POST "http://127.0.0.1:5000/api/v1/places/" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Beach House",
+    "description": "Beautiful oceanfront property",
+    "price": 150.0,
+    "latitude": 34.0522,
+    "longitude": -118.2437
+  }'
+```
+Expected Response:
+``` bash
+{
+    "id": "fb3a127a-2a54-4052-87cf-371f1832b356",
+    "title": "Beach House",
+    "description": "Beautiful oceanfront property",
+    "price": 150.0,
+    "latitude": 34.0522,
+    "longitude": -118.2437,
+    "created_at": "2026-01-27T13:44:17.114732",
+    "updated_at": "2026-01-27T13:44:17.114913"
+}
+
+```
+3.  Get all places:
+   ``` bash
+curl -X GET "http://127.0.0.1:5000/api/v1/places/"
+```
+Expected Response:
+```bash
+[
+    {
+        "id": "fb3a127a-2a54-4052-87cf-371f1832b356",
+        "title": "Beach House",
+        "description": "Beautiful oceanfront property",
+        "price": 150.0,
+        "latitude": 34.0522,
+        "longitude": -118.2437,
+        "created_at": "2026-01-27T13:44:17.114732",
+        "updated_at": "2026-01-27T13:44:17.114913"
+    }
+]
+
+```
+
+4.  Get place by ID (use ID from step 2):
+   ``` bash
+curl -X GET "http://127.0.0.1:5000/api/v1/places/<place_id>"
+```
+Expected Response:
+```bash
+{
+    "id": "fb3a127a-2a54-4052-87cf-371f1832b356",
+    "title": "Beach House",
+    "description": "Beautiful oceanfront property",
+    "price": 150.0,
+    "latitude": 34.0522,
+    "longitude": -118.2437,
+    "created_at": "2026-01-27T13:44:17.114732",
+    "updated_at": "2026-01-27T13:44:17.114913"
+}
+
+```
+5.  Update place:
+   ```bash
+curl -X PUT "http://127.0.0.1:5000/api/v1/places/<place_id>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "price": 175.0,
+    "description": "Newly renovated!"
+  }'
+```
+Expected Response:
+```bash
+{
+    "id": "fb3a127a-2a54-4052-87cf-371f1832b356",
+    "title": "Beach House",
+    "description": "Newly renovated!",
+    "price": 175.0,
+    "latitude": 34.0522,
+    "longitude": -118.2437,
+    "updated_at": "2026-01-27T13:51:10.370791"
+}
+
+```
+
+6.  Delete place:
+   ```bash
+curl -X DELETE "http://127.0.0.1:5000/api/v1/places/<place_id>"
+```
+Expected Response:
+```bash
+{
+    "message": "Place deleted successfully"
+}
+```
 
