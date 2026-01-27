@@ -15,6 +15,10 @@ class User(BaseModel):
     password = db.Column(db.String(128), nullable=False)
     is_admin = db.Column(db.Boolean, default=False)
 
+    # Relationships 
+    #places = db.relationship('Place', backref='owner', lazy=True)
+    #reviews = db.relationship('Review', backref='author', lazy=True)
+
     @validates("first_name")
     def validate_first_name(self, key, value):
         if not value or len(value) > 50:
