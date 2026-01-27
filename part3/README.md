@@ -383,8 +383,8 @@ Expected Response:
     "message": "Place deleted successfully"
 }
 ```
-
-7. Create a review:
+### Test CRUL for review
+1. Create a review:
 ```bash
 curl -X POST http://127.0.0.1:5000/api/v1/reviews/ \
   -H "Content-Type: application/json" \
@@ -403,17 +403,17 @@ Expected Response:
 }
 ```
 
-8. Retrieve all reviews:
+2. Retrieve all reviews:
 ```bash
 curl -X GET http://127.0.0.1:5000/api/v1/reviews/
 ```
 
-9. Retrieve review by review id:
+3. Retrieve review by review id:
 ```bash
 curl -X GET http://127.0.0.1:5000/api/v1/reviews/REVIEW_ID
 ```
 
-10. Update a review:
+4. Update a review:
 ```bash
 curl -X PUT http://127.0.0.1:5000/api/v1/reviews/REVIEW_ID \
   -H "Content-Type: application/json" \
@@ -427,7 +427,7 @@ Expected Response:
 }
 ```
 
-11. Delete a review:
+5. Delete a review:
 ```bash
 curl -X DELETE http://127.0.0.1:5000/api/v1/reviews/REVIEW_ID \
   -H "Authorization: Bearer <TOKEN>"
@@ -439,39 +439,62 @@ Expected Response:
     "message": "Review deleted successfully"
 }
 ```
-
-12. Create Amenity
+### Test CRUL for Amenity
+1. Create Amenity
 ```bash
-curl -X POST http://127.0.0.1:5000/api/v1/amenities/ \
+curl -X POST "http://127.0.0.1:5000/api/v1/amenities/" \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer $ADMIN_TOKEN" \
-  -d '{"name":"WiFi"}'
+  -d '{
+    "name": "WiFi"
+  }'
 ```
 
 Expected Response:
 ```bash
 {
-    "id": "d2693824-4505-4b5b-bd06-7ebde11352ea",
-    "name": "WiFi"
+    "id": "f13a2442-7089-425e-95b4-9637014a53e7",
+    "name": "WiFi",
+    "created_at": "2026-01-27T15:14:14.912118",
+    "updated_at": "2026-01-27T15:14:14.912130"
 }
 ```
 
-13. Get All Amenities:
+2. Get All Amenities:
 ```bash
 curl -X GET http://127.0.0.1:5000/api/v1/amenities/
 ```
-
-14. Get Amenity by ID:
+Expected Response:
+``` bash
+[
+    {
+        "id": "f13a2442-7089-425e-95b4-9637014a53e7",
+        "name": "WiFi",
+        "created_at": "2026-01-27T15:14:14.912118",
+        "updated_at": "2026-01-27T15:14:14.912130"
+    }
+]
+```
+3. Get Amenity by ID:
 ```bash
 curl -X GET http://127.0.0.1:5000/api/v1/amenities/AMENITY_ID
 ```
-
-15. Update Amenity:
+Expected Response:
 ```bash
-curl -X PUT http://127.0.0.1:5000/api/v1/amenities/AMENITY_ID \
+{
+    "id": "f13a2442-7089-425e-95b4-9637014a53e7",
+    "name": "WiFi",
+    "created_at": "2026-01-27T15:14:14.912118",
+    "updated_at": "2026-01-27T15:14:14.912130"
+}
+```
+4. Update Amenity:
+```bash
+curl -X PUT "http://127.0.0.1:5000/api/v1/amenities/f13a2442-7089-425e-95b4-9637014a53e7" \ 
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer $ADMIN_TOKEN" \
-  -d '{"name":"Air Conditioning"}'
+  -d '{
+    "name": "High-Speed WiFi"
+  }'
+
 ```
 
 Expected Response:
