@@ -1,6 +1,6 @@
 from app.models.base_model import BaseModel
 from app import db
-from sqlalchemy.orm import validates
+from sqlalchemy.orm import validates, relationship
 
 class Amenity(BaseModel):
     __tablename__ = 'amenities'
