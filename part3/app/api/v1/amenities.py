@@ -19,7 +19,7 @@ amenity_output_model = api.model('AmenityOutput', {
 
 @api.route('/')
 class AmenityList(Resource):
-    @api.expect(amenity_model)
+    @api.expect(amenity_input_model, validate=True)
     @api.response(201, 'Amenity successfully created')
     @api.response(400, 'Invalid input data')
     def post(self):
@@ -99,4 +99,4 @@ class AmenityResource(Resource):
         if not result:
             return {"error": "Amenity not found"}, 404
 
-        return {"message": "Amenity deleted"}, 200
+        return {"message": "Amenity deleted successfully"}, 200
