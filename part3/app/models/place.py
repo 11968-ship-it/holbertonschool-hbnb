@@ -52,3 +52,6 @@ class Place(BaseModel):
         if not -180.0 <= value <= 180.0:
             raise ValueError("Longitude must be within -180.0 to 180.0")
         return value
+
+    def __repr__(self):
+        return f"<Place '{self.title}' - ${self.price}/night>"
