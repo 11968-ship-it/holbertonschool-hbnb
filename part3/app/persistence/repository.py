@@ -32,6 +32,7 @@ class SQLAlchemyRepository(Repository):
         self.model = model
 
     def add(self, obj):
+        """ add object to database"""
         db.session.add(obj)
         db.session.commit()
 
@@ -50,9 +51,12 @@ class SQLAlchemyRepository(Repository):
 
     def delete(self, obj_id):
         obj = self.get(obj_id)
-        if obj:
-            db.session.delete(obj)
-            db.session.commit()
+        if not obj:
+            return False
+            
+        db.session.delete(obj)
+        db.session.commit()
+        return True
 
     def get_by_attribute(self, attr_name, attr_value):
         return self.model.query.filter(getattr(self.model, attr_name) == attr_value).first()
