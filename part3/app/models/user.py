@@ -17,7 +17,7 @@ class User(BaseModel):
 
     # Relationships between Places and Reviews
     places = db.relationship('Place', back_populates='owner', lazy=True, cascade='all, delete-orphan')
-    reviews = db.relationship('Review', back_populates='author', lazy=True, cascade='all, delete-orphan')
+    reviews = db.relationship('Review', back_populates='user', lazy=True, cascade='all, delete-orphan')
 
     @validates("first_name")
     def validate_first_name(self, key, value):
