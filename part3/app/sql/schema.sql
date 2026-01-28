@@ -62,6 +62,11 @@ CREATE TABLE IF NOT EXISTS Amenity (
     name VARCHAR(255) UNIQUE NOT NULL
 );
 
+INSERT INTO "Amenity" (id, name) VALUES
+('f1b2c3d4-1111-4e2a-aaaa-1234567890ab', 'WiFi'),
+('f1b2c3d4-2222-4e2a-bbbb-1234567890ac', 'Swimming Pool'),
+('f1b2c3d4-3333-4e2a-cccc-1234567890ad', 'Air Conditioning');
+
 -- ---- Place_Amenity (Many-to-Many) ----------
 CREATE TABLE IF NOT EXISTS Place_Amenity (
     place_id   CHAR(36) NOT NULL,
