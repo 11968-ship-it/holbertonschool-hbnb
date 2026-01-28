@@ -65,7 +65,8 @@ class HBnBFacade:
             'description': place_data.get('description', ''),
             'price': place_data['price'],
             'latitude': place_data['latitude'],
-            'longitude': place_data['longitude']
+            'longitude': place_data['longitude'],
+            'owner_id': place_data['owner_id'],
         }
 
         place = Place(**place_data_clean)
@@ -108,15 +109,31 @@ class HBnBFacade:
     def create_review(self, review_data):
         text = review_data.get("text")
         rating = review_data.get("rating")
+        place_id = review_data.get("place_id")
+        user_id = review_data.get("user_id")
 
         # --- Validation ---
         if not isinstance(text, str) or not text.strip():
             raise ValueError("Review text must be a non-empty string")
         if not isinstance(rating, int) or rating < 1 or rating > 5:
             raise ValueError("Rating must be 1-5")
+        if not place_id:
+            raise ValueError("place_id is required")
+        if not user_id:
+            raise ValueError("user_id is required")
+
+        if not self.place_repo.get(place_id):
+            raise ValueError("Place not found")
+        if not self.user_repo.get(user_id):
+            raise ValueError("User not found")
         
         # --- Create review ---
-        review = Review(text=text.strip(), rating=rating)
+        review = Review(
+            text=text.strip(),
+            rating=rating,
+            place_id=place_id,
+            user_id=user_id,
+        )
         self.review_repo.add(review)
         return review
 
