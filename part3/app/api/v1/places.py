@@ -9,7 +9,8 @@ place_input_model = api.model('PlaceInput', {
     'description': fields.String(description='Description of the place'),
     'price': fields.Float(required=True, description='Price per night'),
     'latitude': fields.Float(required=True, description='Latitude of the place'),
-    'longitude': fields.Float(required=True, description='Longitude of the place')
+    'longitude': fields.Float(required=True, description='Longitude of the place'),
+    'owner_id': fields.String(required=True, description='ID of the owner (User)')
 })
 
 # what API returns
@@ -20,6 +21,7 @@ place_output_model = api.model('PlaceOutput', {
     'price': fields.Float(required=True, description='Price per night'),
     'latitude': fields.Float(required=True, description='Latitude of the place'),
     'longitude': fields.Float(required=True, description='Longitude of the place'),
+    'owner_id': fields.String(description='Owner ID'),
     'created_at': fields.DateTime(description='Creation date'),
     'updated_at': fields.DateTime(description='Last update')
 })
@@ -44,6 +46,7 @@ class PlaceList(Resource):
                 'price': new_place.price,
                 'latitude': new_place.latitude,
                 'longitude': new_place.longitude,
+                'owner_id': new_place.owner_id,
                 'created_at': new_place.created_at.isoformat() if new_place.created_at else None,
                 'updated_at': new_place.updated_at.isoformat() if new_place.updated_at else None
             }, 201
@@ -62,6 +65,7 @@ class PlaceList(Resource):
             'price': p.price,
             'latitude': p.latitude,
             'longitude': p.longitude,
+            'owner_id': p.owner_id,
             'created_at': p.created_at.isoformat() if p.created_at else None,
             'updated_at': p.updated_at.isoformat() if p.updated_at else None
         } for p in places], 200
@@ -83,6 +87,7 @@ class PlaceResource(Resource):
             'price': place.price,
             'latitude': place.latitude,
             'longitude': place.longitude,
+            'owner_id': place.owner_id,
             'created_at': place.created_at.isoformat() if place.created_at else None,
             'updated_at': place.updated_at.isoformat() if place.updated_at else None
         }, 200
@@ -107,6 +112,7 @@ class PlaceResource(Resource):
                 'price': updated.price,
                 'latitude': updated.latitude,
                 'longitude': updated.longitude,
+                'owner_id': updated.owner_id,
                 'updated_at': updated.updated_at.isoformat() if updated.updated_at else None
             }, 200
         except (ValueError, TypeError) as e:
