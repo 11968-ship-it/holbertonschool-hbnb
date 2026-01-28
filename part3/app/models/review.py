@@ -14,7 +14,7 @@ class Review(BaseModel):
 
     # relationships
     place = db.relationship("Place", back_populates="reviews", lazy=True)
-    author = db.relationship("User", back_populates="reviews", lazy=True)
+    user = db.relationship("User", back_populates="reviews", lazy=True)
     
     @validates("text")
     def validate_text(self, key, value):
