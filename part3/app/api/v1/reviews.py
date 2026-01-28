@@ -11,13 +11,13 @@ api = Namespace('reviews', description='Review operations')
 review_model = api.model('Review', {
     'text': fields.String(required=True, description='Text of the review'),
     'rating': fields.Integer(required=True, description='Rating of the place (1-5)'),
-    'place_id': fields.String(required=True, description='ID of the place')
+    'place_id': fields.String(required=True, description='ID of the place'),
     'rating': fields.Integer(required=True, description='Rating of the review (1-5)')
 })
 
 review_update_model = api.model('ReviewUpdate', {
     'text': fields.String(required=False, description='Text of the review'),
-    'rating': fields.Integer(required=False, description='Rating of the place (1-5)')
+    'rating': fields.Integer(required=False, description='Rating of the place (1-5)'),
     'rating': fields.Integer(required=False, description='Rating of the review (1-5)')
 })
 
