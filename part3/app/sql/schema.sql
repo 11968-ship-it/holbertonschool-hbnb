@@ -1,6 +1,13 @@
 -- ====================
 -- HBnB Schema (SQLite)
 -- ====================
+-- Drop existing tables if they exist (for clean setup)
+DROP TABLE IF EXISTS place_amenity;
+DROP TABLE IF EXISTS Reviews;
+DROP TABLE IF EXISTS Places;
+DROP TABLE IF EXISTS Amenitys;
+DROP TABLE IF EXISTS Users;
+
 PRAGMA foreign_keys = ON;
 
 -- ---------- User --------------
@@ -15,7 +22,7 @@ CREATE TABLE IF NOT EXISTS Users (
 
 
 -- ---------- Place --------------
-CREATE TABLE Place (
+CREATE TABLE Places (
     id CHAR(36) PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
     description TEXT,
@@ -28,7 +35,7 @@ CREATE TABLE Place (
     FOREIGN KEY (owner_id) REFERENCES User(id) ON DELETE CASCADE
 );
 -- ---------- Review --------------
-CREATE TABLE Review (
+CREATE TABLE Reviews (
     id CHAR(36) PRIMARY KEY,
     text TEXT NOT NULL,
     rating INT CHECK (rating >= 1 AND rating <= 5),
@@ -40,7 +47,7 @@ CREATE TABLE Review (
 );
 
 -- ---------- Amenity --------------
-CREATE TABLE Amenity (
+CREATE TABLE Amenitys (
     id CHAR(36) PRIMARY KEY,
     name VARCHAR(255) UNIQUE NOT NULL
 );
