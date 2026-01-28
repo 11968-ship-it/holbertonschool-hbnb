@@ -51,10 +51,10 @@ class ReviewList(Resource):
             if owner_value is not None and str(owner_value) == str(current_user):
                 return {"error": "You cannot review your own place."}, 400
 
-            # prevent duplicates (if your facade supports it)
-            existing = facade.get_review_by_user_and_place(current_user, place_id)
-            if existing:
-                return {"error": "You have already reviewed this place."}, 400
+            if hasattr(facade.get_review_by_user_and_place):
+                existing = facade.get_review_by_user_and_place(current_user, place_id)
+                if existing:
+                    return {"error": "You have already reviewed this place."}, 400
 
             data = {
                 "text": text,
@@ -69,7 +69,7 @@ class ReviewList(Resource):
         except ValueError as e:
             return {"error": str(e)}, 400
         except Exception:
-            return {"error": "Invalid input data"}, 400
+            return {"error": str(e)}, 400
 
     @api.response(200, 'List of reviews retrieved successfully')
     def get(self):
