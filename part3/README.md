@@ -522,5 +522,6 @@ Expected Response:
 
 ## ER Diagram:
 
-<img width="707" height="687" alt="image" src="https://github.com/user-attachments/assets/a084c5ae-560e-4aed-8475-833964c83cb6" />
+<img width="1167" height="875" alt="Screenshot (587)" src="https://github.com/user-attachments/assets/96e55801-558f-48d3-822e-8b4a7b159f7c" />
+
 
