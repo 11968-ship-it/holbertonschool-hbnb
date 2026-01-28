@@ -20,17 +20,6 @@ CREATE TABLE IF NOT EXISTS "User" (
     is_admin   BOOLEAN NOT NULL DEFAULT 0
 );
 
-INSERT INTO "User" (id, first_name, last_name, email, password, is_admin)
-VALUES (
-    '36c9050e-ddd3-4c3b-9731-9f487208bbc1',
-    'Admin',
-    'HBnB',
-    'admin@hbnb.io',
-    '$2b$12$KIXw7eKuoD1lVggh7X1sPOn2rOqNQtvFzOn8ZsT6r8gMf2eZcx42C', -- bcrypt hash
-    TRUE
-);
-
-
 -- ---------- Place --------------
 CREATE TABLE IF NOT EXISTS Place (
     id CHAR(36) PRIMARY KEY,
