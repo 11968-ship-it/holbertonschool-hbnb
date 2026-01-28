@@ -65,7 +65,8 @@ class HBnBFacade:
             'description': place_data.get('description', ''),
             'price': place_data['price'],
             'latitude': place_data['latitude'],
-            'longitude': place_data['longitude']
+            'longitude': place_data['longitude'],
+            'owner_id': place_data['owner_id'],
         }
 
         place = Place(**place_data_clean)
