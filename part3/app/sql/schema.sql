@@ -4,7 +4,7 @@
 PRAGMA foreign_keys = ON;
 
 -- ---------- User --------------
-CREATE TABLE IF NOT EXISTS users (
+CREATE TABLE IF NOT EXISTS Users (
     id         CHAR(36) PRIMARY KEY,
     first_name VARCHAR(255),
     last_name  VARCHAR(255),
@@ -15,8 +15,18 @@ CREATE TABLE IF NOT EXISTS users (
 
 
 -- ---------- Place --------------
+CREATE TABLE Place (
+    id CHAR(36) PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description TEXT,
+    price DECIMAL(10, 2) NOT NULL,
+    latitude FLOAT NOT NULL,
+    longitude FLOAT NOT NULL,
+    owner_id CHAR(36) NOT NULL,
 
-
+    -- Foreign key 
+    FOREIGN KEY (owner_id) REFERENCES User(id) ON DELETE CASCADE
+);
 -- ---------- Review --------------
 
 
