@@ -20,7 +20,7 @@ INSERT INTO User (
     'Admin',
     'HBnB',
     '$2b$12$OBOKagu1u1QSSGzvvBeeoeRaAW4H/nLIIyrZehUnZauE1Dgx/Mnte',
-    1
+    TRUE
 );
 
 -- ====================
