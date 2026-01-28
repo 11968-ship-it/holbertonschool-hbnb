@@ -2,6 +2,11 @@
 -- HBnB Seed Data
 -- ====================
 
+PRAGMA foreign_keys = ON;
+
+-- ====================
+-- Seed: Admin User
+-- ====================
 INSERT INTO User (
     id,
     email,
@@ -17,3 +22,7 @@ INSERT INTO User (
     '$2b$12$OBOKagu1u1QSSGzvvBeeoeRaAW4H/nLIIyrZehUnZauE1Dgx/Mnte',
     1
 );
+
+-- ====================
+-- Seed: Initial Amenities
+-- ====================
