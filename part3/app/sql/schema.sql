@@ -28,7 +28,7 @@ CREATE TABLE Place (
     FOREIGN KEY (owner_id) REFERENCES User(id) ON DELETE CASCADE
 );
 -- ---------- Review --------------
-CREATE TABLE "Review" (
+CREATE TABLE Review (
     id CHAR(36) PRIMARY KEY,
     text TEXT NOT NULL,
     rating INT CHECK (rating >= 1 AND rating <= 5),
@@ -40,7 +40,22 @@ CREATE TABLE "Review" (
 );
 
 -- ---------- Amenity --------------
-CREATE TABLE "Amenity" (
+CREATE TABLE Amenity (
     id CHAR(36) PRIMARY KEY,
     name VARCHAR(255) UNIQUE NOT NULL
 );
+
+-- ---- Place_Amenity (Many-to-Many) ----------
+CREATE TABLE IF NOT EXISTS Place_Amenity (
+    place_id   CHAR(36) NOT NULL,
+    amenity_id CHAR(36) NOT NULL,
+
+    PRIMARY KEY (place_id, amenity_id),
+
+    FOREIGN KEY (place_id) REFERENCES places(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    FOREIGN KEY (amenity_id) REFERENCES amenities(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+    );
