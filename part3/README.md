@@ -518,3 +518,9 @@ Expected Response:
 ```bash
 { "message": "Amenity deleted successfully" }
 ```
+
+
+## ER Diagram:
+
+<img width="707" height="687" alt="image" src="https://github.com/user-attachments/assets/a084c5ae-560e-4aed-8475-833964c83cb6" />
+
