@@ -28,6 +28,19 @@ CREATE TABLE Place (
     FOREIGN KEY (owner_id) REFERENCES User(id) ON DELETE CASCADE
 );
 -- ---------- Review --------------
-
+CREATE TABLE "Review" (
+    id CHAR(36) PRIMARY KEY,
+    text TEXT NOT NULL,
+    rating INT CHECK (rating >= 1 AND rating <= 5),
+    user_id CHAR(36) NOT NULL,
+    place_id CHAR(36) NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES "User"(id) ON DELETE CASCADE,
+    FOREIGN KEY (place_id) REFERENCES "Place"(id) ON DELETE CASCADE,
+    UNIQUE (user_id, place_id) -- ensures one review per user per place
+);
 
 -- ---------- Amenity --------------
+CREATE TABLE "Amenity" (
+    id CHAR(36) PRIMARY KEY,
+    name VARCHAR(255) UNIQUE NOT NULL
+);
