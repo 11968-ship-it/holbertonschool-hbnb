@@ -16,6 +16,8 @@ class UserList(Resource):
     @api.response(201, 'User successfully created')
     @api.response(400, 'Email already registered')
     @api.response(400, 'Invalid input data')
+
+    #users creation
     def post(self):
         """Register a new user"""
         user_data = api.payload
@@ -32,7 +34,8 @@ class UserList(Resource):
             }, 201
         except ValueError as e:
             return {'error': str(e)}, 400
-
+            
+    #users lists
     def get(self):
         """get User List"""
         users = facade.get_all_users()
