@@ -132,7 +132,13 @@ curl -X POST "http://127.0.0.1:5000/api/v1/auth/login" \
      }'
 ```
 
-3. Create a New User as an Admin:
+3. Retrieve a List of Users:
+
+```
+curl -X GET "http://127.0.0.1:5000/api/v1/users/"
+```
+
+4. Create a New User as an Admin:
 
 ```
 curl -X POST "http://127.0.0.1:5000/api/v1/users/"
@@ -142,7 +148,7 @@ curl -X POST "http://127.0.0.1:5000/api/v1/users/"
 ```
 
 
-4. Modify as an Admin:
+5. Modify as an Admin:
 
 ```
 curl -X PUT "http://127.0.0.1:5000/api/v1/users/<user_id>"
