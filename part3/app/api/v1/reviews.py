@@ -68,7 +68,7 @@ class ReviewList(Resource):
 
         except ValueError as e:
             return {"error": str(e)}, 400
-        except Exception:
+        except Exception as e:
             return {"error": str(e)}, 400
 
     @api.response(200, 'List of reviews retrieved successfully')
