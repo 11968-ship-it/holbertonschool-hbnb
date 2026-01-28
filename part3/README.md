@@ -518,3 +518,56 @@ Expected Response:
 ```bash
 { "message": "Amenity deleted successfully" }
 ```
+
+
+## ER Diagram:
+
+<img width="1167" height="875" alt="Screenshot (587)" src="https://github.com/user-attachments/assets/96e55801-558f-48d3-822e-8b4a7b159f7c" />
+
+erDiagram
+
+    USER {
+        char(36) id PK
+        varchar first_name
+        varchar last_name
+        varchar email "UNIQUE, NOT NULL"
+        varchar password "NOT NULL"
+        boolean is_admin "DEFAULT false"
+    }
+
+    PLACE {
+        char(36) id PK
+        varchar title "NOT NULL"
+        text description
+        decimal price "NOT NULL"
+        float latitude "NOT NULL"
+        float longitude "NOT NULL"
+        char(36) owner_id FK
+    }
+
+    REVIEW {
+        char(36) id PK
+        text text "NOT NULL"
+        int rating "CHECK 1..5"
+        char(36) user_id FK
+        char(36) place_id FK
+        %% also: UNIQUE(user_id, place_id)
+    }
+
+    AMENITY {
+        char(36) id PK
+        varchar name "UNIQUE, NOT NULL"
+    }
+
+    PLACE_AMENITY {
+        char(36) place_id PK, FK
+        char(36) amenity_id PK, FK
+    }
+
+    %% Relationships
+    USER  ||--o{ PLACE  : owns
+    USER  ||--o{ REVIEW : writes
+    PLACE ||--o{ REVIEW : receives
+
+    PLACE   ||--o{ PLACE_AMENITY : has
+    AMENITY ||--o{ PLACE_AMENITY : included_in
