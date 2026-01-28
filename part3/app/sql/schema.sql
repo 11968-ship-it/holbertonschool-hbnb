@@ -2,7 +2,7 @@
 -- HBnB Schema (SQLite)
 -- ====================
 -- Drop existing tables if they exist (for clean setup)
-DROP TABLE IF EXISTS place_amenity;
+DROP TABLE IF EXISTS Place_Amenity;
 DROP TABLE IF EXISTS Reviews;
 DROP TABLE IF EXISTS Places;
 DROP TABLE IF EXISTS Amenitys;
