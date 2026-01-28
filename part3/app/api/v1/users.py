@@ -39,9 +39,7 @@ class UserList(Resource):
         """Register a new user (Admin only)"""
         
         claims = get_jwt()
-        is_admin = claims.get("is_admin", False)
-        
-        if not is_admin:
+        if not claims.get("is_admin", False)
             return {'error': 'Admin privileges required'}, 403
         
         user_data = api.payload
