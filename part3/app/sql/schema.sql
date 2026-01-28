@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS Users (
 
 
 -- ---------- Place --------------
-CREATE TABLE Places (
+CREATE TABLE IF NOT EXISTS Places (
     id CHAR(36) PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
     description TEXT,
@@ -35,7 +35,7 @@ CREATE TABLE Places (
     FOREIGN KEY (owner_id) REFERENCES User(id) ON DELETE CASCADE
 );
 -- ---------- Review --------------
-CREATE TABLE Reviews (
+CREATE TABLE IF NOT EXISTS Reviews (
     id CHAR(36) PRIMARY KEY,
     text TEXT NOT NULL,
     rating INT CHECK (rating >= 1 AND rating <= 5),
@@ -47,7 +47,7 @@ CREATE TABLE Reviews (
 );
 
 -- ---------- Amenity --------------
-CREATE TABLE Amenitys (
+CREATE TABLE IF NOT EXISTS Amenitys (
     id CHAR(36) PRIMARY KEY,
     name VARCHAR(255) UNIQUE NOT NULL
 );
