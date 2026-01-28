@@ -54,7 +54,7 @@ def serialize_place(place, include_owner=True, include_amenities=True, include_r
         "price": place.price,
         "latitude": place.latitude,
         "longitude": place.longitude,
-        "owner_id": place.owner.id
+        "owner_id": place.owner.id if place.owner else None
     }
 
     if include_owner and place.owner:
@@ -77,7 +77,7 @@ def serialize_place(place, include_owner=True, include_amenities=True, include_r
                 "id": r.id,
                 "text": r.text,
                 "rating": r.rating,
-                "user_id": r.user_id if getattr(r, "user", None) else getattr(r, "user_id", None)
+                "user_id": r.user_id if r.user else r.user_id
             }
             for r in place.reviews
         ]
@@ -185,13 +185,12 @@ class PlaceReviewList(Resource):
         if not place:
             return {"error": "Place not found"}, 404
 
-        reviews = facade.get_reviews_by_place(place_id)
         return [
             {
                 "id": r.id,
                 "text": r.text,
                 "rating": r.rating,
-                "user_id": r.user.id,
+                "user_id": r.user.id if r.user else r.user_id,
                 "place_id": place_id
             }
             for r in place.reviews
