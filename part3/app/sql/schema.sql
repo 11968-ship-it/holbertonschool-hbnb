@@ -3,15 +3,15 @@
 -- ====================
 -- Drop existing tables if they exist (for clean setup)
 DROP TABLE IF EXISTS Place_Amenity;
-DROP TABLE IF EXISTS Reviews;
-DROP TABLE IF EXISTS Places;
-DROP TABLE IF EXISTS Amenitys;
-DROP TABLE IF EXISTS Users;
+DROP TABLE IF EXISTS Review;
+DROP TABLE IF EXISTS Place;
+DROP TABLE IF EXISTS Amenity;
+DROP TABLE IF EXISTS User;
 
 PRAGMA foreign_keys = ON;
 
 -- ---------- User --------------
-CREATE TABLE IF NOT EXISTS Users (
+CREATE TABLE IF NOT EXISTS "User" (
     id         CHAR(36) PRIMARY KEY,
     first_name VARCHAR(255),
     last_name  VARCHAR(255),
@@ -20,9 +20,19 @@ CREATE TABLE IF NOT EXISTS Users (
     is_admin   BOOLEAN NOT NULL DEFAULT 0
 );
 
+INSERT INTO "User" (id, first_name, last_name, email, password, is_admin)
+VALUES (
+    '36c9050e-ddd3-4c3b-9731-9f487208bbc1',
+    'Admin',
+    'HBnB',
+    'admin@hbnb.io',
+    '$2b$12$KIXw7eKuoD1lVggh7X1sPOn2rOqNQtvFzOn8ZsT6r8gMf2eZcx42C', -- bcrypt hash
+    TRUE
+);
+
 
 -- ---------- Place --------------
-CREATE TABLE IF NOT EXISTS Places (
+CREATE TABLE IF NOT EXISTS Place (
     id CHAR(36) PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
     description TEXT,
@@ -35,7 +45,7 @@ CREATE TABLE IF NOT EXISTS Places (
     FOREIGN KEY (owner_id) REFERENCES User(id) ON DELETE CASCADE
 );
 -- ---------- Review --------------
-CREATE TABLE IF NOT EXISTS Reviews (
+CREATE TABLE IF NOT EXISTS Review (
     id CHAR(36) PRIMARY KEY,
     text TEXT NOT NULL,
     rating INT CHECK (rating >= 1 AND rating <= 5),
@@ -47,7 +57,7 @@ CREATE TABLE IF NOT EXISTS Reviews (
 );
 
 -- ---------- Amenity --------------
-CREATE TABLE IF NOT EXISTS Amenitys (
+CREATE TABLE IF NOT EXISTS Amenity (
     id CHAR(36) PRIMARY KEY,
     name VARCHAR(255) UNIQUE NOT NULL
 );
@@ -59,10 +69,10 @@ CREATE TABLE IF NOT EXISTS Place_Amenity (
 
     PRIMARY KEY (place_id, amenity_id),
 
-    FOREIGN KEY (place_id) REFERENCES places(id)
+    FOREIGN KEY (place_id) REFERENCES "Place"(id)
         ON DELETE CASCADE
         ON UPDATE CASCADE,
-    FOREIGN KEY (amenity_id) REFERENCES amenities(id)
+    FOREIGN KEY (amenity_id) REFERENCES "Amenity"(id)
         ON DELETE CASCADE
         ON UPDATE CASCADE
     );
