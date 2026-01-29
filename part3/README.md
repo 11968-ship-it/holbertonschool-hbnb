@@ -223,6 +223,13 @@ curl -X POST "http://127.0.0.1:5000/api/v1/auth/register-admin" \
      }'
 
 ```
+
+
+### creating admin test on thr 29/1/2025
+
+<img width="1044" height="478" alt="image" src="https://github.com/user-attachments/assets/a643b493-7ae7-4a29-b7ba-cd55ffb5c135" />
+
+
 Login as Admin to Get JWT Token
 
 ```bash
