@@ -29,6 +29,8 @@ admin_user_update_model = api.model('AdminUserUpdate', {
     'is_admin': fields.Boolean(required=False, description='Admin flag')
 })
 
+# used is_admin() helper instead of raw get_jwt()
+
 @api.route('/')
 class UserList(Resource):
     @api.expect(user_model, validate=True)
