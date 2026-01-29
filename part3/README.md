@@ -229,6 +229,7 @@ curl -X POST "http://127.0.0.1:5000/api/v1/auth/register-admin" \
 
 <img width="1044" height="478" alt="image" src="https://github.com/user-attachments/assets/a643b493-7ae7-4a29-b7ba-cd55ffb5c135" />
 
+2. <img width="1060" height="879" alt="image" src="https://github.com/user-attachments/assets/7954e6f2-de45-4761-9871-42ae4eddc12c" />
 
 Login as Admin to Get JWT Token
 
