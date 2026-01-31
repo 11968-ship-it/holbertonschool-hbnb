@@ -277,6 +277,7 @@ curl -X POST "http://127.0.0.1:5000/api/v1/amenities/" \
 
 ### ER Diagram
 
+> The following ER diagram was generated using Mermaid.js and reflects the SQLAlchemy models used in the application.
 <img width="1167" height="875" alt="Screenshot (587)" src="https://github.com/user-attachments/assets/96e55801-558f-48d3-822e-8b4a7b159f7c" />
 
 This ER diagram represents the relational structure of the HBnB backend.  
