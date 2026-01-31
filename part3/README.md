@@ -343,4 +343,7 @@ erDiagram
 
 Part 3 elevates the HBnB backend into a secure, scalable, and production-ready system. With authentication, authorization, and database persistence in place, the application is now aligned with industry-standard backend practices and ready for further expansion.
 
-
+# Authors
+- Lamyaa Mohammed Alghaihab 11955@holbertonstudents.com 💻✍️
+- Thekira A. Ahmed 11968@holbertonstudents.com 💻✍️
+- Yara K. Alrasheed 11982@holbertonstudents.com 💻✍️
