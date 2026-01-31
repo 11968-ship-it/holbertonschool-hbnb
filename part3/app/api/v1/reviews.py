@@ -52,8 +52,8 @@ class ReviewList(Resource):
                 return {"error": "You cannot review your own place."}, 400
 
             existing = facade.get_review_by_user_and_place(current_user, place_id)
-                if existing:
-                    return {"error": "You have already reviewed this place."}, 400
+            if existing:
+                return {"error": "You have already reviewed this place."}, 400
 
             data = {
                 "text": text,
