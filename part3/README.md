@@ -279,6 +279,17 @@ curl -X POST "http://127.0.0.1:5000/api/v1/amenities/" \
 
 <img width="1167" height="875" alt="Screenshot (587)" src="https://github.com/user-attachments/assets/96e55801-558f-48d3-822e-8b4a7b159f7c" />
 
+This ER diagram represents the relational structure of the HBnB backend.  
+It defines users, places, reviews, amenities, and their relationships while enforcing data integrity through foreign keys and constraints.
+
+- A **User** can own multiple **Places** and write multiple **Reviews**.
+- A **Place** belongs to one **User** (owner) and can receive multiple **Reviews**.
+- A **Review** links a **User** to a **Place**, with a uniqueness constraint ensuring one review per user per place.
+- **Amenities** are linked to **Places** through a many-to-many relationship using the `Place_Amenity` join table.
+- Administrative privileges are handled via the `is_admin` flag on the `User` entity.
+
+This schema ensures normalized data storage, clear ownership rules, and consistent relationships across all core entities.
+
 erDiagram
 
     USER {
