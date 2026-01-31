@@ -1,7 +1,7 @@
 from flask_restx import Namespace, Resource, fields
 from flask import request
 from app.services import facade
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 
 api = Namespace('reviews', description='Review operations')
 
@@ -99,7 +99,10 @@ class ReviewResource(Resource):
     def put(self, review_id):
         """Update a review"""
         try:
+            claims = get_jwt()
+            is_admin = claims.get("is_admin", False)
             current_user = get_jwt_identity()
+            
             review = facade.get_review(review_id)
             if not review:
                 return {"error": "Review not found"}, 404
@@ -112,7 +115,7 @@ class ReviewResource(Resource):
             if review_owner is not None and hasattr(review_owner, "id"):
                 review_owner = review_owner.id
 
-            if review_owner is None or str(review_owner) != str(current_user):
+            if not is_admin and (review_owner is None or str(review_owner) != str(current_user)):
                 return {"error": "Unauthorized action"}, 403
 
             payload = request.json or {}
@@ -134,7 +137,10 @@ class ReviewResource(Resource):
     @api.response(403, 'Unauthorized action')
     def delete(self, review_id):
         """Delete a review"""
+        claims = get_jwt()
+        is_admin = claims.get("is_admin", False)
         current_user = get_jwt_identity()
+        
         review = facade.get_review(review_id)
         if not review:
             return {"error": "Review not found"}, 404
@@ -147,7 +153,7 @@ class ReviewResource(Resource):
         if review_owner is not None and hasattr(review_owner, "id"):
             review_owner = review_owner.id
 
-        if review_owner is None or str(review_owner) != str(current_user):
+        if not is_admin and (review_owner is None or str(review_owner) != str(current_user)):
             return {"error": "Unauthorized action"}, 403
 
         success = facade.delete_review(review_id)
