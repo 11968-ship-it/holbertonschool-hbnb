@@ -189,7 +189,7 @@ Start the Flask development server:
       - ```AMENITY_ID```: Amenity created by admin
       - ```REVIEW_ID```: Review created by USER2_TOKEN
 
-| Resource  | Endpoint  | Method | Who | Expected | Actual | Result | Notes / Error |
+| Resource  | Endpoint | Method | Who | Expected | Actual | Result | Notes / Error |
 |---|---|---:|---|---|---|---|---|
 | Users | `/api/v1/users/` | POST | Admin | 201 | 201 | ✅ | Admin can create users |
 | Users | `/api/v1/users/` | POST | User | 403 | 403 | ✅ | `Admin privileges required` |
