@@ -23,6 +23,36 @@
     </header>
     
     <main>
+        <search class="search-bar">
+            <form id="filter-form">
+        <!-- WHERE: Destination -->
+                <div class="filter-group">
+                    <label for="location">Where</label>
+                    <input type="text" id="location" placeholder="Search destinations" list="location-suggestions">
+                    <datalist id="location-suggestions">
+                        <option value="Paris, France">
+                        <option value="New York, USA">
+                    </datalist>
+                </div>
+                <!-- WHEN: Check-in & Checkout -->
+                <div class="filter-group">
+                    <label for="check-in">When</label>
+                    <div class="date-inputs">
+                        <input type="date" id="check-in" name="check-in">
+                        <input type="date" id="check-out" name="check-out">
+                    </div>
+                </div>
+                <!-- WHO: Guests -->
+                <div class="filter-group">
+                    <label for="guests">Who</label>
+                    <input type="number" id="guests" min="1" placeholder="Add guests">
+                </div>
+                <button type="submit" class="search-btn">
+                    <span class="icon">🔍</span>
+                </button>
+            </form>
+        </search>
+
         <section id="filter">
             <label for="price-filter">Max Price:</label>
             <select id="price-filter">
