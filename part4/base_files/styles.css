@@ -101,6 +101,5 @@ textarea {
 .header-logo {
   height: 40px;
   width: auto;
-    filter: brightness(1.3) contrast(1.1)
-      drop-shadow(0 0 4px rgba(255, 255, 255, 0.25));
+  filter: brightness(1.45) contrast(1.15);
 }
