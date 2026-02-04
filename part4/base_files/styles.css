@@ -27,6 +27,9 @@ header {
 }
 
 nav {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   gap: 1.5rem;
 }
@@ -92,9 +95,9 @@ textarea {
 }
 
 .header-container {
+  position: relative;
   display: flex;
   align-items: center;
-  justify-content: center;
 }
 
 .brand {
@@ -107,4 +110,72 @@ textarea {
   height: 40px;
   width: auto;
 filter: brightness(1.6) contrast(1.25) saturate(1.05);
+}
+
+/* Center the modal */
+.modal-overlay {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-bg);
+  padding: 2rem;
+}
+
+/* Popup card */
+.modal {
+  width: 100%;
+  max-width: 420px;
+  background-color: var(--color-white);
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+/* Form layout */
+#login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#login-form h2 {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+#login-form button {
+  width: 100%;
+}
+
+/* Logo spacing */
+.logo-container {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+/* Error text */
+.form-error {
+  color: #880808;
+  font-size: 0.9rem;
+  margin-top: 6px;
+}
+
+/* Shake animation */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}
+
+.modal.shake {
+  animation: shake 0.35s ease-in-out;
+}
+
+/* Loading button state */
+button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
 }
