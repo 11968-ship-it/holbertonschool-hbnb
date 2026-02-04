@@ -51,10 +51,9 @@ class ReviewList(Resource):
             if owner_value is not None and str(owner_value) == str(current_user):
                 return {"error": "You cannot review your own place."}, 400
 
-            if hasattr(facade, "get_review_by_user_and_place"):
-                existing = facade.get_review_by_user_and_place(current_user, place_id)
-                if existing:
-                    return {"error": "You have already reviewed this place."}, 400
+            existing = facade.get_review_by_user_and_place(current_user, place_id)
+            if existing:
+                return {"error": "You have already reviewed this place."}, 400
 
             data = {
                 "text": text,

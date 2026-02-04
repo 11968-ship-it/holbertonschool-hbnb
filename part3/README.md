@@ -1,15 +1,34 @@
-# holbertonschool-hbnb
+# HBnB Project – Part 3: Enhanced Backend with Authentication & Database Integration
 
 ## Project Overview
-This project is part of the HBnB application and focuses on setting up the initial project structure and core architecture. The goal is to create a clean, modular Flask application with a clear separation of concerns, preparing the codebase for future development.
+Part 3 of the HBnB Project focuses on transforming the backend from a prototype into a secure, persistent, and production-ready system. This phase introduces JWT-based authentication, role-based authorization, and database integration using SQLAlchemy with SQLite for development and MySQL for production.
+
+By the end of this part, the backend supports authenticated users, enforces permissions, persists data reliably, and is structured to scale in real-world environments.
 
 
-The application is organized into three main layers:
+## Objectives
 
-- **Presentation Layer**: RESTful API endpoints built with Flask and Flask-RESTx.
-- **Business Logic Layer**: Core models and services that define application behavior.
-- **Persistence Layer**: An in-memory repository used for object storage and validation (to be replaced by a database in later stages).
+### Authentication & Authorization
+- Implement JWT authentication using Flask-JWT-Extended
+- Secure protected endpoints
+- Enforce role-based access control (RBAC) using the is_admin attribute
 
+### Database Integration
+- Replace in-memory storage with SQLite for development
+- Prepare the application for MySQL in production
+- Use SQLAlchemy ORM for database interactions
+
+### CRUD Operations
+- Refactor all CRUD operations to use persistent database storage
+- Ensure consistent and reliable data handling
+
+### Database Design & Visualization
+- Design relational schemas for all entities
+- Visualize entity relationships using Mermaid.js ER diagrams
+
+### Data Validation & Consistency
+- Enforce constraints and validation rules at the model level
+- Maintain data integrity across relationships
 
 ---
 
@@ -33,20 +52,29 @@ part3/
 │   │   ├── user.py
 │   │   ├── place.py
 │   │   ├── review.py
+│   │   ├── place_amenity.py
 │   │   ├── amenity.py
 │   ├── services/
 │   │   ├── __init__.py
 │   │   ├── facade.py
 │   ├── persistence/
 │   |   ├── __init__.py
+│   |   ├── repositories/
+│   │       ├── amenity_repository.py
+│   │       ├── place_repository.py
+│   │       ├── review_repository.py
+│   │       ├── user_repository.py
 │   |   ├── repository.py
+│   ├── sql/
+│   |   ├──schema.sql
+│   |   ├── seed.sql
+│   |   ├── generate_admin_hash.py
 |   ├── tests/
 |   |   ├── test_models.py
 ├── run.py
 ├── config.py
 ├── requirements.txt
-├── README.md
-
+└── README.md
 ```
 
 ### Directory Purpose
@@ -55,48 +83,95 @@ part3/
 - **models/**: Contains core entity classes.
 - **services/**: Implements the Facade pattern to coordinate interactions between layers.
 - **persistence/**: Provides an in-memory repository implementing a common storage interface.
+- **persistence/repositories/**: Entity-specific repository implementations.
+- **app/sql/**: Raw SQL utilities including schema, seed data, and admin password hash generator.
+- **app/tests/**: Unit tests for models and core logic.
 - **run.py**: Starts the Flask application.
 - **config.py**: Holds environment-specific configuration.
 - **requirements.txt**: Lists required Python packages.
-
 ---
+
+## Authentication & Authorization
+### Password Management
+- User passwords are securely hashed using bcrypt
+- Plain-text passwords are never stored
+
+### JWT Authentication
+- Token-based authentication using Flask-JWT-Extended
+- Access tokens required for protected routes
+
+### Role-Based Access Control
+- is_admin flag determines administrative privileges
+- Admin-only endpoints are strictly enforced
+
+## Database Integration
+### Development
+- SQLite is used for lightweight, local development
+- Database managed through SQLAlchemy
+
+### Production
+- Configured to switch seamlessly to MySQL
+- Environment-based configuration ensures flexibility
+
+### ORM Mapping
+- Entities mapped using SQLAlchemy:
+      - User
+      - Place
+      - Review
+      - Amenity
+- Relationships are properly defined with foreign keys and constraints.
 
 ## Installation
 
-1. Clone the repository:
+### Clone the repository:
    
    ```bash
    git clone <repository-url>
    cd holbertonschool-hbnb
-   
-2. Install dependencies:
+   ```
+
+### Install dependencies:
 
    ```
    pip install -r requirements.txt
    ```
 
-The application will run in debug mode.
-No API routes are fully implemented yet, but the server should start without errors.
-
-4. Install the ```flask-bcrypt``` plugin:
-
-   ```
-   pip install flask-bcrypt
-   ```
-   
-5. Install ```flask-jwt-extended``` Library:
-
-   ```
-   pip install flask-jwt-extended
-   ```
-
-6. To initialize the database and create the table, run:
+### To initialize the database and create the table, run:
 
    ```
    flask shell
    >>> from app import db
    >>> db.create_all()
    ```
+
+### Loading Schema and Seed Data
+
+1. Open the SQLite database:
+   ```
+   sqlite3 hbnb.db
+   ```
+
+2. Load the schema
+   ```
+   .read schema.sql
+   ```
+
+3. Load the seed (initial) data:
+   ```
+   .read seed.sql
+   ```
+
+**These steps will:**
+
+- Create all required tables and relationships
+- Insert initial test or development data
+- Allow immediate interaction with the database without running migrations
+
+4. Exit the SQLite prompt when finished:
+   ```
+   .exit
+   ```
+
 ## Running the Application
 
 Start the Flask development server:
@@ -105,127 +180,35 @@ Start the Flask development server:
    python3 run.py
    ```
 
-# Core Business Logic Classes
+## API Tests (cURL)
+- Environment variables used
+      - ```ADMIN_TOKEN```: JWT for admin user
+      - ```USER_TOKEN```: JWT for normal user (place owner)
+      - ```USER2_TOKEN```: JWT for another normal user
+      - ```PLACE_ID```: Place created by USER_TOKEN
+      - ```AMENITY_ID```: Amenity created by admin
+      - ```REVIEW_ID```: Review created by USER2_TOKEN
 
-# User Endpoints
+| Resource  | Endpoint | Method | Who | Expected | Actual | Result | Notes / Error |
+|---|---|---:|---|---|---|---|---|
+| Users | `/api/v1/users/` | POST | Admin | 201 | 201 | ✅ | Admin can create users |
+| Users | `/api/v1/users/` | POST | User | 403 | 403 | ✅ | `Admin privileges required` |
+| Places | `/api/v1/places/` | POST | User | 201 | 201 | ✅ | User can create place (owner_id = user) |
+| Places | `/api/v1/places/<place_id>` | PUT | Owner | 200 | 200 | ✅ | Must send required fields if validation requires them |
+| Places | `/api/v1/places/<place_id>` | PUT | Admin | 200 | 200 | ✅ | Admin bypass ownership |
+| Places | `/api/v1/places/<place_id>` | DELETE | Admin | 200 | 200 | ✅ | Admin bypass ownership works |
+| Amenities | `/api/v1/amenities/` | POST | User | 403 | 403 | ✅ | `Admin privileges required` |
+| Amenities | `/api/v1/amenities/` | POST | Admin | 201 | 201 | ✅ | Amenity created |
+| Amenities | `/api/v1/amenities/<amenity_id>` | PUT | Admin | 200 | 200 | ✅ | Amenity updated |
+| Amenities | `/api/v1/amenities/<amenity_id>` | DELETE | Admin | 200 | 200 | ✅ | Amenity deleted |
+| Reviews | `/api/v1/reviews/` | POST | Owner | 400 | 400 | ✅ | `You cannot review your own place.` |
+| Reviews | `/api/v1/reviews/` | POST | User2 | 201 | 201 | ✅ | Review created successfully |
+| Reviews | `/api/v1/reviews/` | POST | Same user2 again | 400 | 400 | ✅ | `You already reviewed this place.` (enforce unique user+place) |
+| Reviews | `/api/v1/reviews/<review_id>` | PUT | Other user | 403 | 403 | ✅ | `Unauthorized action` |
+| Reviews | `/api/v1/reviews/<review_id>` | PUT | Admin | 200 | 200 | ✅ | Admin bypass ownership |
+| Reviews | `/api/v1/reviews/<review_id>` | DELETE | Admin | 200 | 200 | ✅ | Admin bypass ownership |
 
-1. **Create user:**
-
-```bash
-curl -X POST "http://127.0.0.1:5000/api/v1/users/" \
-     -H "Content-Type: application/json" \
-     -d '{
-       "first_name": "John",
-       "last_name": "Doe",
-       "email": "john.doe@example.com",
-       "password": "my_secure_password"
-     }'
-```
-2. **Login:**
-
-```bash
-curl -X POST "http://127.0.0.1:5000/api/v1/auth/login" \
-     -H "Content-Type: application/json" \
-     -d '{
-       "email": "john.doe@example.com",
-       "password": "my_secure_password"
-     }'
-```
-
-3. Retrieve a List of Users:
-
-```
-curl -X GET "http://127.0.0.1:5000/api/v1/users/"
-```
-
-4. Create a New User as an Admin:
-
-```
-curl -X POST "http://127.0.0.1:5000/api/v1/users/"
-     -d '{"email": "newuser@example.com", "first_name": "Admin", "last_name": "User"}'
-     -H "Authorization: Bearer <admin_token>"
-     -H "Content-Type: application/json"
-```
-
-
-5. Modify as an Admin:
-
-```
-curl -X PUT "http://127.0.0.1:5000/api/v1/users/<user_id>"
-     -d '{"<first_name>": "mary"}'
-     -H "Authorization: Bearer <admin_token>"
-     -H "Content-Type: application/json"
-```
-
-At this point the ```User``` can't change the email or pawssord!
-
-
-3. **Access a Protected Endpoint**
-
-```bash
-curl -X GET "http://127.0.0.1:5000/api/v1/auth/protected" -H "Authorization: Bearer your_generated_jwt_token"
-```
-
-# Place Endpoints
-
-**1. Create place:**
-
-```bash
-curl -X POST "http://127.0.0.1:5000/api/v1/places/" \
-  -H "Authorization: Bearer < your_token>" -H "Content-Type: application/json" \
-  -d '{
-    "title": "User A Luxury Villa",
-    "description": "Amazing villa by the town",
-    "price": 400.0,
-    "latitude": 34.0540,
-    "longitude": -118.2457,
-    "amenities": []
-  }'
-```
-
-**2. Update Place:**
-
-```bash
-curl -X PUT "http://127.0.0.1:5000/api/v1/places/4fbefac0-906e-453e-a160-a63d8110b341" \
-  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc2OTAwNzA0NCwianRpIjoiYmRkY2E5NjMtNzFmYi00NTY3LWE1MWYtY2YwZmE1Mzc3YTM5IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImM4ZTg4MzI2LTMzMTQtNGYwOC1iZmIxLTcwNDVkNWM3ZWYzZCIsIm5iZiI6MTc2OTAwNzA0NCwiY3NyZiI6IjZjNGM5ZTllLTkzMzYtNDcyMi04MzBkLWQwZThiYzkzMDU1YyIsImV4cCI6MTc2OTAwNzk0NCwiaXNfYWRtaW4iOmZhbHNlfQ.XAkHIApGy7PjAju7H_DQBd_PZ8cHcNCRnOqMNdmfD9k" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "title": "Updated Luxury Villa",
-    "description": "Amazing villa by the beach",
-    "price": 300.0,
-    "latitude": 34.0522,
-    "longitude": -118.2437,
-    "amenities": []
-  }'
-```
-
-
-
-
-## Table
-
-The test for each as follow?
-
-| left | Center | Right |
-|:-----|:------:|------:|
-| A    |    B   |   C   |
-
-## Task: Implement Administrator Access Endpoints
-Create Admin 
-```bash
-curl -X POST "http://127.0.0.1:5000/api/v1/auth/register-admin" \
-     -H "Content-Type: application/json" \
-     -d '{
-       "email": "admin@example.com",
-       "password": "admin123",
-       "first_name": "Admin",
-       "last_name": "User"
-     }'
-
-```
-
-
-### creating admin test on thr 29/1/2025
+### Creating admin test on thr 29/1/2025
 
 <img width="1044" height="478" alt="image" src="https://github.com/user-attachments/assets/a643b493-7ae7-4a29-b7ba-cd55ffb5c135" />
 
@@ -290,247 +273,23 @@ curl -X POST "http://127.0.0.1:5000/api/v1/amenities/" \
 
 ```
 
-## Task: Map the User Entity to SQLAlchemy Model
+## Database Schema
 
-## Task: Map the Place, Review, and Amenity Entities
+### ER Diagram
 
-### Test CRUL for place
-1. Start your Flask app:
-   ``` bash
-   python3 run.py
-   ```
-2.  Create a place:
-   ``` bash
-curl -X POST "http://127.0.0.1:5000/api/v1/places/" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "title": "Beach House",
-    "description": "Beautiful oceanfront property",
-    "price": 150.0,
-    "latitude": 34.0522,
-    "longitude": -118.2437
-  }'
-```
-Expected Response:
-``` bash
-{
-    "id": "fb3a127a-2a54-4052-87cf-371f1832b356",
-    "title": "Beach House",
-    "description": "Beautiful oceanfront property",
-    "price": 150.0,
-    "latitude": 34.0522,
-    "longitude": -118.2437,
-    "created_at": "2026-01-27T13:44:17.114732",
-    "updated_at": "2026-01-27T13:44:17.114913"
-}
-
-```
-3.  Get all places:
-   ``` bash
-curl -X GET "http://127.0.0.1:5000/api/v1/places/"
-```
-Expected Response:
-```bash
-[
-    {
-        "id": "fb3a127a-2a54-4052-87cf-371f1832b356",
-        "title": "Beach House",
-        "description": "Beautiful oceanfront property",
-        "price": 150.0,
-        "latitude": 34.0522,
-        "longitude": -118.2437,
-        "created_at": "2026-01-27T13:44:17.114732",
-        "updated_at": "2026-01-27T13:44:17.114913"
-    }
-]
-
-```
-
-4.  Get place by ID (use ID from step 2):
-   ``` bash
-curl -X GET "http://127.0.0.1:5000/api/v1/places/<place_id>"
-```
-Expected Response:
-```bash
-{
-    "id": "fb3a127a-2a54-4052-87cf-371f1832b356",
-    "title": "Beach House",
-    "description": "Beautiful oceanfront property",
-    "price": 150.0,
-    "latitude": 34.0522,
-    "longitude": -118.2437,
-    "created_at": "2026-01-27T13:44:17.114732",
-    "updated_at": "2026-01-27T13:44:17.114913"
-}
-
-```
-5.  Update place:
-   ```bash
-curl -X PUT "http://127.0.0.1:5000/api/v1/places/<place_id>" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "price": 175.0,
-    "description": "Newly renovated!"
-  }'
-```
-Expected Response:
-```bash
-{
-    "id": "fb3a127a-2a54-4052-87cf-371f1832b356",
-    "title": "Beach House",
-    "description": "Newly renovated!",
-    "price": 175.0,
-    "latitude": 34.0522,
-    "longitude": -118.2437,
-    "updated_at": "2026-01-27T13:51:10.370791"
-}
-
-```
-
-6.  Delete place:
-   ```bash
-curl -X DELETE "http://127.0.0.1:5000/api/v1/places/<place_id>"
-```
-Expected Response:
-```bash
-{
-    "message": "Place deleted successfully"
-}
-```
-### Test CRUL for review
-1. Create a review:
-```bash
-curl -X POST http://127.0.0.1:5000/api/v1/reviews/ \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer <TOKEN>" \
-  -d '{"text":"This is a test review","rating":5}'
-```
-
-Expected Response:
-```bash
-{
-    "id": "REVIEW_ID",
-    "text": "This is a test review",
-    "rating": 5,
-    "created_at": "2026-01-27T14:13:10.838734",
-    "updated_at": "2026-01-27T14:13:10.838736"
-}
-```
-
-2. Retrieve all reviews:
-```bash
-curl -X GET http://127.0.0.1:5000/api/v1/reviews/
-```
-
-3. Retrieve review by review id:
-```bash
-curl -X GET http://127.0.0.1:5000/api/v1/reviews/REVIEW_ID
-```
-
-4. Update a review:
-```bash
-curl -X PUT http://127.0.0.1:5000/api/v1/reviews/REVIEW_ID \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer <TOKEN>" \
-  -d '{"text":"Updated review text"}'
-```
-Expected Response:
-```bash
-{
-    "message": "Review updated successfully"
-}
-```
-
-5. Delete a review:
-```bash
-curl -X DELETE http://127.0.0.1:5000/api/v1/reviews/REVIEW_ID \
-  -H "Authorization: Bearer <TOKEN>"
-```
-
-Expected Response:
-```bash
-{
-    "message": "Review deleted successfully"
-}
-```
-### Test CRUL for Amenity
-1. Create Amenity
-```bash
-curl -X POST "http://127.0.0.1:5000/api/v1/amenities/" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "WiFi"
-  }'
-```
-
-Expected Response:
-```bash
-{
-    "id": "f13a2442-7089-425e-95b4-9637014a53e7",
-    "name": "WiFi",
-    "created_at": "2026-01-27T15:14:14.912118",
-    "updated_at": "2026-01-27T15:14:14.912130"
-}
-```
-
-2. Get All Amenities:
-```bash
-curl -X GET http://127.0.0.1:5000/api/v1/amenities/
-```
-Expected Response:
-``` bash
-[
-    {
-        "id": "f13a2442-7089-425e-95b4-9637014a53e7",
-        "name": "WiFi",
-        "created_at": "2026-01-27T15:14:14.912118",
-        "updated_at": "2026-01-27T15:14:14.912130"
-    }
-]
-```
-3. Get Amenity by ID:
-```bash
-curl -X GET http://127.0.0.1:5000/api/v1/amenities/AMENITY_ID
-```
-Expected Response:
-```bash
-{
-    "id": "f13a2442-7089-425e-95b4-9637014a53e7",
-    "name": "WiFi",
-    "created_at": "2026-01-27T15:14:14.912118",
-    "updated_at": "2026-01-27T15:14:14.912130"
-}
-```
-4. Update Amenity:
-```bash
-curl -X PUT "http://127.0.0.1:5000/api/v1/amenities/f13a2442-7089-425e-95b4-9637014a53e7" \ 
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "High-Speed WiFi"
-  }'
-
-```
-
-Expected Response:
-```bash
-{ "message": "Amenity updated successfully" }
-```
-
-16. Delete Amenity:
-```bash
-curl -X DELETE http://127.0.0.1:5000/api/v1/amenities/AMENITY_ID \
-  -H "Authorization: Bearer $ADMIN_TOKEN"
-```
-
-Expected Response:
-```bash
-{ "message": "Amenity deleted successfully" }
-```
-
-
-## ER Diagram:
-
+> The following ER diagram was generated using Mermaid.js and reflects the SQLAlchemy models used in the application.
 <img width="1167" height="875" alt="Screenshot (587)" src="https://github.com/user-attachments/assets/96e55801-558f-48d3-822e-8b4a7b159f7c" />
+
+This ER diagram represents the relational structure of the HBnB backend.  
+It defines users, places, reviews, amenities, and their relationships while enforcing data integrity through foreign keys and constraints.
+
+- A **User** can own multiple **Places** and write multiple **Reviews**.
+- A **Place** belongs to one **User** (owner) and can receive multiple **Reviews**.
+- A **Review** links a **User** to a **Place**, with a uniqueness constraint ensuring one review per user per place.
+- **Amenities** are linked to **Places** through a many-to-many relationship using the `Place_Amenity` join table.
+- Administrative privileges are handled via the `is_admin` flag on the `User` entity.
+
+This schema ensures normalized data storage, clear ownership rules, and consistent relationships across all core entities.
 
 erDiagram
 
@@ -579,3 +338,12 @@ erDiagram
 
     PLACE   ||--o{ PLACE_AMENITY : has
     AMENITY ||--o{ PLACE_AMENITY : included_in
+
+# Conclusion
+
+Part 3 elevates the HBnB backend into a secure, scalable, and production-ready system. With authentication, authorization, and database persistence in place, the application is now aligned with industry-standard backend practices and ready for further expansion.
+
+# Authors
+- Lamyaa Mohammed Alghaihab 11955@holbertonstudents.com 💻✍️
+- Thekira A. Ahmed 11968@holbertonstudents.com 💻✍️
+- Yara K. Alrasheed 11982@holbertonstudents.com 💻✍️
