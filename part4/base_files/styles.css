@@ -26,10 +26,15 @@ header {
   padding: 1rem 2rem;
 }
 
+nav {
+  display: flex;
+  gap: 1.5rem;
+}
+
 nav a {
   color: var(--color-white);
   text-decoration: none;
-  margin-left: 1rem;
+  margin: 0;
 }
 
 nav a:hover {
@@ -89,7 +94,7 @@ textarea {
 .header-container {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
 }
 
 .brand {
