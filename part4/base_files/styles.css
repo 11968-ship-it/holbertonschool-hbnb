@@ -85,3 +85,20 @@ textarea {
   max-width: 160px;
   height: auto;
 }
+
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.header-logo {
+  height: 40px;
+  width: auto;
+}
