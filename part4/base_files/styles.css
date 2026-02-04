@@ -131,7 +131,7 @@ body.modal-open {
 .modal-airbnb {
   width: min(720px, 100%);
   max-height: 90vh;
-  background: var(--color-white);
+  background: var(--color-bg);
   border-radius: 16px;
   overflow: hidden;
   border: 1px solid #ddd;
