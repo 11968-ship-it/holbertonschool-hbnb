@@ -368,15 +368,64 @@ header nav {
   flex-shrink: 0;
 }
 
+/* Place images gallery (place details page) */
 .place-images {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+  overflow-x: auto;
 }
 
 .place-images img {
-    width: 100%;
-    max-width: 300px;
-    border-radius: 10px;
-    border: 1px solid #ddd;
+  width: 100%;
+  max-width: 280px;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  flex-shrink: 0;
+}
+
+/* Places layout (list page) */
+.places-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+/* Place card */
+.place-card {
+  overflow: hidden;
+}
+
+/* Main image inside place card */
+.place-image {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+/* Subtle muted text */
+.muted {
+  opacity: 0.85;
+}
+
+/* Details button */
+.details-button {
+  display: block;
+  margin-top: 10px;
+  background: var(--color-primary);
+  color: var(--color-white);
+  padding: 10px 12px;
+  border-radius: 10px;
+  text-decoration: none;
+  text-align: center;
+  font-weight: 600;
+  transition: opacity 0.15s ease;
+}
+
+.details-button:hover {
+  opacity: 0.9;
 }
