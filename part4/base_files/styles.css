@@ -241,3 +241,40 @@ button:disabled {
   opacity: 0.7;
   cursor: not-allowed;
 }
+
+header nav {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 1.5rem;
+}
+
+/* Page section spacing */
+.add-review {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.add-review h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Form as a card (matches your card spec) */
+.form-card {
+  margin: 20px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-color: var(--color-accent);
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Make button full width for nicer UI */
+.form-card button {
+  width: 100%;
+}
