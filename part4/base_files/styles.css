@@ -378,7 +378,7 @@ header nav {
 
 .place-images img {
   width: 100%;
-  max-width: 280px;
+  max-width: 200px;
   aspect-ratio: 4 / 3;
   object-fit: cover;
   border-radius: 10px;
@@ -401,7 +401,7 @@ header nav {
 /* Main image inside place card */
 .place-image {
   width: 100%;
-  height: 160px;
+  height: 130px;
   object-fit: cover;
   border-radius: 8px;
   margin-bottom: 10px;
