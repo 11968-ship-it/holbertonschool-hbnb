@@ -55,13 +55,6 @@ button:hover {
   opacity: 0.9;
 }
 
-.card {
-  background-color: var(--color-accent);
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
-  padding: 1rem;
-}
-
 input, textarea, select {
   border: 1px solid var(--color-border);
   padding: 0.6rem;
@@ -71,4 +64,41 @@ input, textarea, select {
 
 textarea {
   min-height: 120px;
+}
+
+.card,
+.place-card,
+.review-card {
+  margin: 20px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-color: var(--color-accent);
+}
+
+.logo-container {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.logo {
+  max-width: 160px;
+  height: auto;
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.header-logo {
+  height: 40px;
+  width: auto;
 }
