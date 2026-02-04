@@ -101,5 +101,5 @@ textarea {
 .header-logo {
   height: 40px;
   width: auto;
-  filter: brightness(1.45) contrast(1.15);
+filter: brightness(1.6) contrast(1.25) saturate(1.05);
 }
