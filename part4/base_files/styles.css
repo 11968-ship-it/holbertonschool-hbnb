@@ -112,7 +112,11 @@ textarea {
 filter: brightness(1.6) contrast(1.25) saturate(1.05);
 }
 
-/* Modal entrance */
+/* =========================
+   MODAL (LOGIN PAGE)
+========================= */
+
+/* Animations */
 @keyframes modal-in {
   from {
     opacity: 0;
@@ -124,13 +128,20 @@ filter: brightness(1.6) contrast(1.25) saturate(1.05);
   }
 }
 
-/* Overlay fade */
 @keyframes overlay-in {
   from { opacity: 0; }
   to { opacity: 1; }
 }
 
-/* Dark overlay */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}
+
+/* Overlay */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -139,6 +150,7 @@ filter: brightness(1.6) contrast(1.25) saturate(1.05);
   align-items: center;
   justify-content: center;
   padding: 24px;
+  animation: overlay-in 0.2s ease-out;
 }
 
 body.modal-open {
@@ -153,9 +165,14 @@ body.modal-open {
   border-radius: 16px;
   overflow: hidden;
   border: 1px solid #ddd;
+  animation: modal-in 0.25s ease-out;
 }
 
-/* Header bar */
+.modal-airbnb.shake {
+  animation: shake 0.35s ease-in-out;
+}
+
+/* Modal header */
 .modal-header {
   display: grid;
   grid-template-columns: 48px 1fr 48px;
@@ -172,28 +189,26 @@ body.modal-open {
 
 .modal-header-spacer {
   width: 48px;
-  height: 1px;
 }
 
-/* Close button (no glow) */
+/* Close button */
 .modal-close {
   width: 36px;
   height: 36px;
-  border: 0;
+  border: none;
   background: transparent;
   border-radius: 50%;
   cursor: pointer;
   font-size: 24px;
-  line-height: 1;
   display: grid;
   place-items: center;
 }
 
 .modal-close:hover {
-  background: rgba(0,0,0,0.06);
+  background: rgba(0, 0, 0, 0.06);
 }
 
-/* Scrollable body */
+/* Modal body */
 .modal-body {
   padding: 24px;
   max-height: calc(90vh - 60px);
@@ -206,7 +221,7 @@ body.modal-open {
   margin: 12px 0 16px;
 }
 
-/* Form look */
+/* LOGIN FORM */
 #login-form {
   display: flex;
   flex-direction: column;
@@ -225,33 +240,29 @@ body.modal-open {
   padding: 12px;
 }
 
-/* Primary button like Airbnb */
 #login-form button {
   width: 100%;
   border-radius: 10px;
   padding: 12px;
   font-weight: 700;
   margin-top: 8px;
+  transition: transform 0.1s ease, opacity 0.2s ease;
 }
 
-/* Error text */
+#login-form button:active {
+  transform: scale(0.98);
+}
+
+#login-btn.loading {
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+/* ERROR */
 .form-error {
   color: #880808;
   font-size: 0.9rem;
   margin-top: 6px;
-}
-
-/* Shake animation */
-@keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  20% { transform: translateX(-6px); }
-  40% { transform: translateX(6px); }
-  60% { transform: translateX(-4px); }
-  80% { transform: translateX(4px); }
-}
-
-.modal.shake {
-  animation: shake 0.35s ease-in-out;
 }
 
 /* Loading button state */
@@ -355,25 +366,6 @@ header nav {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-}
-
-.modal {
-  animation: modal-in 0.25s ease-out;
-}
-
-/* Button click feedback */
-#login-btn {
-  transition: transform 0.1s ease, opacity 0.2s ease;
-}
-
-#login-btn:active {
-  transform: scale(0.98);
-}
-
-/* Loading state */
-#login-btn.loading {
-  opacity: 0.85;
-  pointer-events: none;
 }
 
 .place-images {
