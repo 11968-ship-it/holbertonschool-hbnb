@@ -58,7 +58,7 @@ function setLoginLoading(isLoading, button) {
    API CALL
 ========================================================= */
 async function loginUser(email, password) {
-  const LOGIN_URL = "http://127.0.0.1:5000/api/v1/auth/login";
+  const LOGIN_URL = "http://127.0.0.1/api/v1/auth/login";
 
   const response = await fetch(LOGIN_URL, {
     method: "POST",
