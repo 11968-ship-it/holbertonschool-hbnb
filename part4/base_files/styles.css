@@ -345,11 +345,7 @@ button:disabled {
 }
 
 .search-btn {
-  background: linear-gradient(
-    135deg,
-    #a10f0f,
-    #880808
-  );
+  background-color: #c41717; /* brighter red */
   border-radius: 50%;
   width: 45px;
   height: 45px;
@@ -359,7 +355,7 @@ button:disabled {
   justify-content: center;
   flex-shrink: 0;
 
-  box-shadow: 0 6px 16px rgba(136, 8, 8, 0.35);
+  box-shadow: 0 6px 16px rgba(196, 23, 23, 0.35);
 }
 
 .search-btn .icon {
@@ -368,7 +364,7 @@ button:disabled {
 }
 
 .search-btn:hover {
-  box-shadow: 0 10px 22px rgba(136, 8, 8, 0.45);
+  background-color: #d61f1f;
 }
 
 /* Place images gallery (place details page) */
