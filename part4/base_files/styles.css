@@ -454,6 +454,22 @@ header nav a:hover::after {
   transform: scaleX(1);
 }
 
+/* ====================================================
+  Add spacing between text elements
+======================================================== */
+
+h1, h2, h3, h4, h5, h6 {
+  margin-bottom: 0.5rem;
+}
+
+p {
+    margin-bottom: 0.75rem;
+}
+
+section {
+    margin-bottom: 2rem;
+}
+
 /* 3) Logo subtle tilt on hover (no glow) */
 .brand:hover .header-logo {
   transform: rotate(-1deg) scale(1.03);
