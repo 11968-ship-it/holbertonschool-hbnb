@@ -6,15 +6,19 @@ document.addEventListener("DOMContentLoaded", () => {
   handleAuthUI();
 
   const placeId = getPlaceIdFromURL();
+
+  const placeSection = document.getElementById("place-details");
+
   if (!placeId) {
-    alert("No place ID provided in the URL.");
+    if (placeSection) {
+      placeSection.innerHTML = `<p>No place ID provided in the URL. Please go back to <a href="index.html">Home</a>.</p>`;
+    }
     return;
   }
 
   const token = getCookie("token");
   fetchPlaceDetails(placeId, token);
 });
-
 /* =========================================================
    LOGIN FORM HANDLING
 ========================================================= */
