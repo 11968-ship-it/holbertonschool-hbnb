@@ -92,6 +92,11 @@ textarea {
   background-color: var(--color-accent);
 }
 
+
+/* ====================================================
+       Logo container
+======================================================== */
+
 .logo-container {
   text-align: center;
   margin-bottom: 20px;
