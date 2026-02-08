@@ -54,15 +54,21 @@
             </form>
         </search>
 
-        <section id="filter">
+        <section id="filter" class="price-filter">
             <label for="price-filter">Max Price:</label>
-            <select id="price-filter">
-                <option value="all">All Prices</option>
-                <option value="50">$50</option>
-                <option value="100">$100</option>
-                <option value="200">$200+</option>
-            </select>
+            
+            <div class="select-wrap">
+                <img src="images/Saudi_Riyal_Symbol-1.png" alt="SAR" class="currency-icon" />
+                <select id="price-filter" name="price-filter">
+                    <option value="all">All prices</option>
+                    <option value="200">200 SAR</option>
+                    <option value="500">500 SAR</option>
+                    <option value="1000">1000 SAR</option>
+                    <option value="2000">2000+ SAR</option>
+                </select>
+            </div>
         </section>
+
         <section id="places-list">
             <article class="place-card">
                 <div class="place-images">
