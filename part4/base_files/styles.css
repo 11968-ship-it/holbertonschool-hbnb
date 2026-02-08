@@ -26,25 +26,32 @@ header {
   padding: 1rem 2rem;
 }
 
-/* ===== Header layout fix (top only) ===== */
+/* ===== Header layout: logo left, nav centered ===== */
 .header-container {
-  position: relative;
-  display: flex;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
-  justify-content: space-between;
+}
+
+.brand {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
 }
 
 header nav {
+  justify-self: center;
   position: static;
   transform: none;
   display: flex;
+  justify-content: center;
   gap: 1.5rem;
 }
 
 nav a {
   color: var(--color-white);
   text-decoration: none;
-  margin: 0;
 }
 
 nav a:hover {
@@ -99,12 +106,6 @@ textarea {
 .logo {
   max-width: 160px;
   height: auto;
-}
-
-.brand {
-  display: inline-flex;
-  align-items: center;
-  text-decoration: none;
 }
 
 .header-logo {
