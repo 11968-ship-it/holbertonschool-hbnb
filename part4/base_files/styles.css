@@ -26,10 +26,17 @@ header {
   padding: 1rem 2rem;
 }
 
-nav {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
+/* ===== Header layout fix (top only) ===== */
+.header-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+header nav {
+  position: static;
+  transform: none;
   display: flex;
   gap: 1.5rem;
 }
@@ -92,12 +99,6 @@ textarea {
 .logo {
   max-width: 160px;
   height: auto;
-}
-
-.header-container {
-  position: relative;
-  display: flex;
-  align-items: center;
 }
 
 .brand {
@@ -269,14 +270,6 @@ body.modal-open {
 button:disabled {
   opacity: 0.7;
   cursor: not-allowed;
-}
-
-header nav {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 1.5rem;
 }
 
 /* Page section spacing */
