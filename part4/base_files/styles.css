@@ -372,23 +372,50 @@ button:disabled {
   background-color: #d61f1f;
 }
 
-/* Place images gallery (place details page) */
+
+/* ====================================================
+      Place images gallery (place details page)
+======================================================== */
+
 .place-images {
   display: flex;
   gap: 12px;
   margin-bottom: 20px;
   overflow-x: auto;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .place-images img {
-  width: 140px;           /* thumbnail size */
-  height: 100px;
+  width: 300px;           /* thumbnail size */
+  height: 200px;
   object-fit: cover;
-  border-radius: 8px;
+  border-radius: 10px;
   border: 1px solid #ddd;
   cursor: pointer;
-  transition: transform 0.15s ease, opacity 0.15s ease;
+  transition: transform 0.2s ease, opacity 0.2s ease;
 }
+
+.place-images img:hover {
+  transform: scale(1.05);     /* subtle zoom on hover */
+}
+
+/* make images horizontally scrollable on very small screens */
+@media (max-width: 480px) {
+  .place-images {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 8px;
+  }
+
+  .place-images img {
+    flex: 0 0 auto;
+    width: 80vw;  /* almost full viewport width */
+    height: auto;
+  }
+}
+
+/* ==================================================================== */
 
 /* Places layout (list page) */
 .places-grid {
@@ -797,4 +824,63 @@ select:focus {
 .category-score i {
   font-size: 18px;
   color: #555;
+}
+
+/* ====================================================
+      Footer
+======================================================== */
+footer {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  text-align: center;
+  padding: 40px 20px;
+  font-size: 0.9rem;
+}
+
+footer hr {
+  border: 0;
+  height: 1px;
+  background-color: #ccc;
+  margin: 20px auto;
+  max-width: 600px;
+}
+
+footer p {
+  margin: 10px 0 15px 0;
+}
+
+footer ul {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;        /* wrap on small screens */
+  gap: 20px;
+  padding: 0;
+  margin: 10px 0 0 0;
+}
+
+footer ul li a {
+  color: var(--color-white);
+  text-decoration: none;
+  transition: color 0.2s ease;
+  font-weight: 600;
+}
+
+footer ul li a:hover {
+  color: var(--color-accent);
+}
+
+/* Footer small screens adjustment */
+@media (max-width: 480px) {
+  footer {
+    padding: 30px 15px;
+  }
+
+  footer ul {
+    gap: 10px;
+  }
+
+  footer p {
+    font-size: 0.85rem;
+  }
 }
