@@ -22,5 +22,8 @@ def create_app(config_class="config.DevelopmentConfig"):
 
     from app.api import api
     api.init_app(app)
+
+    # Enable CORS for API routes
+    CORS(app, resources={r"/api/*": {"origins": "*"}})
     
     return app
