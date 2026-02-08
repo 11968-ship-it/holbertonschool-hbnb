@@ -4,6 +4,15 @@
 document.addEventListener("DOMContentLoaded", () => {
   handleLoginForm();
   handleAuthUI();
+
+  const placeId = getPlaceIdFromURL();
+  if (!placeId) {
+    alert("No place ID provided in the URL.");
+    return;
+  }
+
+  const token = getCookie("token");
+  fetchPlaceDetails(placeId, token);
 });
 
 /* =========================================================
@@ -121,3 +130,91 @@ function getCookie(name) {
   }
   return null;
 }
+
+/* =========================================================
+   Place
+========================================================= */
+function getPlaceIdFromURL() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get("id"); // expects URL like place.html?id=123
+}
+async function fetchPlaceDetails(placeId, token) {
+  try {
+    const headers = {};
+    if (token) headers["Authorization"] = `Bearer ${token}`;
+
+    const response = await fetch(`http://127.0.0.1:5000/api/v1/places/${placeId}`, {
+      method: "GET",
+      headers
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch place details: ${response.status}`);
+    }
+
+    const data = await response.json();
+    displayPlaceDetails(data);
+  } catch (error) {
+    console.error(error);
+    const placeSection = document.getElementById("place-details");
+    if (placeSection) {
+      placeSection.innerHTML = `<p>Failed to load place details.</p>`;
+    }
+  }
+}
+
+function displayPlaceDetails(place) {
+  const placeSection = document.getElementById("place-details");
+  if (!placeSection) return;
+
+  placeSection.innerHTML = ""; // clear existing content
+
+  // Name
+  const nameEl = document.createElement("h1");
+  nameEl.textContent = place.name;
+  placeSection.appendChild(nameEl);
+
+  // Description
+  const descEl = document.createElement("p");
+  descEl.textContent = place.description;
+  placeSection.appendChild(descEl);
+
+  // Price
+  const priceEl = document.createElement("p");
+  priceEl.innerHTML = `<strong>Price:</strong> $${place.price} per night`;
+  placeSection.appendChild(priceEl);
+
+  // Amenities
+  if (place.amenities?.length) {
+    const amenitiesTitle = document.createElement("h2");
+    amenitiesTitle.textContent = "Amenities";
+    placeSection.appendChild(amenitiesTitle);
+
+    const ul = document.createElement("ul");
+    ul.className = "amenities-list";
+    place.amenities.forEach((amenity) => {
+      const li = document.createElement("li");
+      li.innerHTML = `<i class="fa fa-check"></i> ${amenity}`;
+      ul.appendChild(li);
+    });
+    placeSection.appendChild(ul);
+  }
+
+  // Reviews
+  if (place.reviews?.length) {
+    const reviewsTitle = document.createElement("h2");
+    reviewsTitle.textContent = "Reviews";
+    placeSection.appendChild(reviewsTitle);
+
+    place.reviews.forEach((review) => {
+      const reviewCard = document.createElement("div");
+      reviewCard.className = "review-card";
+      reviewCard.innerHTML = `
+        <p><strong>${review.user}</strong> rated <strong>${review.rating}/5</strong></p>
+        <p>${review.comment}</p>
+      `;
+      placeSection.appendChild(reviewCard);
+    });
+  }
+}
+
