@@ -110,12 +110,14 @@ function setCookie(name, value, days) {
 }
 
 function getCookie(name) {
-  const cookies = document.cookie.split("; ");
+  const cookies = document.cookie ? document.cookie.split("; ") : [];
   for (const cookie of cookies) {
-    const [key, value] = cookie.split("=");
-    if (key === name) {
-      return decodeURIComponent(value);
-    }
+    const eqIndex = cookie.indexOf("=");
+    const rawKey = eqIndex === -1 ? cookie : cookie.slice(0, eqIndex);
+    const rawVal = eqIndex === -1 ? "" : cookie.slice(eqIndex + 1);
+
+    const key = decodeURIComponent(rawKey);
+    if (key === name) return decodeURIComponent(rawVal);
   }
   return null;
 }
