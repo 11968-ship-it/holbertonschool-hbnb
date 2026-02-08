@@ -356,6 +356,11 @@ button:disabled {
   flex-shrink: 0;
 }
 
+.search-btn .icon {
+  font-size: 1.3rem;   /* increase visibility */
+  line-height: 1;
+}
+
 /* Place images gallery (place details page) */
 .place-images {
   display: flex;
