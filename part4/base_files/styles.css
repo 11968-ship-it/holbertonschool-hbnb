@@ -656,6 +656,7 @@ select:focus {
   display: flex;
   gap: 40px;
   padding-top: 10px;
+  flex-wrap: wrap;
 }
 
 /* Rating distribution bars */
