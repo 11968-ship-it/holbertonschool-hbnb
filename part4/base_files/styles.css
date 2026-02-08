@@ -588,3 +588,130 @@ select:focus {
   transform: translateX(2px);
   color: var(--color-primary);
 }
+
+
+/* ====================================================
+   Review Summary section
+======================================================== */
+.review-summary {
+  font-family: 'Nunito Sans', sans-serif;
+  max-width: 900px;
+  margin: 20px auto 40px auto;
+  padding: 20px;
+  color: #222;
+  border-top: 1px solid #ddd;
+}
+
+.summary-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.overall-rating {
+  font-weight: 700;
+  font-size: 24px;
+  color: #222;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.overall-rating i {
+  color: #f4b400; /* gold star */
+  font-size: 28px;
+}
+
+.review-count {
+  font-weight: 400;
+  font-size: 18px;
+  color: #666;
+}
+
+.how-reviews-work {
+  font-size: 14px;
+  color: #555;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.summary-content {
+  display: flex;
+  gap: 40px;
+  padding-top: 10px;
+}
+
+/* Rating distribution bars */
+
+.rating-distribution {
+  width: 150px;
+  font-size: 14px;
+  color: #666;
+}
+
+.rating-bar-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.rating-bar-row span {
+  width: 15px;
+  text-align: right;
+  margin-right: 10px;
+  font-weight: 600;
+}
+
+.bar-container {
+  flex-grow: 1;
+  background: #eee;
+  height: 8px;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.bar {
+  height: 100%;
+  background: #f4b400;
+  border-radius: 5px 0 0 5px;
+}
+
+.bar.filled {
+  background: #f4b400;
+}
+
+/* Category ratings */
+
+.category-ratings {
+  flex-grow: 1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px 30px;
+}
+
+.category {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.category-name {
+  font-weight: 600;
+  font-size: 16px;
+  color: #222;
+}
+
+.category-score {
+  font-weight: 700;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #222;
+}
+
+.category-score i {
+  font-size: 18px;
+  color: #555;
+}
