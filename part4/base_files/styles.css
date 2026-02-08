@@ -345,7 +345,11 @@ button:disabled {
 }
 
 .search-btn {
-  background-color: var(--color-primary);
+  background: linear-gradient(
+    135deg,
+    #a10f0f,
+    #880808
+  );
   border-radius: 50%;
   width: 45px;
   height: 45px;
@@ -354,6 +358,8 @@ button:disabled {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+
+  box-shadow: 0 6px 16px rgba(136, 8, 8, 0.35);
 }
 
 .search-btn .icon {
