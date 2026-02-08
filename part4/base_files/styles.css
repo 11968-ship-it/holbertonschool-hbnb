@@ -367,6 +367,10 @@ button:disabled {
   line-height: 1;
 }
 
+.search-btn:hover {
+  box-shadow: 0 10px 22px rgba(136, 8, 8, 0.45);
+}
+
 /* Place images gallery (place details page) */
 .place-images {
   display: flex;
