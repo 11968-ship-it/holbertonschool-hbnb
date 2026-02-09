@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
   
   // Index/Home page (places list)
   if (currentPage === 'index') {
-    checkAuthenticationAndFetchPlaces();
+    checkAuthentication();
     initPriceFilter();
     setupLogout();
   }
@@ -31,6 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       const token = getCookie("token");
       fetchPlaceDetails(placeId, token);
+      }
 
       // add review page
       if (currentPage === 'review'){
@@ -194,6 +195,58 @@ async function fetchPlaceDetails(placeId, token) {
     if (placeSection) {
       placeSection.innerHTML = `<p>Failed to load place details.</p>`;
     }
+  }
+}
+
+async function fetchPlaces(token) {
+  const headers = {};
+  if (token) headers["Authorization"] = `Bearer ${token}`;
+
+  const res = await fetch("http://127.0.0.1:5000/api/v1/places", { headers });
+  if (!res.ok) throw new Error(`Failed to fetch places: ${res.status}`);
+
+  const places = await res.json();
+  displayPlaces(Array.isArray(places) ? places : []);
+}
+
+function displayPlaces(places) {
+  const list = document.getElementById("places-list");
+  if (!list) return;
+
+  list.innerHTML = "";
+
+  const imgs = ["images/place-01.jpg", "images/place-02.jpg", "images/place-03.jpg"];
+
+  places.forEach((place, idx) => {
+    const card = document.createElement("article");
+    card.className = "place-card";
+    card.setAttribute("data-price", String(place.price ?? 0));
+
+    const imgSrc = place.image_url || imgs[idx % imgs.length];
+
+    card.innerHTML = `
+      <div class="place-images">
+        <img src="${imgSrc}" alt="Place Image">
+      </div>
+      <h3>${place.name ?? "Untitled place"}</h3>
+      <p>Price per night:
+        <img src="images/Saudi_Riyal_Symbol-1.png" alt="SAR symbol" class="currency-icon">
+        ${place.price ?? "N/A"}
+      </p>
+      <a href="place.html?id=${place.id}" class="details-button">View Details</a>
+    `;
+
+    list.appendChild(card);
+  });
+
+  // apply current slider filter to the new cards
+  const priceRange = document.getElementById("price-range");
+  if (priceRange) {
+    const maxPrice = Number(priceRange.value);
+    document.querySelectorAll(".place-card").forEach(card => {
+      const p = Number(card.getAttribute("data-price") || 0);
+      card.style.display = p <= maxPrice ? "" : "none";
+    });
   }
 }
 
