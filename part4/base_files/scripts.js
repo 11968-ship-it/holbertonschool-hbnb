@@ -222,3 +222,28 @@ function displayPlaceDetails(place) {
   }
 }
 
+const priceRange = document.getElementById("price-range");
+const priceValue = document.getElementById("price-value");
+
+function updatePriceLabel() {
+  const v = Number(priceRange.value);
+  priceValue.textContent = (v === 3000) ? "3000+ SAR" : `${v} SAR`;
+}
+
+priceRange?.addEventListener("input", updatePriceLabel);
+updatePriceLabel();
+
+document.getElementById("filter-form")?.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  const maxPrice = Number(priceRange.value);
+
+  document.querySelectorAll(".place-card").forEach(card => {
+    // expects: Price per night: ... 220 (last number in the text)
+    const text = card.querySelector("p")?.textContent || "";
+    const match = text.match(/(\d+)\s*$/);
+    const price = match ? Number(match[1]) : Infinity;
+
+    card.style.display = price <= maxPrice ? "" : "none";
+  });
+});
