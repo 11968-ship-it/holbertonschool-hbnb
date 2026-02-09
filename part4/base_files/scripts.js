@@ -103,6 +103,31 @@ async function loginUser(email, password) {
 /* =========================================================
    AUTH UI (SHOW/HIDE ELEMENTS)
 ========================================================= */
+function checkAuthentication() {
+    const token = getCookie('token');
+    const loginLink = document.getElementById('login-link');
+
+    if (!token) {
+        loginLink.style.display = 'block';
+    } else {
+        loginLink.style.display = 'none';
+        // Fetch places data if the user is authenticated
+        fetchPlaces(token);
+    }
+}
+function getCookie(name) {
+  const cookies = document.cookie ? document.cookie.split("; ") : [];
+  for (const cookie of cookies) {
+    const eqIndex = cookie.indexOf("=");
+    const rawKey = eqIndex === -1 ? cookie : cookie.slice(0, eqIndex);
+    const rawVal = eqIndex === -1 ? "" : cookie.slice(eqIndex + 1);
+
+    const key = decodeURIComponent(rawKey);
+    if (key === name) return decodeURIComponent(rawVal);
+  }
+  return null;
+}
+
 function handleAuthUI() {
   const token = getCookie("token");
 
@@ -120,19 +145,6 @@ function setCookie(name, value, days) {
   const sameSite = "; samesite=lax";
   const secure = location.protocol === "https:" ? "; secure" : "";
   document.cookie = `${encodeURIComponent(name)}=${encodeURIComponent(value)}${maxAge}; path=/${sameSite}${secure}`;
-}
-
-function getCookie(name) {
-  const cookies = document.cookie ? document.cookie.split("; ") : [];
-  for (const cookie of cookies) {
-    const eqIndex = cookie.indexOf("=");
-    const rawKey = eqIndex === -1 ? cookie : cookie.slice(0, eqIndex);
-    const rawVal = eqIndex === -1 ? "" : cookie.slice(eqIndex + 1);
-
-    const key = decodeURIComponent(rawKey);
-    if (key === name) return decodeURIComponent(rawVal);
-  }
-  return null;
 }
 
 /* =========================================================
