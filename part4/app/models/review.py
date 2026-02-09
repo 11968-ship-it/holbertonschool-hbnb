@@ -3,7 +3,7 @@ from sqlalchemy.orm import validates
 from app.models.base_model import BaseModel
 
 class Review(BaseModel):
-    __tablename__ = 'reviews'
+    __tablename__ = 'Review'
     __table_args__ = (
         db.UniqueConstraint('user_id', 'place_id', name='uq_review_user_place'),
     )
@@ -12,8 +12,8 @@ class Review(BaseModel):
     rating = db.Column(db.Integer, nullable=False)
 
     #FK columns
-    place_id = db.Column(db.String(36), db.ForeignKey("places.id"), nullable=False)
-    user_id = db.Column(db.String(36), db.ForeignKey("users.id"), nullable=False)
+    place_id = db.Column(db.String(36), db.ForeignKey("Place.id"), nullable=False)
+    user_id = db.Column(db.String(36), db.ForeignKey("User.id"), nullable=False)
 
     # relationships
     place = db.relationship("Place", back_populates="reviews", lazy=True)

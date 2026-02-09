@@ -7,7 +7,7 @@ import re
 
 
 class User(BaseModel):
-    __tablename__ = 'user'
+    __tablename__ = 'User'
 
     first_name = db.Column(db.String(50), nullable=False)
     last_name = db.Column(db.String(50), nullable=False)

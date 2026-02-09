@@ -5,7 +5,7 @@ from sqlalchemy.orm import validates, relationship
 
 
 class Place(BaseModel):
-    __tablename__ = 'places'
+    __tablename__ = 'Place'
     
     title = db.Column(db.String(100), nullable=False) #Title of the place.
     description = db.Column(db.Text, nullable=True) # Description of the place.
@@ -14,7 +14,7 @@ class Place(BaseModel):
     longitude = db.Column(db.Float, nullable=False) # Longitude of the place.
 
     # Foreign key to User
-    owner_id = db.Column(db.String(36), db.ForeignKey('users.id'), nullable=False)
+    owner_id = db.Column(db.String(36), db.ForeignKey('User.id'), nullable=False)
     
     # Relationships
     owner = relationship('User', back_populates='places')

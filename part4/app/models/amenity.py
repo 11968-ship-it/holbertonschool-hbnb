@@ -4,7 +4,7 @@ from app.models.place_amenity import place_amenity
 from sqlalchemy.orm import validates
 
 class Amenity(BaseModel):
-    __tablename__ = 'amenities'
+    __tablename__ = 'Amenity'
 
     name = db.Column(db.String(50), nullable=False, unique=True)
 
