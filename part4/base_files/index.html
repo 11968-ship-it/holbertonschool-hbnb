@@ -54,13 +54,34 @@
             </form>
         </search>
 
-<section id="filter" class="price-filter">
-  <label for="price-range">Max Price:</label>
+<section class="price-filter" aria-label="Price filter">
+  <div class="price-filter-header">
+    <label for="price-range" class="price-label">Max Price</label>
 
-  <div class="range-wrap">
+    <button type="button" id="price-reset" class="price-reset">
+      Reset
+    </button>
+  </div>
+
+  <div class="price-range-row">
     <img src="images/Saudi_Riyal_Symbol-1.png" alt="SAR" class="currency-icon" />
-    <input type="range" id="price-range" min="0" max="3000" step="50" value="2000" />
-    <span id="price-value">2000 SAR</span>
+
+    <input
+      type="range"
+      id="price-range"
+      min="0"
+      max="3000"
+      step="50"
+      value="2000"
+      aria-describedby="price-value"
+    />
+
+    <output id="price-value" for="price-range" class="price-value"></output>
+  </div>
+
+  <div class="price-hints">
+    <span>0</span>
+    <span>3000+</span>
   </div>
 </section>
 

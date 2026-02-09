@@ -228,28 +228,72 @@ function displayPlaceDetails(place) {
 function initPriceFilter() {
   const priceRange = document.getElementById("price-range");
   const priceValue = document.getElementById("price-value");
-  const filterForm = document.getElementById("filter-form");
+  const resetBtn = document.getElementById("price-reset");
 
-  if (!priceRange || !priceValue || !filterForm) return;
+  if (!priceRange || !priceValue) return;
 
-  function updatePriceLabel() {
-    const v = Number(priceRange.value);
-    priceValue.textContent = v === 3000 ? "3000+ SAR" : `${v} SAR`;
+  const DEFAULT_MAX = Number(priceRange.value);
+
+  function formatSAR(v) {
+    const max = Number(priceRange.max);
+    const text = v.toLocaleString("en-US");
+    return v === max ? `${text}+ SAR` : `${text} SAR`;
   }
 
-  priceRange.addEventListener("input", updatePriceLabel);
-  updatePriceLabel();
+  function setFill() {
+    const min = Number(priceRange.min);
+    const max = Number(priceRange.max);
+    const val = Number(priceRange.value);
+    const pct = ((val - min) / (max - min)) * 100;
+    priceRange.style.setProperty("--fill", `${pct}%`);
+  }
 
-  filterForm.addEventListener("submit", (e) => {
-    e.preventDefault();
+  function updateUI() {
+    const v = Number(priceRange.value);
+    priceValue.textContent = formatSAR(v);
+    setFill();
+  }
+
+  function getCardPrice(card) {
+    // Best: put data-price on the card: <article class="place-card" data-price="220">
+    const dp = card.getAttribute("data-price");
+    if (dp) return Number(dp);
+
+    // Fallback: last number in first <p>
+    const text = card.querySelector("p")?.textContent || "";
+    const match = text.match(/(\d+)\s*$/);
+    return match ? Number(match[1]) : Infinity;
+  }
+
+  // Debounce for smooth drag
+  let timer;
+  function applyFilterDebounced() {
+    clearTimeout(timer);
+    timer = setTimeout(applyFilter, 80);
+  }
+
+  function applyFilter() {
     const maxPrice = Number(priceRange.value);
-
-    document.querySelectorAll(".place-card").forEach(card => {
-      const text = card.querySelector("p")?.textContent || "";
-      const match = text.match(/(\d+)\s*$/);
-      const price = match ? Number(match[1]) : Infinity;
-
+    document.querySelectorAll(".place-card").forEach((card) => {
+      const price = getCardPrice(card);
       card.style.display = price <= maxPrice ? "" : "none";
     });
+  }
+
+  // Live behavior while dragging
+  priceRange.addEventListener("input", () => {
+    updateUI();
+    applyFilterDebounced();
   });
+
+  // Reset
+  resetBtn?.addEventListener("click", () => {
+    priceRange.value = String(DEFAULT_MAX);
+    updateUI();
+    applyFilter();
+  });
+
+  // Init
+  updateUI();
+  applyFilter();
 }
