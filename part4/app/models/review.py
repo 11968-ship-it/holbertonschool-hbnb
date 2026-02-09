@@ -3,7 +3,7 @@ from sqlalchemy.orm import validates
 from app.models.base_model import BaseModel
 
 class Review(BaseModel):
-    __tablename__ = 'reviews'
+    __tablename__ = 'Review'
     __table_args__ = (
         db.UniqueConstraint('user_id', 'place_id', name='uq_review_user_place'),
     )
