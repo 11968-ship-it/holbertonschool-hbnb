@@ -5,7 +5,7 @@ from sqlalchemy.orm import validates, relationship
 
 
 class Place(BaseModel):
-    __tablename__ = 'places'
+    __tablename__ = 'Place'
     
     title = db.Column(db.String(100), nullable=False) #Title of the place.
     description = db.Column(db.Text, nullable=True) # Description of the place.
