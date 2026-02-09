@@ -4,9 +4,9 @@
 document.addEventListener("DOMContentLoaded", () => {
   handleLoginForm();
   handleAuthUI();
+   initPriceFilter();
 
   const placeId = getPlaceIdFromURL();
-
   const placeSection = document.getElementById("place-details");
 
   if (!placeId) {
@@ -222,28 +222,34 @@ function displayPlaceDetails(place) {
   }
 }
 
-const priceRange = document.getElementById("price-range");
-const priceValue = document.getElementById("price-value");
+/* =========================================================
+   PRICE RANGE FILTER
+========================================================= */
+function initPriceFilter() {
+  const priceRange = document.getElementById("price-range");
+  const priceValue = document.getElementById("price-value");
+  const filterForm = document.getElementById("filter-form");
 
-function updatePriceLabel() {
-  const v = Number(priceRange.value);
-  priceValue.textContent = (v === 3000) ? "3000+ SAR" : `${v} SAR`;
-}
+  if (!priceRange || !priceValue || !filterForm) return;
 
-priceRange?.addEventListener("input", updatePriceLabel);
-updatePriceLabel();
+  function updatePriceLabel() {
+    const v = Number(priceRange.value);
+    priceValue.textContent = v === 3000 ? "3000+ SAR" : `${v} SAR`;
+  }
 
-document.getElementById("filter-form")?.addEventListener("submit", (e) => {
-  e.preventDefault();
+  priceRange.addEventListener("input", updatePriceLabel);
+  updatePriceLabel();
 
-  const maxPrice = Number(priceRange.value);
+  filterForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const maxPrice = Number(priceRange.value);
 
-  document.querySelectorAll(".place-card").forEach(card => {
-    // expects: Price per night: ... 220 (last number in the text)
-    const text = card.querySelector("p")?.textContent || "";
-    const match = text.match(/(\d+)\s*$/);
-    const price = match ? Number(match[1]) : Infinity;
+    document.querySelectorAll(".place-card").forEach(card => {
+      const text = card.querySelector("p")?.textContent || "";
+      const match = text.match(/(\d+)\s*$/);
+      const price = match ? Number(match[1]) : Infinity;
 
-    card.style.display = price <= maxPrice ? "" : "none";
+      card.style.display = price <= maxPrice ? "" : "none";
+    });
   });
-});
+}
