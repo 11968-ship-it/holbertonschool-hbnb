@@ -2,23 +2,41 @@
    DOM READY
 ========================================================= */
 document.addEventListener("DOMContentLoaded", () => {
-  handleLoginForm();
-  handleAuthUI();
-   initPriceFilter();
+   // handle different pages
+   const currentPage = detectCurrentPage();
 
-  const placeId = getPlaceIdFromURL();
-  const placeSection = document.getElementById("place-details");
-
-  if (!placeId) {
-    if (placeSection) {
-      placeSection.innerHTML = `<p>No place ID provided in the URL. Please go back to <a href="index.html">Home</a>.</p>`;
-    }
-    return;
+   // Login page
+  if (currentPage === 'login') {
+    handleLoginForm();
+  }
+  
+  // Index/Home page (places list)
+  if (currentPage === 'index') {
+    checkAuthenticationAndFetchPlaces();
+    initPriceFilter();
+    setupLogout();
   }
 
-  const token = getCookie("token");
-  fetchPlaceDetails(placeId, token);
-});
+   // Place details page
+   if (currentPage === 'place') {
+    handleAuthUI();
+      const placeId = getPlaceIdFromURL();
+      const placeSection = document.getElementById("place-details");
+      
+      if (!placeId) {
+         if (placeSection) {
+            placeSection.innerHTML = `<p>No place ID provided in the URL. Please go back to <a href="index.html">Home</a>.</p>`;
+         }
+         return;
+      }
+      const token = getCookie("token");
+      fetchPlaceDetails(placeId, token);
+
+      // add review page
+      if (currentPage === 'review'){
+         handleAuthUI();
+      }
+   });
 /* =========================================================
    LOGIN FORM HANDLING
 ========================================================= */
