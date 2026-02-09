@@ -4,9 +4,9 @@
 document.addEventListener("DOMContentLoaded", () => {
   handleLoginForm();
   handleAuthUI();
+   initPriceFilter();
 
   const placeId = getPlaceIdFromURL();
-
   const placeSection = document.getElementById("place-details");
 
   if (!placeId) {
@@ -222,3 +222,34 @@ function displayPlaceDetails(place) {
   }
 }
 
+/* =========================================================
+   PRICE RANGE FILTER
+========================================================= */
+function initPriceFilter() {
+  const priceRange = document.getElementById("price-range");
+  const priceValue = document.getElementById("price-value");
+  const filterForm = document.getElementById("filter-form");
+
+  if (!priceRange || !priceValue || !filterForm) return;
+
+  function updatePriceLabel() {
+    const v = Number(priceRange.value);
+    priceValue.textContent = v === 3000 ? "3000+ SAR" : `${v} SAR`;
+  }
+
+  priceRange.addEventListener("input", updatePriceLabel);
+  updatePriceLabel();
+
+  filterForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const maxPrice = Number(priceRange.value);
+
+    document.querySelectorAll(".place-card").forEach(card => {
+      const text = card.querySelector("p")?.textContent || "";
+      const match = text.match(/(\d+)\s*$/);
+      const price = match ? Number(match[1]) : Infinity;
+
+      card.style.display = price <= maxPrice ? "" : "none";
+    });
+  });
+}
