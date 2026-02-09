@@ -2,6 +2,7 @@ from flask import Flask
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager
 from flask_sqlalchemy import SQLAlchemy
+from flask_cors import CORS
 
 jwt = JWTManager()
 bcrypt = Bcrypt()
@@ -22,5 +23,8 @@ def create_app(config_class="config.DevelopmentConfig"):
 
     from app.api import api
     api.init_app(app)
+
+    # Enable CORS for API routes
+    CORS(app, resources={r"/api/*": {"origins": "*"}})
     
     return app

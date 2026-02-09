@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>List of Places</title>
+    <title>HBnB Home Page</title>
     <link rel="icon" href="images/icon.png" type="image/png">
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,6 +18,7 @@
             </a>
             <nav>
                 <a href="login.html" id="login-link">Login</a>
+                <a href="login.html" id="signup-link">Sign up</a>
             </nav>
         </div>
     </header>
@@ -53,26 +54,49 @@
             </form>
         </search>
 
-        <section id="filter">
+        <section id="filter" class="price-filter">
             <label for="price-filter">Max Price:</label>
-            <select id="price-filter">
-                <option value="all">All Prices</option>
-                <option value="50">$50</option>
-                <option value="100">$100</option>
-                <option value="200">$200+</option>
-            </select>
+            
+            <div class="select-wrap">
+                <img src="images/Saudi_Riyal_Symbol-1.png" alt="SAR" class="currency-icon" />
+                <select id="price-filter" name="price-filter">
+                    <option value="all">All prices</option>
+                    <option value="200">200 SAR</option>
+                    <option value="500">500 SAR</option>
+                    <option value="1000">1000 SAR</option>
+                    <option value="2000">2000+ SAR</option>
+                </select>
+            </div>
         </section>
+
         <section id="places-list">
             <article class="place-card">
                 <div class="place-images">
                     <img src="images/place-01.jpg" alt="Place Image">
                 </div>
                 <h3>Cozy Beachfront Cottage</h3>
-                <p>Price per night:<img src="images/Saudi_Riyal_Symbol-1.png" alt="SAR symbol" class="currency-icon">220</p>
-                <a href="place.html" class="details-button">View Details</a>
+                <p>Price per night: <img src="images/Saudi_Riyal_Symbol-1.png" alt="SAR symbol" class="currency-icon">220</p>
+                <a href="place.html?id=1" class="details-button">View Details</a>
             </article>
         </section>
     </main>
+    
+       <!-- Footer -->
+  <footer>
+
+    <hr>
+    <p>© 2026 All rights reserved, made with ♥ by students at Holberton School.</p>
+
+    <div>
+      <ul>
+          <li><a href="#">Terms of Use</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Cookie Policy</a></li>
+        </ul>
+    </div>
+  </footer>
     <script src="scripts.js"></script>
+
+    
 </body>
 </html>
