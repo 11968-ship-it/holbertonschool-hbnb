@@ -193,6 +193,23 @@ function setCookie(name, value, days) {
 }
 
 /* =========================================================
+   LOGOUT FUNCTIONALITY
+========================================================= */
+function setupLogout() {
+   const logoutBtn = document.getElementById('logout-btn');
+   if (!logoutBtn) return; // Exit if logout button doesn't exist on this page
+
+   logoutBtn.addEventListener('click', (event) => {
+      event.preventDefault();
+
+      // clear the token cookie
+      document.cookie = 'token=; path=/; max-age=0';
+
+      // redirect to login page
+      window.location.href = 'login.html';
+   });
+}
+/* =========================================================
    Place
 ========================================================= */
 function getPlaceIdFromURL() {
