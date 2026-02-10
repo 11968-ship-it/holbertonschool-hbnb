@@ -142,23 +142,28 @@ async function loginUser(email, password) {
 function checkAuthentication() {
    const token = getCookie('token');
    const loginLink = document.getElementById('login-link');
+   const logoutBtn = document.getElementById('logout-btn');
 
    // Basic token validation (check if it exists and looks like a JWT)
    const isValidToken = token && token.split('.').length === 3;
 
    if (!isValidToken) {
-      // user not authenticated: show login link
-      loginLink.style.display = 'block';
+      // user not authenticated: show login link, hide logout button
+      if (loginLink) loginLink.style.display = 'block';
+      if (logoutBtn) logoutBtn.style.display = 'none';
+      
       // Clear invalid token
       if (token) {
          document.cookie = 'token=; path=/; max-age=0';
       }
    } else {
-      // user IS authenticated: hide login link
-      loginLink.style.display = 'none';
+      // user IS authenticated: hide login link, show logout button
+      if (loginLink) loginLink.style.display = 'none';
+      if (logoutBtn) logoutBtn.style.display = 'block';
    }
    // ALWAYS fetch places, regardless of authentication
-   fetchPlaces(token);
+   // pass null if token is invalid
+   fetchPlaces(isValidToken ? token : null);
 }
 function getCookie(name) {
   const cookies = document.cookie ? document.cookie.split("; ") : [];
