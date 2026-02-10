@@ -35,7 +35,16 @@ By the end of this part, the backend supports authenticated users, enforces perm
 ## Project Structure
 
 ```
-part3/
+part4/
+├── base_files/
+│   ├── add_review.html
+│   ├── index.html
+│   ├── login.html
+│   ├── place.html
+│   ├── scripts.js
+│   ├── signup.html
+│   ├── styles.css
+│   ├── images
 ├── app/
 │   ├── __init__.py
 │   ├── api/
