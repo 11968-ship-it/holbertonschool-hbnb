@@ -7,10 +7,31 @@ from flask import current_app
 api = Namespace('auth', description='Authentication operations')
 
 # Model for input validation
+
+# Login model
 login_model = api.model('Login', {
     'email': fields.String(required=True, description='User email'),
     'password': fields.String(required=True, description='User password')
 })
+
+# Signup model
+signup_model = api.model('Signup', {
+    'email': fields.String(required=True, description='User email'),
+    'password': fields.String(required=True, description='User password'),
+    'first_name': fields.String(required=True, description='User first name'),
+    'last_name': fields.String(required=True, description='User last name')
+})
+
+# ============================================================================
+# AUTHENTICATION ENDPOINTS
+# ============================================================================
+@api.route('/signup')
+class Signup(Resource):
+    @api.expect(signup_model)
+    def post(self):
+        """Register a new user and return a JWT token"""
+        user_data = api.payload
+
 
 @api.route('/login')
 class Login(Resource):
