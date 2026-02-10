@@ -123,16 +123,25 @@ async function loginUser(email, password) {
    AUTH UI (SHOW/HIDE ELEMENTS)
 ========================================================= */
 function checkAuthentication() {
-    const token = getCookie('token');
-    const loginLink = document.getElementById('login-link');
+   const token = getCookie('token');
+   const loginLink = document.getElementById('login-link');
 
-    if (!token) {
-        loginLink.style.display = 'block';
-    } else {
-        loginLink.style.display = 'none';
-        // Fetch places data if the user is authenticated
-        fetchPlaces(token);
-    }
+   // Basic token validation (check if it exists and looks like a JWT)
+   const isValidToken = token && token.split('.').length === 3;
+
+   if (!isValidToken) {
+      // user not authenticated: show login link
+      loginLink.style.display = 'block';
+      // Clear invalid token
+      if (token) {
+         document.cookie = 'token=; path=/; max-age=0';
+      }
+   } else {
+      // user IS authenticated: hide login link
+      loginLink.style.display = 'none';
+   }
+   // ALWAYS fetch places, regardless of authentication
+   fetchPlaces(token);
 }
 function getCookie(name) {
   const cookies = document.cookie ? document.cookie.split("; ") : [];
@@ -199,14 +208,31 @@ async function fetchPlaceDetails(placeId, token) {
 }
 
 async function fetchPlaces(token) {
-  const headers = {};
-  if (token) headers["Authorization"] = `Bearer ${token}`;
+   try {
+      const headers = {};
+      if (token) headers["Authorization"] = `Bearer ${token}`;
+      
+      const res = await fetch("http://127.0.0.1:5000/api/v1/places", { headers });
+      if (!res.ok) {
+         throw new Error(`Failed to fetch places: ${res.status}`);
+      }
+      
+      const places = await res.json();
+      displayPlaces(Array.isArray(places) ? places : []);
+   } catch (error) {
+      console.error('Error fetching places:', error);
 
-  const res = await fetch("http://127.0.0.1:5000/api/v1/places", { headers });
-  if (!res.ok) throw new Error(`Failed to fetch places: ${res.status}`);
-
-  const places = await res.json();
-  displayPlaces(Array.isArray(places) ? places : []);
+      //show error message to user
+      const placesList = document.getElementById('places-list');
+      if (placesList) {
+         placesList.innerHTML = `
+            <div class="error-message">
+                <p>Failed to load places. Please try again later.</p>
+                <button onclick="location.reload()">Retry</button>
+            </div> 
+         `;
+      }
+   }
 }
 
 function displayPlaces(places) {
