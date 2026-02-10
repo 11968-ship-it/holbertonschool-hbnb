@@ -31,6 +31,29 @@ class Signup(Resource):
     def post(self):
         """Register a new user and return a JWT token"""
         user_data = api.payload
+        
+        # Validate required fields
+        required_fields = ['email', 'password', 'first_name', 'last_name']
+        for field in required_fields:
+            if field not in user_data:
+                return {'error': f'{field} is required'}, 400
+        
+        # Check if user already exists
+        existing_user = facade.get_user_by_email(user_data['email'])
+        if existing_user:
+            return {'error': 'Email already registered'}, 409
+        
+        try:
+            # Create new user
+            new_user = facade.create_user(user_data)
+            return {
+                'id': new_user.id,
+                'email': new_user.email,
+                'first_name': new_user.first_name,
+                'last_name': new_user.last_name
+            }, 201
+        except ValueError as e:
+            return {'error': str(e)}, 400
 
 
 @api.route('/login')
