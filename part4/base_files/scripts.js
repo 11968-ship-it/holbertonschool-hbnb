@@ -446,3 +446,19 @@ function initPriceFilter() {
   updateUI();
   applyFilter();
 }
+
+/* LOGOUT BUTTON */
+document.addEventListener("DOMContentLoaded", () => {
+  const logoutBtn = document.getElementById("logout-btn");
+
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", () => {
+      // Optional: clear login state
+      localStorage.clear();
+      sessionStorage.clear();
+
+      // Redirect to index.html
+      window.location.href = "index.html";
+    });
+  }
+});
