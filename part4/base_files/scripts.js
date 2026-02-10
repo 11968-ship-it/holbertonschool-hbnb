@@ -396,3 +396,61 @@ function initPriceFilter() {
   updateUI();
   applyFilter();
 }
+
+/* =========================================================
+   DISPLAY PLACES (INDEX PAGE)
+========================================================= */
+function displayPlaces(places) {
+  const placesList = document.getElementById("places-list");
+  if (!placesList) return;
+
+  placesList.innerHTML = "";
+
+  if (!places.length) {
+    placesList.innerHTML = `<p class="empty-message">No places found.</p>`;
+    return;
+  }
+
+  const frag = document.createDocumentFragment();
+
+  places.forEach((place) => {
+    const card = document.createElement("article");
+    card.className = "place-card";
+
+    // Used by your price filter
+    if (place.price != null) card.setAttribute("data-price", String(place.price));
+
+    const id = place.id || place._id || place.place_id; // covers common API shapes
+
+    card.innerHTML = `
+      <a class="place-card__link" href="place.html?id=${encodeURIComponent(id)}">
+        <h3 class="place-card__title">${escapeHtml(place.name ?? "Unnamed place")}</h3>
+        <p class="place-card__desc">${escapeHtml(place.description ?? "")}</p>
+        <div class="place-card__meta">
+          <span class="place-card__price">
+            <strong>${formatPrice(place.price)}</strong>
+          </span>
+        </div>
+      </a>
+    `;
+
+    frag.appendChild(card);
+  });
+
+  placesList.appendChild(frag);
+}
+
+function formatPrice(price) {
+  if (price == null || Number.isNaN(Number(price))) return "Price not available";
+  return `${Number(price).toLocaleString("en-US")} SAR / night`;
+}
+
+// Basic XSS-safe escaping for any user-provided strings
+function escapeHtml(str) {
+  return String(str)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
