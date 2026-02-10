@@ -52,6 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // add review page
       if (currentPage === 'review'){
+         checkAuthentication();
          handleAuthUI();
       }
    });
