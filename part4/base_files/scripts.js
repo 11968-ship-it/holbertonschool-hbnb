@@ -224,7 +224,7 @@ async function fetchPlaces(token) {
     const headers = {};
     if (token) headers["Authorization"] = `Bearer ${token}`;
 
-    const res = await fetch("http://127.0.0.1:5000/api/v1/places", { headers });
+    const res = await fetch("http://localhost:5000/api/v1/places/", { headers });
     if (!res.ok) throw new Error(`Failed to fetch places: ${res.status}`);
 
     const places = await res.json();
