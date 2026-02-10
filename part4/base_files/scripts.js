@@ -1,3 +1,5 @@
+const API_BASE_URL = "http://127.0.0.1:5500/api/v1";
+
 /* =========================================================
    PAGE DETECTION
 ========================================================= */
@@ -19,21 +21,18 @@ function detectCurrentPage() {
 document.addEventListener("DOMContentLoaded", () => {
   const currentPage = detectCurrentPage();
 
-  // Login page
   if (currentPage === 'login') handleLoginForm();
 
-  // Index/Home page
   if (currentPage === 'index') {
     checkAuthentication();
     initPriceFilter();
     setupLogout();
   }
 
-  // Place details page
   if (currentPage === 'place') {
     const placeId = getPlaceIdFromURL();
-    handleAuthUI(); // show/hide review form
-    setupAddReviewForm(); // handle review submissions
+    handleAuthUI();
+    setupAddReviewForm();
 
     if (!placeId) {
       const placeSection = document.getElementById("place-details");
@@ -47,7 +46,6 @@ document.addEventListener("DOMContentLoaded", () => {
     fetchPlaceDetails(placeId, token);
   }
 
-  // Add review page (if separate page)
   if (currentPage === 'review') {
     handleAuthUI();
     setupAddReviewForm();
@@ -68,7 +66,6 @@ function handleLoginForm() {
 
   loginForm.addEventListener("submit", async (event) => {
     event.preventDefault();
-
     if (errorEl) errorEl.textContent = "";
 
     const email = emailInput?.value.trim();
@@ -103,7 +100,7 @@ function setLoginLoading(isLoading, button) {
    API CALL
 ========================================================= */
 async function loginUser(email, password) {
-  const LOGIN_URL = "http://127.0.0.1:5000/api/v1/auth/login";
+  const LOGIN_URL = `${API_BASE_URL}/auth/login`;
 
   const response = await fetch(LOGIN_URL, {
     method: "POST",
@@ -203,7 +200,7 @@ async function fetchPlaceDetails(placeId, token) {
     const headers = {};
     if (token) headers["Authorization"] = `Bearer ${token}`;
 
-    const response = await fetch(`http://127.0.0.1:5000/api/v1/places/${placeId}`, {
+    const response = await fetch(`${API_BASE_URL}/places/${placeId}`, {
       method: "GET",
       headers
     });
@@ -227,7 +224,7 @@ async function fetchPlaces(token) {
     const headers = {};
     if (token) headers["Authorization"] = `Bearer ${token}`;
 
-    const res = await fetch("http://localhost:5000/api/v1/places/", { headers });
+    const res = await fetch(`${API_BASE_URL}/places/`, { headers });
     if (!res.ok) throw new Error(`Failed to fetch places: ${res.status}`);
 
     const places = await res.json();
@@ -315,7 +312,7 @@ function setupAddReviewForm() {
     if (!comment) return alert("Please enter a review.");
 
     try {
-      const response = await fetch(`http://127.0.0.1:5000/api/v1/places/${placeId}/reviews`, {
+      const response = await fetch(`${API_BASE_URL}/places/${placeId}/reviews`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
