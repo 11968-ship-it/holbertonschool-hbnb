@@ -1,25 +1,42 @@
 /* =========================================================
+   PAGE DETECTION
+========================================================= */
+function detectCurrentPage() {
+  // Get the current page filename from the URL
+  const path = window.location.pathname;
+  const page = path.substring(path.lastIndexOf('/') + 1);
+  
+  // Remove .html extension and return page name
+  if (page === 'login.html' || page === 'login') return 'login';
+  if (page === 'place.html' || page === 'place') return 'place';
+  if (page === 'add-review.html' || page === 'review') return 'review';
+  if (page === 'index.html' || page === 'index' || page === '') return 'index';
+  
+  // Default to index if unknown
+  return 'index';
+}
+/* =========================================================
    DOM READY
 ========================================================= */
 document.addEventListener("DOMContentLoaded", () => {
    // handle different pages
    const currentPage = detectCurrentPage();
-
+   
    // Login page
-  if (currentPage === 'login') {
-    handleLoginForm();
-  }
-  
-  // Index/Home page (places list)
-  if (currentPage === 'index') {
-    checkAuthentication();
-    initPriceFilter();
-    setupLogout();
-  }
-
+   if (currentPage === 'login') {
+      handleLoginForm();
+   }
+   
+   // Index/Home page (places list)
+   if (currentPage === 'index') {
+      checkAuthentication();
+      initPriceFilter();
+      setupLogout();
+   }
+   
    // Place details page
    if (currentPage === 'place') {
-    handleAuthUI();
+      handleAuthUI();
       const placeId = getPlaceIdFromURL();
       const placeSection = document.getElementById("place-details");
       
