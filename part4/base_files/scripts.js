@@ -6,11 +6,12 @@ const API_BASE_URL = 'http://127.0.0.1:5000/api/v1';
 function detectCurrentPage() {
   const path = window.location.pathname;
   const page = path.substring(path.lastIndexOf('/') + 1);
-
-  if (page === 'login.html' || page === 'login') return 'login';
-  if (page === 'place.html' || page === 'place') return 'place';
-  if (page === 'add-review.html' || page === 'review') return 'review';
-  if (page === 'index.html' || page === 'index' || page === '') return 'index';
+   
+   if (page === 'login.html' || page === 'login') return 'login';
+   if (page === 'signup.html' || page === 'signup') return 'signup';
+   if (page === 'place.html' || page === 'place') return 'place';
+   if (page === 'add-review.html' || page === 'review') return 'review';
+   if (page === 'index.html' || page === 'index' || page === '') return 'index';
 
   return 'index';
 }
@@ -19,11 +20,12 @@ function detectCurrentPage() {
    DOM READY
 ========================================================= */
 document.addEventListener("DOMContentLoaded", () => {
-  const currentPage = detectCurrentPage();
-
-  if (currentPage === 'login') handleLoginForm();
-
-  if (currentPage === 'index') {
+   const currentPage = detectCurrentPage();
+   
+   if (currentPage === 'login') handleLoginForm();
+   if (currentPage === 'signup') handleSignupForm();
+   
+   if (currentPage === 'index') {
     checkAuthentication();
     initPriceFilter();
     setupLogout();
@@ -97,6 +99,75 @@ function setLoginLoading(isLoading, button) {
 }
 
 /* =========================================================
+   SIGNUP FORM HANDLING
+========================================================= */
+function handleSignupForm() {
+  const signupForm = document.getElementById("signup-form");
+  if (!signupForm) return;
+
+  const firstNameInput = document.getElementById("first_name");
+  const lastNameInput = document.getElementById("last_name");
+  const emailInput = document.getElementById("email");
+  const passwordInput = document.getElementById("password");
+  const errorEl = document.getElementById("error-message");
+  const signupBtn = document.getElementById("signup-btn");
+
+  signupForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    if (errorEl) errorEl.textContent = "";
+
+    // Get form values
+    const firstName = firstNameInput?.value.trim();
+    const lastName = lastNameInput?.value.trim();
+    const email = emailInput?.value.trim();
+    const password = passwordInput?.value;
+
+    // Validation
+    if (!firstName || !lastName || !email || !password) {
+      if (errorEl) errorEl.textContent = "All fields are required.";
+      return;
+    }
+
+    if (password.length < 6) {
+      if (errorEl) errorEl.textContent = "Password must be at least 6 characters.";
+      return;
+    }
+
+    // Email format validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      if (errorEl) errorEl.textContent = "Please enter a valid email address.";
+      return;
+    }
+
+    setSignupLoading(true, signupBtn);
+
+    try {
+      await registerUser(firstName, lastName, email, password);
+      
+      // Show success message
+      alert("Account created successfully! Please login.");
+      
+      // Redirect to login page
+      window.location.href = "login.html";
+    } catch (error) {
+      if (errorEl) {
+        errorEl.textContent = error.message || "Registration failed. Please try again.";
+      }
+    } finally {
+      setSignupLoading(false, signupBtn);
+    }
+  });
+}
+
+function setSignupLoading(isLoading, button) {
+  if (!button) return;
+  button.disabled = isLoading;
+  button.classList.toggle('loading', isLoading);
+  button.textContent = isLoading ? "Creating Account..." : "Create Account";
+}
+
+/* =========================================================
    API CALL
 ========================================================= */
 async function loginUser(email, password) {
@@ -121,6 +192,38 @@ async function loginUser(email, password) {
   if (!token) throw new Error("No token returned from server");
 
   return token;
+}
+
+async function registerUser(firstName, lastName, email, password) {
+  const SIGNUP_URL = `${API_BASE_URL}/auth/signup`;
+
+  const response = await fetch(SIGNUP_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      first_name: firstName,
+      last_name: lastName,
+      email: email,
+      password: password
+    })
+  });
+
+  let data;
+  try {
+    data = await response.json();
+  } catch {
+    throw new Error("Invalid server response");
+  }
+
+  // Handle different error responses from Flask-RESTX
+  if (!response.ok) {
+    if (response.status === 409) {
+      throw new Error("Email already registered. Please login instead.");
+    }
+    throw new Error(data?.error || data?.message || "Registration failed");
+  }
+
+  return data; // Returns { id, email, first_name, last_name }
 }
 
 /* =========================================================
