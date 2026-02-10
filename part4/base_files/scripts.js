@@ -212,7 +212,7 @@ function setupLogout() {
       document.cookie = 'token=; path=/; max-age=0';
 
       // redirect to login page
-      window.location.href = 'index.html';
+      window.location.reload();
    });
 }
 /* =========================================================
