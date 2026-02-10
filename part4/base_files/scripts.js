@@ -47,10 +47,10 @@ document.addEventListener("DOMContentLoaded", () => {
     fetchPlaceDetails(placeId, token);
   }
 
-  // Add review page
+  // Add review page (if separate page)
   if (currentPage === 'review') {
-    checkAuthentication();
     handleAuthUI();
+    setupAddReviewForm();
   }
 });
 
@@ -131,7 +131,7 @@ async function loginUser(email, password) {
 ========================================================= */
 function checkAuthentication() {
   const token = getCookie('token');
-  const loginLink = document.getElementById('login-link');
+  const loginLink = document.querySelector('.login-button');
   const logoutBtn = document.getElementById('logout-btn');
 
   const isValidToken = token && token.split('.').length === 3;
@@ -161,7 +161,7 @@ function getCookie(name) {
 
 function handleAuthUI() {
   const token = getCookie("token");
-  const addReviewSection = document.getElementById("add-review-section");
+  const addReviewSection = document.getElementById("add-review");
   if (token && addReviewSection) addReviewSection.style.display = "block";
   else if (addReviewSection) addReviewSection.style.display = "none";
 }
@@ -191,7 +191,7 @@ function setupLogout() {
 }
 
 /* =========================================================
-   Place
+   PLACE DETAILS
 ========================================================= */
 function getPlaceIdFromURL() {
   const params = new URLSearchParams(window.location.search);
@@ -219,6 +219,9 @@ async function fetchPlaceDetails(placeId, token) {
   }
 }
 
+/* =========================================================
+   FETCH PLACES
+========================================================= */
 async function fetchPlaces(token) {
   try {
     const headers = {};
@@ -242,62 +245,26 @@ async function fetchPlaces(token) {
   }
 }
 
-function displayPlaces(places) {
-  const list = document.getElementById("places-list");
-  if (!list) return;
-  list.innerHTML = "";
-
-  const imgs = ["images/place-01.jpg", "images/place-02.jpg", "images/place-03.jpg"];
-  places.forEach((place, idx) => {
-    const card = document.createElement("article");
-    card.className = "place-card";
-    card.setAttribute("data-price", String(place.price ?? 0));
-    const imgSrc = place.image_url || imgs[idx % imgs.length];
-    card.innerHTML = `
-      <div class="place-images"><img src="${imgSrc}" alt="Place Image"></div>
-      <h3>${place.name ?? "Untitled place"}</h3>
-      <p>Price per night:
-        <img src="images/Saudi_Riyal_Symbol-1.png" alt="SAR symbol" class="currency-icon">
-        ${place.price ?? "N/A"}
-      </p>
-      <a href="place.html?id=${place.id}" class="details-button">View Details</a>`;
-    list.appendChild(card);
-  });
-
-  const priceRange = document.getElementById("price-range");
-  if (priceRange) {
-    const maxPrice = Number(priceRange.value);
-    document.querySelectorAll(".place-card").forEach(card => {
-      const p = Number(card.getAttribute("data-price") || 0);
-      card.style.display = p <= maxPrice ? "" : "none";
-    });
-  }
-}
-
 /* =========================================================
-   Display Place Details
+   DISPLAY PLACE DETAILS
 ========================================================= */
 function displayPlaceDetails(place) {
   const placeSection = document.getElementById("place-details");
   if (!placeSection) return;
   placeSection.innerHTML = "";
 
-  // Name
   const nameEl = document.createElement("h1");
   nameEl.textContent = place.name;
   placeSection.appendChild(nameEl);
 
-  // Description
   const descEl = document.createElement("p");
   descEl.textContent = place.description;
   placeSection.appendChild(descEl);
 
-  // Price
   const priceEl = document.createElement("p");
   priceEl.innerHTML = `<strong>Price:</strong> $${place.price} per night`;
   placeSection.appendChild(priceEl);
 
-  // Amenities
   if (place.amenities?.length) {
     const amenitiesTitle = document.createElement("h2");
     amenitiesTitle.textContent = "Amenities";
@@ -311,13 +278,8 @@ function displayPlaceDetails(place) {
       ul.appendChild(li);
     });
     placeSection.appendChild(ul);
-  } else {
-    const noAmenities = document.createElement("p");
-    noAmenities.textContent = "No amenities listed.";
-    placeSection.appendChild(noAmenities);
   }
 
-  // Reviews
   if (place.reviews?.length) {
     const reviewsTitle = document.createElement("h2");
     reviewsTitle.textContent = "Reviews";
@@ -335,10 +297,10 @@ function displayPlaceDetails(place) {
 }
 
 /* =========================================================
-   Setup Add Review Form
+   ADD REVIEW FORM
 ========================================================= */
 function setupAddReviewForm() {
-  const form = document.getElementById("add-review-form");
+  const form = document.getElementById("review-form");
   if (!form) return;
 
   form.addEventListener("submit", async (e) => {
@@ -347,8 +309,10 @@ function setupAddReviewForm() {
     if (!token) return alert("You must be logged in to submit a review.");
 
     const placeId = getPlaceIdFromURL();
-    const rating = form.querySelector("#review-rating").value;
-    const comment = form.querySelector("#review-comment").value;
+    const rating = form.querySelector("#review-rating")?.value || 5;
+    const comment = form.querySelector("#review-text")?.value;
+
+    if (!comment) return alert("Please enter a review.");
 
     try {
       const response = await fetch(`http://127.0.0.1:5000/api/v1/places/${placeId}/reviews`, {
@@ -404,10 +368,7 @@ function initPriceFilter() {
 
   function getCardPrice(card) {
     const dp = card.getAttribute("data-price");
-    if (dp) return Number(dp);
-    const text = card.querySelector("p")?.textContent || "";
-    const match = text.match(/(\d+)\s*$/);
-    return match ? Number(match[1]) : Infinity;
+    return dp ? Number(dp) : Infinity;
   }
 
   let timer;
@@ -438,17 +399,3 @@ function initPriceFilter() {
   updateUI();
   applyFilter();
 }
-
-/* =========================================================
-   LOGOUT BUTTON
-========================================================= */
-document.addEventListener("DOMContentLoaded", () => {
-  const logoutBtn = document.getElementById("logout-btn");
-  if (logoutBtn) {
-    logoutBtn.addEventListener("click", () => {
-      localStorage.clear();
-      sessionStorage.clear();
-      window.location.href = "index.html";
-    });
-  }
-});
