@@ -11,6 +11,7 @@ function detectCurrentPage() {
    if (page === 'signup.html' || page === 'signup') return 'signup';
    if (page === 'place.html' || page === 'place') return 'place';
    if (page === 'add-review.html' || page === 'review') return 'review';
+   if (page === 'add_place.html' || page === 'add_place') return 'add_place';
    if (page === 'index.html' || page === 'index' || page === '') return 'index';
 
   return 'index';
@@ -52,6 +53,16 @@ document.addEventListener("DOMContentLoaded", () => {
     handleAuthUI();
     setupAddReviewForm();
   }
+
+   if (currentPage === 'add_place') {
+  const token = getCookie("token");
+  if (!token) {
+    window.location.href = "index.html";
+    return;
+  }
+
+  setupLogout();
+}
 });
 
 /* =========================================================
