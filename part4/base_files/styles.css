@@ -24,9 +24,6 @@ header {
   background-color: var(--color-primary);
   color: var(--color-white);
   padding: 1rem 2rem;
-}
-
-header{
   position: fixed;
   top: 0;
   left: 0;
@@ -513,12 +510,6 @@ button:disabled {
   opacity: 0.9;
 }
 
-.currency-icon {
-    width: 16px;          /* Adjust size as needed */
-    height: auto;
-    vertical-align: middle;
-    margin-right: 4px;    /* Small space between icon and number */
-}
 
 /* =========================
    EXTRA ANIMATIONS (ADD-ONLY)
