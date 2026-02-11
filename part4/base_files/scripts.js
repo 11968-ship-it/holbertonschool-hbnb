@@ -221,6 +221,117 @@ function setSignupLoading(isLoading, button) {
   button.classList.toggle('loading', isLoading);
   button.textContent = isLoading ? "Creating Account..." : "Create Account";
 }
+/* =========================================================
+   ADD PLACE FORM HANDLING
+========================================================= */
+function handleAddPlaceForm() {
+  const addPlaceForm = document.getElementById("add-place-form");
+  if (!addPlaceForm) return;
+
+  const token = getCookie("token");
+  if (!token) {
+    window.location.href = "index.html";
+    return;
+  }
+
+  const titleInput = document.getElementById("title");
+  const descriptionInput = document.getElementById("description");
+  const priceInput = document.getElementById("price");
+  const latitudeInput = document.getElementById("latitude");
+  const longitudeInput = document.getElementById("longitude");
+  const errorEl = document.getElementById("error-message");
+  const addPlaceBtn = document.getElementById("add-place-btn");
+
+  addPlaceForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    if (errorEl) errorEl.textContent = "";
+
+    // Get form values
+    const title = titleInput?.value.trim();
+    const description = descriptionInput?.value.trim();
+    const price = parseFloat(priceInput?.value);
+    const latitude = parseFloat(latitudeInput?.value);
+    const longitude = parseFloat(longitudeInput?.value);
+
+    // Validation
+    if (!title || !description || !price || !latitude || !longitude) {
+      if (errorEl) errorEl.textContent = "All fields are required.";
+      return;
+    }
+
+    if (price <= 0) {
+      if (errorEl) errorEl.textContent = "Price must be greater than 0.";
+      return;
+    }
+
+    if (latitude < -90 || latitude > 90) {
+      if (errorEl) errorEl.textContent = "Latitude must be between -90 and 90.";
+      return;
+    }
+
+    if (longitude < -180 || longitude > 180) {
+      if (errorEl) errorEl.textContent = "Longitude must be between -180 and 180.";
+      return;
+    }
+
+    setAddPlaceLoading(true, addPlaceBtn);
+
+    try {
+      const placeData = await createPlace(token, {
+        title,
+        description,
+        price,
+        latitude,
+        longitude
+      });
+      
+      // Show success message
+      alert("Place created successfully!");
+      
+      // Redirect to home page
+      window.location.href = "index.html";
+    } catch (error) {
+      if (errorEl) {
+        errorEl.textContent = error.message || "Failed to create place. Please try again.";
+      }
+    } finally {
+      setAddPlaceLoading(false, addPlaceBtn);
+    }
+  });
+}
+
+function setAddPlaceLoading(isLoading, button) {
+  if (!button) return;
+  button.disabled = isLoading;
+  button.classList.toggle('loading', isLoading);
+  button.textContent = isLoading ? "Creating..." : "Create Place";
+}
+
+async function createPlace(token, placeData) {
+  const CREATE_PLACE_URL = `${API_BASE_URL}/places`;
+
+  const response = await fetch(CREATE_PLACE_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`
+    },
+    body: JSON.stringify(placeData)
+  });
+
+  let data;
+  try {
+    data = await response.json();
+  } catch {
+    throw new Error("Invalid server response");
+  }
+
+  if (!response.ok) {
+    throw new Error(data?.error || data?.message || "Failed to create place");
+  }
+
+  return data;
+}
 
 /* =========================================================
    API CALL
