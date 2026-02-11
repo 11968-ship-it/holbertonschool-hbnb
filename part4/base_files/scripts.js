@@ -665,7 +665,7 @@ function displayPlaces(places) {
          alt="${escapeHtml(place.name ?? "Place")}"
          loading="lazy" />
 
-    <h3 class="place-card__title">${escapeHtml(place.name ?? "Unnamed place")}</h3>
+    <h3 class="place-card__title">${escapeHtml(place.title ?? place.name ?? "Unnamed place")}</h3>
     <p class="place-card__desc">${escapeHtml(place.description ?? "")}</p>
     <div class="place-card__meta">
       <span class="place-card__price">
