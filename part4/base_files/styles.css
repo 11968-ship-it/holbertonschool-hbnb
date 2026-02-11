@@ -102,19 +102,6 @@ header nav button:hover{
   text-decoration: underline;
 }
 
-
-/* ==========================
-           DATE-Time
-============================= */
-
-/* General input styles */
-input, textarea, select {
-  border: 1px solid var(--color-border);
-  padding: 0.6rem;
-  border-radius: 4px;
-  width: 100%;
-}
-
 /* =======================
     Date input styling 
 ============================ */
@@ -151,13 +138,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 /* =================================== */
-
-input, textarea, select {
-  border: 1px solid var(--color-border);
-  padding: 0.6rem;
-  border-radius: 4px;
-  width: 100%;
-}
 
 textarea {
   min-height: 120px;
