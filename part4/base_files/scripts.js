@@ -655,18 +655,25 @@ function displayPlaces(places) {
     if (place.price != null) card.setAttribute("data-price", String(place.price));
 
     const id = place.id || place._id || place.place_id; // covers common API shapes
+     
+     const imgSrc = place.image_url || getFallbackImage(place);
+     
+     card.innerHTML = `
+     <a class="place-card__link" href="place.html?id=${encodeURIComponent(id)}">
+     <img class="place-card__img"
+         src="${imgSrc}"
+         alt="${escapeHtml(place.name ?? "Place")}"
+         loading="lazy" />
 
-    card.innerHTML = `
-      <a class="place-card__link" href="place.html?id=${encodeURIComponent(id)}">
-        <h3 class="place-card__title">${escapeHtml(place.name ?? "Unnamed place")}</h3>
-        <p class="place-card__desc">${escapeHtml(place.description ?? "")}</p>
-        <div class="place-card__meta">
-          <span class="place-card__price">
-            <strong>${formatPrice(place.price)}</strong>
-          </span>
-        </div>
-      </a>
-    `;
+    <h3 class="place-card__title">${escapeHtml(place.name ?? "Unnamed place")}</h3>
+    <p class="place-card__desc">${escapeHtml(place.description ?? "")}</p>
+    <div class="place-card__meta">
+      <span class="place-card__price">
+        <strong>${formatPrice(place.price)}</strong>
+      </span>
+    </div>
+  </a>
+`;
 
     frag.appendChild(card);
   });
