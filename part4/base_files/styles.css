@@ -460,13 +460,6 @@ button:disabled {
   overflow: hidden;
 }
 
-/* Main image inside place card */
-.place-images {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
 /* Subtle muted text */
 .muted {
   opacity: 0.85;
@@ -1119,15 +1112,6 @@ footer ul li a:hover {
   object-fit: cover;    /* crop nicely */
   border-radius: 12px;
   margin-bottom: 10px;
-  display: block;
-}
-
-/* === INDEX thumbnails inside place cards === */
-.place-card .place-thumb {
-  width: 100%;
-  height: 160px;       /* make smaller if you want */
-  object-fit: cover;
-  border-radius: 12px;
   display: block;
 }
 
