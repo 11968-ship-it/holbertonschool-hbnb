@@ -324,7 +324,7 @@ function setAddPlaceLoading(isLoading, button) {
 }
 
 async function createPlace(token, placeData) {
-  const CREATE_PLACE_URL = `${API_BASE_URL}/places`;
+  const CREATE_PLACE_URL = `${API_BASE_URL}/places/`;
 
   const response = await fetch(CREATE_PLACE_URL, {
     method: "POST",
