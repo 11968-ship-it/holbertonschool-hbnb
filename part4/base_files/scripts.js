@@ -666,20 +666,16 @@ function displayPlaces(places) {
     const id = place.id || place._id || place.place_id; // covers common API shapes
      
      const imgSrc = place.image_url || getFallbackImage(place);
-     
-     card.innerHTML = `
-     <a class="place-card__link" href="place.html?id=${encodeURIComponent(id)}">
-     <img class="place-card__img"
-         src="${imgSrc}"
-         alt="${escapeHtml(place.name ?? "Place")}"
-         loading="lazy" />
 
-    <h3 class="place-card__title">${escapeHtml(place.title ?? place.name ?? "Unnamed place")}</h3>
-    <p class="place-card__desc">${escapeHtml(place.description ?? "")}</p>
-    <div class="place-card__meta">
-      <span class="place-card__price">
-        <strong>${formatPrice(place.price)}</strong>
-      </span>
+     card.innerHTML = `
+  <a class="place-card__link" href="place.html?id=${encodeURIComponent(id)}">
+    <img class="place-card__img" src="${imgSrc}" alt="${escapeHtml(place.name ?? "Place")}" loading="lazy" />
+    <div class="place-card__body">
+      <h3 class="place-card__title">${escapeHtml(place.title ?? place.name ?? "Unnamed place")}</h3>
+      <p class="place-card__desc">${escapeHtml(place.description ?? "")}</p>
+      <div class="place-card__meta">
+        <span class="place-card__price"><strong>${formatPrice(place.price)}</strong></span>
+      </div>
     </div>
   </a>
 `;
