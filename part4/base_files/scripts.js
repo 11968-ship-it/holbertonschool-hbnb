@@ -1,4 +1,5 @@
 const API_BASE_URL = 'http://127.0.0.1:5000/api/v1';
+let ALL_PLACES = [];
 
 /* =========================================================
    PAGE DETECTION
@@ -30,6 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
     checkAuthentication();
     initPriceFilter();
     setupLogout();
+   setupIndexSearch();
   }
 
   if (currentPage === 'place') {
@@ -351,7 +353,8 @@ async function fetchPlaces(token) {
     if (!res.ok) throw new Error(`Failed to fetch places: ${res.status}`);
 
     const places = await res.json();
-    displayPlaces(Array.isArray(places) ? places : []);
+     ALL_PLACES = Array.isArray(places) ? places : [];
+     displayPlaces(ALL_PLACES);
   } catch (error) {
     console.error('Error fetching places:', error);
     const placesList = document.getElementById('places-list');
@@ -363,6 +366,40 @@ async function fetchPlaces(token) {
         </div>`;
     }
   }
+}
+
+function setupIndexSearch() {
+  const form = document.getElementById("filter-form");
+  if (!form) return;
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const location = document.getElementById("location")?.value.trim().toLowerCase();
+    const guests = Number(document.getElementById("guests")?.value || 0);
+    const maxPrice = Number(document.getElementById("price-range")?.value || Infinity);
+
+    const filtered = ALL_PLACES.filter((p) => {
+      const name = String(p.name ?? "").toLowerCase();
+      const desc = String(p.description ?? "").toLowerCase();
+      const price = Number(p.price ?? Infinity);
+
+      const matchesLocation =
+        !location ||
+        name.includes(location) ||
+        desc.includes(location);
+
+      const matchesPrice = price <= maxPrice;
+
+      const maxGuests = Number(p.max_guests ?? 0);
+      const matchesGuests = !guests || (maxGuests >= guests);
+
+      return matchesLocation && matchesPrice && matchesGuests;
+    });
+
+    displayPlaces(filtered);
+    initPriceFilter(); // re-apply slider visuals
+  });
 }
 
 /* =========================================================
