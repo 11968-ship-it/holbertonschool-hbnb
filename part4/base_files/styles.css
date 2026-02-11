@@ -102,6 +102,39 @@ header nav button:hover{
   text-decoration: underline;
 }
 
+
+/* ==========================
+DATE-Time
+============================= */
+
+/* General input styles */
+input, textarea, select {
+  border: 1px solid var(--color-border);
+  padding: 0.6rem;
+  border-radius: 4px;
+  width: 100%;
+}
+
+/* ===== Date input styling ===== */
+input[type="date"] {
+  border: 1px solid var(--color-border);
+  padding: 8px 12px;
+  border-radius: 8px;
+  background-color: var(--color-white);
+  color: var(--color-text);
+  font-size: 0.95rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  width: 100%;
+}
+
+input[type="date"]:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 5px rgba(136, 8, 8, 0.3);
+  outline: none;
+  transform: translateY(-1px);
+}
+
+
 input, textarea, select {
   border: 1px solid var(--color-border);
   padding: 0.6rem;
