@@ -1042,3 +1042,36 @@ footer ul li a:hover {
   animation: slide-up 0.3s ease-out;
 }
 
+/* =========================
+   ADD PLACE PAGE
+========================= */
+
+/* Description textarea specific height */
+.place-description {
+  min-height: 120px;
+  resize: vertical; /* Allow user to resize vertically */
+}
+
+/* Cancel button styling */
+.cancel-btn {
+  background-color: #666;
+  margin-top: 10px;
+  width: 100%;
+}
+
+.cancel-btn:hover {
+  background-color: #555;
+  opacity: 1;
+}
+
+/* Form buttons container */
+.signup-form .button-group {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.signup-form .button-group button {
+  flex: 1;
+  margin-top: 0;
+}
