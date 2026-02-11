@@ -1138,3 +1138,19 @@ footer ul li a:hover {
 .place-card__body{
   padding: 14px 16px 16px;
 }
+
+.review-place-image {
+  width: 100%;
+  max-width: 400px;     /* limits how wide it can grow */
+  height: 220px;        /* fixed preview height */
+  object-fit: cover;    /* crops nicely */
+  border-radius: 14px;
+  display: block;
+  margin: 0 auto 20px;  /* center it */
+}
+
+/* Optional: wrap preview in a container */
+.review-place-image {
+  text-align: center;
+  margin-bottom: 20px;
+}
