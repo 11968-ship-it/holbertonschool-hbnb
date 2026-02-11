@@ -1107,17 +1107,16 @@ footer ul li a:hover {
 }
 
 .place-card__img {
-  width: 60px;          /* icon size */
-  height: 60px;         /* keep square */
-  object-fit: cover;
-  border-radius: 10px;
-  flex-shrink: 0;
+  width: 100%;
+  aspect-ratio: 1 / 1;   /* makes it a perfect square */
+  object-fit: cover;     /* crops nicely */
+  border-radius: 12px;
+  margin-bottom: 12px;
+  display: block;
 }
 
 .place-card__link {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+  display: block;
   text-decoration: none;
   color: inherit;
 }
