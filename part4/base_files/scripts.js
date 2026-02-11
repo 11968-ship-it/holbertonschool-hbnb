@@ -410,6 +410,10 @@ async function fetchPlaces(token) {
   }
 }
 
+/* =============================================
+      Searching bar
+================================================ */
+
 function setupIndexSearch() {
   const form = document.getElementById("filter-form");
   if (!form) return;
@@ -436,6 +440,18 @@ function setupIndexSearch() {
       const maxGuests = Number(p.max_guests ?? 0);
       const matchesGuests = !guests || (maxGuests >= guests);
 
+       // Date filter
+  let matchesDate = true;
+  const checkInInput = document.getElementById("check-in")?.value;
+  const checkOutInput = document.getElementById("check-out")?.value;
+  if (checkInInput && checkOutInput && p.available_from && p.available_to) {
+    const checkIn = new Date(checkInInput);
+    const checkOut = new Date(checkOutInput);
+    const availableFrom = new Date(p.available_from);
+    const availableTo = new Date(p.available_to);
+    matchesDate = availableFrom <= checkIn && availableTo >= checkOut;
+  }
+       
       return matchesLocation && matchesPrice && matchesGuests;
     });
 
