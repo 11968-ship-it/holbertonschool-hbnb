@@ -1,1 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Place - HBnB</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="brand">
+                <a href="index.html">
+                    <img src="images/logo.png" alt="HBnB Logo" class="header-logo">
+                </a>
+            </div>
+            <nav>
+                <a href="index.html">Home</a>
+                <a href="#" id="auth-link">Login</a>
+            </nav>
+            <div></div>
+        </div>
+    </header>
 
+    <main>
+        <div class="signup-container">
+            <h1>List Your Place</h1>
+            
+            <form id="add-place-form" class="signup-form">
+                <div>
+                    <label for="title">Title</label>
+                    <input type="text" id="title" name="title" placeholder="Cozy Beach House" required>
+                </div>
+                
+                <div>
+                    <label for="description">Description</label>
+                    <textarea id="description" name="description" placeholder="Describe your place..." required class="place-description"></textarea>
+                </div>
+                
+                <div>
+                    <label for="price">Price per Night (SAR)</label>
+                    <input type="number" id="price" name="price" step="0.01" min="1" placeholder="100.00" required>
+                </div>
+                
+                <div>
+                    <label for="latitude">Latitude</label>
+                    <input type="number" id="latitude" name="latitude" step="any" placeholder="24.7136" required>
+                </div>
+                
+                <div>
+                    <label for="longitude">Longitude</label>
+                    <input type="number" id="longitude" name="longitude" step="any" placeholder="46.6753" required>
+                </div>
+                
+                <button type="submit" id="add-place-btn">Create Place</button>
+                <button type="button" class="cancel-btn" onclick="window.location.href='index.html'">Cancel</button>
+                
+                <div id="error-message" class="form-error"></div>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 HBnB. All rights reserved.</p>
+        <ul>
+            <li><a href="#">Privacy</a></li>
+            <li><a href="#">Terms</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+    </footer>
+
+    <script src="scripts.js"></script>
+</body>
+</html>
