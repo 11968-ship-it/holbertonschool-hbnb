@@ -7,7 +7,7 @@ DROP TABLE IF EXISTS Place_Amenity;
 DROP TABLE IF EXISTS Review;
 DROP TABLE IF EXISTS Place;
 DROP TABLE IF EXISTS Amenity;
-DROP TABLE IF EXISTS User;
+DROP TABLE IF EXISTS "User";
 
 PRAGMA foreign_keys = ON;
 
@@ -36,10 +36,28 @@ CREATE TABLE IF NOT EXISTS Place (
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
 
     -- Foreign key 
-    FOREIGN KEY (owner_id) REFERENCES User(id) ON DELETE CASCADE
+    FOREIGN KEY (owner_id) REFERENCES "User"(id) ON DELETE CASCADE
 );
 -- ---------- Place Image --------------
+CREATE TABLE IF NOT EXISTS PlaceImage (
+    id CHAR(36) PRIMARY KEY,
+    place_id CHAR(36) NOT NULL,
+    image_url VARCHAR(500) NOT NULL,
+    display_order INTEGER DEFAULT 0,
+    is_primary BOOLEAN DEFAULT 0,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    
+    -- Foreign key: When place is deleted, delete all its images
+    FOREIGN KEY (place_id) REFERENCES Place(id) ON DELETE CASCADE,
+    
+    -- Ensure display order is unique per place
+    UNIQUE(place_id, display_order)
+);
 
+-- Indexes
+CREATE INDEX IF NOT EXISTS idx_place_images_place_id ON PlaceImage(place_id);
+CREATE INDEX IF NOT EXISTS idx_place_images_primary ON PlaceImage(is_primary) WHERE is_primary = 1;
 -- ---------- Review --------------
 CREATE TABLE IF NOT EXISTS Review (
     id CHAR(36) PRIMARY KEY,
