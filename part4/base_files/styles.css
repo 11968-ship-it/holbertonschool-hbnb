@@ -1105,13 +1105,12 @@ footer ul li a:hover {
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 20px;
 }
-
-.place-card__img{
-  width: 100%;
-  aspect-ratio: 1 / 1;   /* ✅ forces square */
-  object-fit: cover;     /* ✅ crop nicely */
-  display: block;
-  border-radius: 12px;
+.place-card__img {
+  width: 60px;          /* icon size */
+  height: 60px;         /* keep square */
+  object-fit: cover;
+  border-radius: 10px;
+  flex-shrink: 0;
 }
 
 .place-card__link{
