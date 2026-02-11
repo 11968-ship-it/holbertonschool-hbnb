@@ -587,60 +587,34 @@ function setupIndexSearch() {
 function displayPlaceDetails(place) {
   const placeSection = document.getElementById("place-details");
   if (!placeSection) return;
-  placeSection.innerHTML = "";
-
-   function displayPlaceDetails(place) {
-  const placeSection = document.getElementById("place-details");
-  if (!placeSection) return;
 
   placeSection.innerHTML = "";
 
-  /* === IMAGE GALLERY === */
+  // === IMAGES ===
+  const images = getPlaceImages(place);
   const imagesContainer = document.createElement("div");
   imagesContainer.className = "place-images";
 
-  const images = place.images || [place.image_url] || [];
-
-  if (images && images.length) {
-    images.forEach((imgUrl) => {
-      const img = document.createElement("img");
-      img.src = imgUrl || getFallbackImage(place);
-      img.alt = place.name || "Place image";
-      imagesContainer.appendChild(img);
-    });
-  } else {
-    const fallback = document.createElement("img");
-    fallback.src = getFallbackImage(place);
-    fallback.alt = "Place image";
-    imagesContainer.appendChild(fallback);
-  }
+  images.forEach((src) => {
+    const img = document.createElement("img");
+    img.src = src;
+    img.alt = place.name || "Place image";
+    imagesContainer.appendChild(img);
+  });
 
   placeSection.appendChild(imagesContainer);
 
-  /* === PLACE INFO === */
+  // === INFO ===
   const infoDiv = document.createElement("div");
   infoDiv.className = "place-info";
-
   infoDiv.innerHTML = `
-    <h1>${escapeHtml(place.name)}</h1>
-    <p>${escapeHtml(place.description)}</p>
+    <h1>${escapeHtml(place.name ?? "Unnamed place")}</h1>
+    <p>${escapeHtml(place.description ?? "")}</p>
     <p><strong>Price:</strong> ${formatPrice(place.price)}</p>
   `;
-
   placeSection.appendChild(infoDiv);
 
-  const nameEl = document.createElement("h1");
-  nameEl.textContent = place.name;
-  placeSection.appendChild(nameEl);
-
-  const descEl = document.createElement("p");
-  descEl.textContent = place.description;
-  placeSection.appendChild(descEl);
-
-  const priceEl = document.createElement("p");
-  priceEl.innerHTML = `<strong>Price:</strong> $${place.price} per night`;
-  placeSection.appendChild(priceEl);
-
+  // === AMENITIES ===
   if (place.amenities?.length) {
     const amenitiesTitle = document.createElement("h2");
     amenitiesTitle.textContent = "Amenities";
@@ -648,14 +622,17 @@ function displayPlaceDetails(place) {
 
     const ul = document.createElement("ul");
     ul.className = "amenities-list";
+
     place.amenities.forEach((amenity) => {
       const li = document.createElement("li");
-      li.innerHTML = `<i class="fa fa-check"></i> ${amenity}`;
+      li.innerHTML = `<i class="fa fa-check"></i> ${escapeHtml(amenity)}`;
       ul.appendChild(li);
     });
+
     placeSection.appendChild(ul);
   }
 
+  // === REVIEWS ===
   if (place.reviews?.length) {
     const reviewsTitle = document.createElement("h2");
     reviewsTitle.textContent = "Reviews";
@@ -665,8 +642,9 @@ function displayPlaceDetails(place) {
       const reviewCard = document.createElement("div");
       reviewCard.className = "review-card";
       reviewCard.innerHTML = `
-        <p><strong>${review.user}</strong> rated <strong>${review.rating}/5</strong></p>
-        <p>${review.comment}</p>`;
+        <p><strong>${escapeHtml(review.user ?? "User")}</strong> rated <strong>${review.rating ?? "?"}/5</strong></p>
+        <p>${escapeHtml(review.comment ?? "")}</p>
+      `;
       placeSection.appendChild(reviewCard);
     });
   }
@@ -677,6 +655,24 @@ function getFallbackImage(place) {
   const id = String(place.id || "");
   const idx = id.length ? (id.charCodeAt(id.length - 1) % imgs.length) : 0;
   return imgs[idx];
+}
+
+function getPlaceImages(place) {
+  // If API sends an array:
+  if (Array.isArray(place?.images) && place.images.length) return place.images;
+  if (Array.isArray(place?.photos) && place.photos.length) return place.photos;
+
+  // If API sends single image:
+  if (place?.image_url) return [place.image_url];
+
+  // Otherwise: fallbacks
+  return [getFallbackImage(place), "images/place-02.jpg"];
+}
+
+function getPlaceCardImage(place) {
+  // for index page thumbnail (just 1 image)
+  const imgs = getPlaceImages(place);
+  return imgs[0];
 }
 
 /* =========================================================
