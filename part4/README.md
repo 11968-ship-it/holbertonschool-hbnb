@@ -37,6 +37,7 @@ By the end of this part, the backend supports authenticated users, enforces perm
 ```
 part4/
 ├── base_files/
+│   ├── add-place.html
 │   ├── add_review.html
 │   ├── index.html
 │   ├── login.html
