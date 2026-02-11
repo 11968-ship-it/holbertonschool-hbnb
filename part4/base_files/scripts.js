@@ -486,6 +486,13 @@ function displayPlaceDetails(place) {
   }
 }
 
+function getFallbackImage(place) {
+  const imgs = ["images/place-01.jpg", "images/place-02.jpg", "images/place-03.jpg"];
+  const id = String(place.id || "");
+  const idx = id.length ? (id.charCodeAt(id.length - 1) % imgs.length) : 0;
+  return imgs[idx];
+}
+
 /* =========================================================
    ADD REVIEW FORM
 ========================================================= */
@@ -548,7 +555,7 @@ async function loadReviewPlacePreview(placeId) {
     const title = document.getElementById("review-place-title");
 
     if (img) {
-      img.src = place.image_url || "images/place-01.jpg"; 
+       img.src = place.image_url || getFallbackImage(place);
     }
 
     if (title) {
