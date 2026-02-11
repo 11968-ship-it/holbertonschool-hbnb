@@ -46,6 +46,10 @@ part4/
 │   ├── signup.html
 │   ├── styles.css
 │   ├── images
+├── instance
+│   ├── app.db
+│   ├── development.db
+│   ├── hbnb.db
 ├── app/
 │   ├── __init__.py
 │   ├── api/
