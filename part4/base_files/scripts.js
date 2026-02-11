@@ -22,20 +22,21 @@ function detectCurrentPage() {
    DOM READY
 ========================================================= */
 document.addEventListener("DOMContentLoaded", () => {
-   const currentPage = detectCurrentPage();
-   
-   if (currentPage === 'login') handleLoginForm();
-   if (currentPage === 'signup') handleSignupForm();
-   
-   if (currentPage === 'index') {
+  const currentPage = detectCurrentPage();
+
+  // --- MAIN PAGE LOGIC ---
+  if (currentPage === 'login') handleLoginForm();
+  if (currentPage === 'signup') handleSignupForm();
+  
+  if (currentPage === 'index') {
     checkAuthentication();
     initPriceFilter();
     setupLogout();
     populateLocationDatalist();
     setupIndexSearch();
-   }
+  }
 
-if (currentPage === 'place') {
+  if (currentPage === 'place') {
   const placeId = getPlaceIdFromURL();
 
   // Show/hide Login vs Logout in the header
@@ -101,6 +102,13 @@ if (currentPage === 'place') {
 }
 });
 
+ // --- MODAL CLOSE BUTTON ---
+  const closeBtn = document.querySelector(".modal-close");
+  if (closeBtn) {
+    closeBtn.addEventListener("click", () => {
+      window.location.href = "index.html";
+    });
+  }
 /* =========================================================
    LOGIN FORM HANDLING
 ========================================================= */
@@ -697,31 +705,31 @@ function escapeHtml(str) {
     .replaceAll("'", "&#039;");
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  const closeBtn = document.querySelector(".modal-close");
-  if (closeBtn) {
-    closeBtn.addEventListener("click", () => {
-      window.location.href = "index.html";
-    });
-  }
-});
-
 /* =========================================================
    POPULATE LOCATION DATALIST
 ========================================================= */
 function populateLocationDatalist() {
   const locations = [
-    "Paris, France",
-    "New York, USA",
+    "Al Ain, UAE",
+    "Dubai, UAE",
+    "Jakarta, Indonesia",
     "London, UK",
+    "Los Angeles, USA",
+    "Muscat, Oman",
+    "New York, USA",
+    "Paris, France",
+    "Riyadh, Saudi Arabia",
+    "Sharjah, UAE",
     "Tokyo, Japan",
-    "Dubai, UAE"
+    "Toronto, Canada",
+    "Toulouse, France"
   ];
+
+  locations.sort();
 
   const datalist = document.getElementById("location-suggestions");
   if (!datalist) return;
 
-  // Clear existing options first (optional)
   datalist.innerHTML = "";
 
   locations.forEach(loc => {
@@ -730,6 +738,3 @@ function populateLocationDatalist() {
     datalist.appendChild(option);
   });
 }
-
-
-
