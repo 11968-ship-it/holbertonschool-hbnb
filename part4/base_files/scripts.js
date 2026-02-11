@@ -63,6 +63,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   setupLogout();
 
+
+/* ==================================
+              addReview
+====================================
+*/
+
   const addReviewSection = document.getElementById("add-review");
   const addReviewLink = document.getElementById("add-review-link");
   if (token && addReviewSection && addReviewLink && placeId) {
@@ -344,7 +350,7 @@ async function createPlace(token, placeData) {
 }
 
 /* =========================================================
-   API CALL
+                    API CALL
 ========================================================= */
 async function loginUser(email, password) {
   const LOGIN_URL = `${API_BASE_URL}/auth/login`;
@@ -403,7 +409,7 @@ async function registerUser(firstName, lastName, email, password) {
 }
 
 /* =========================================================
-   AUTH UI (SHOW/HIDE ELEMENTS)
+               AUTH UI (SHOW/HIDE ELEMENTS)
 ========================================================= */
 function checkAuthentication() {
   const token = getCookie("token");
@@ -452,7 +458,7 @@ function handleAuthUI() {
 }
 
 /* =========================================================
-   COOKIE HELPERS
+             COOKIE HELPERS
 ========================================================= */
 function setCookie(name, value, days) {
   const maxAge = days ? `; max-age=${days * 24 * 60 * 60}` : "";
@@ -462,7 +468,7 @@ function setCookie(name, value, days) {
 }
 
 /* =========================================================
-   LOGOUT FUNCTIONALITY
+                 LOGOUT FUNCTIONALITY
 ========================================================= */
 function setupLogout() {
   const logoutBtn = document.getElementById('logout-btn');
@@ -476,7 +482,7 @@ function setupLogout() {
 }
 
 /* =========================================================
-   PLACE DETAILS
+                 PLACE DETAILS
 ========================================================= */
 function getPlaceIdFromURL() {
   const params = new URLSearchParams(window.location.search);
@@ -505,7 +511,7 @@ async function fetchPlaceDetails(placeId, token) {
 }
 
 /* =========================================================
-   FETCH PLACES
+                         FETCH PLACES
 ========================================================= */
 async function fetchPlaces(token) {
   try {
@@ -532,7 +538,7 @@ async function fetchPlaces(token) {
 }
 
 /* =============================================
-      Searching bar
+                Searching bar
 ================================================ */
 
 function setupIndexSearch() {
@@ -582,7 +588,7 @@ function setupIndexSearch() {
 }
 
 /* =========================================================
-   DISPLAY PLACE DETAILS
+                 DISPLAY PLACE DETAILS
 ========================================================= */
 function displayPlaceDetails(place) {
   const placeSection = document.getElementById("place-details");
@@ -676,7 +682,7 @@ function getPlaceCardImage(place) {
 }
 
 /* =========================================================
-   ADD REVIEW FORM
+              ADD REVIEW FORM
 ========================================================= */
 function setupAddReviewForm() {
   const form = document.getElementById("review-form");
@@ -694,6 +700,37 @@ function setupAddReviewForm() {
     return;
   }
 
+  
+  // --- Fetch existing reviews ---
+  async function loadReviews() {
+    try {
+      const res = await fetch(`${API_BASE_URL}/places/${placeId}/reviews`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!res.ok) throw new Error("Failed to fetch reviews");
+      const reviews = await res.json();
+
+      reviewsContainer.innerHTML = ""; // clear container
+      if (!reviews.length) {
+        reviewsContainer.innerHTML = "<p>No reviews yet.</p>";
+        return;
+      }
+
+      reviews.forEach((review) => {
+        const div = document.createElement("div");
+        div.className = "review-card";
+        div.innerHTML = `
+          <p><strong>${escapeHtml(review.user ?? "User")}</strong> rated ${review.rating ?? "?"}/5</p>
+          <p>${escapeHtml(review.comment ?? "")}</p>
+        `;
+        reviewsContainer.appendChild(div);
+      });
+    } catch (err) {
+      console.error(err);
+      reviewsContainer.innerHTML = "<p>Failed to load reviews.</p>";
+    }
+  }
+   
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -725,6 +762,8 @@ function setupAddReviewForm() {
     }
   });
 }
+
+
 
 async function loadReviewPlacePreview(placeId) {
   try {
