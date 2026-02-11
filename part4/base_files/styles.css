@@ -1107,7 +1107,7 @@ footer ul li a:hover {
 }
 
 .place-card__img {
-  width: 100%;
+  width: 50%;
   aspect-ratio: 1 / 1;   /* makes it a perfect square */
   object-fit: cover;     /* crops nicely */
   border-radius: 12px;
