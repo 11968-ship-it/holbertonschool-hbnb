@@ -31,8 +31,9 @@ document.addEventListener("DOMContentLoaded", () => {
     checkAuthentication();
     initPriceFilter();
     setupLogout();
-   setupIndexSearch();
-  }
+    populateLocationDatalist();
+    setupIndexSearch();
+   }
 
 if (currentPage === 'place') {
   const placeId = getPlaceIdFromURL();
@@ -704,3 +705,31 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
+/* =========================================================
+   POPULATE LOCATION DATALIST
+========================================================= */
+function populateLocationDatalist() {
+  const locations = [
+    "Paris, France",
+    "New York, USA",
+    "London, UK",
+    "Tokyo, Japan",
+    "Dubai, UAE"
+  ];
+
+  const datalist = document.getElementById("location-suggestions");
+  if (!datalist) return;
+
+  // Clear existing options first (optional)
+  datalist.innerHTML = "";
+
+  locations.forEach(loc => {
+    const option = document.createElement("option");
+    option.value = loc;
+    datalist.appendChild(option);
+  });
+}
+
+
+
