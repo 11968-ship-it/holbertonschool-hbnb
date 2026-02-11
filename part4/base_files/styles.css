@@ -1105,6 +1105,7 @@ footer ul li a:hover {
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 20px;
 }
+
 .place-card__img {
   width: 60px;          /* icon size */
   height: 60px;         /* keep square */
@@ -1113,10 +1114,12 @@ footer ul li a:hover {
   flex-shrink: 0;
 }
 
-.place-card__link{
-  display: block;
-  color: inherit;
+.place-card__link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   text-decoration: none;
+  color: inherit;
 }
 
 .place-card__link:hover{
