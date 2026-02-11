@@ -11,7 +11,7 @@ function detectCurrentPage() {
    if (page === 'login.html' || page === 'login') return 'login';
    if (page === 'signup.html' || page === 'signup') return 'signup';
    if (page === 'place.html' || page === 'place') return 'place';
-   if (page === 'add-review.html' || page === 'review') return 'review';
+   if (page === 'add_review.html' || page === 'review') return 'review';
    if (page === 'add_place.html' || page === 'add_place') return 'add_place';
    if (page === 'index.html' || page === 'index' || page === '') return 'index';
 
@@ -34,27 +34,52 @@ document.addEventListener("DOMContentLoaded", () => {
    setupIndexSearch();
   }
 
-  if (currentPage === 'place') {
-    const placeId = getPlaceIdFromURL();
-    handleAuthUI();
-    setupAddReviewForm();
+if (currentPage === 'place') {
+  const placeId = getPlaceIdFromURL();
 
-    if (!placeId) {
-      const placeSection = document.getElementById("place-details");
-      if (placeSection) {
-        placeSection.innerHTML = `<p>No place ID provided in the URL. Please go back to <a href="index.html">Home</a>.</p>`;
-      }
-      return;
+  // Show/hide Login vs Logout in the header
+  const token = getCookie("token");
+  const loginLink = document.querySelector(".login-button");
+  const logoutBtn = document.getElementById("logout-btn");
+  if (token) {
+    if (loginLink) loginLink.style.display = "none";
+    if (logoutBtn) logoutBtn.style.display = "inline-block";
+  } else {
+    if (loginLink) loginLink.style.display = "inline-block";
+    if (logoutBtn) logoutBtn.style.display = "none";
+  }
+
+  setupLogout();
+
+  const addReviewSection = document.getElementById("add-review");
+  const addReviewLink = document.getElementById("add-review-link");
+  if (token && addReviewSection && addReviewLink && placeId) {
+    addReviewSection.style.display = "block";
+    addReviewLink.href = `add_review.html?id=${encodeURIComponent(placeId)}`;
+  } else if (addReviewSection) {
+    addReviewSection.style.display = "none";
+  }
+
+  if (!placeId) {
+    const placeSection = document.getElementById("place-details");
+    if (placeSection) {
+      placeSection.innerHTML = `<p>No place ID provided in the URL. Please go back to <a href="index.html">Home</a>.</p>`;
     }
-
-    const token = getCookie("token");
-    fetchPlaceDetails(placeId, token);
+    return;
   }
 
-  if (currentPage === 'review') {
-    handleAuthUI();
-    setupAddReviewForm();
+  fetchPlaceDetails(placeId, token);
+}
+
+   if (currentPage === 'review') {
+  const token = getCookie("token");
+  if (!token) {
+    window.location.href = "index.html";
+    return;
   }
+  setupLogout();
+  setupAddReviewForm();
+}
 
    if (currentPage === 'add_place') {
   const token = getCookie("token");
@@ -460,14 +485,23 @@ function setupAddReviewForm() {
   const form = document.getElementById("review-form");
   if (!form) return;
 
+  const token = getCookie("token");
+  if (!token) {
+    window.location.href = "index.html";
+    return;
+  }
+
+  const placeId = getPlaceIdFromURL();
+  if (!placeId) {
+    window.location.href = "index.html";
+    return;
+  }
+
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const token = getCookie("token");
-    if (!token) return alert("You must be logged in to submit a review.");
 
-    const placeId = getPlaceIdFromURL();
     const rating = form.querySelector("#review-rating")?.value || 5;
-    const comment = form.querySelector("#review-text")?.value;
+    const comment = form.querySelector("#review-text")?.value?.trim();
 
     if (!comment) return alert("Please enter a review.");
 
@@ -476,16 +510,18 @@ function setupAddReviewForm() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ rating, comment })
+        body: JSON.stringify({ rating, comment }),
       });
 
       if (!response.ok) throw new Error("Failed to submit review");
 
       alert("Review submitted successfully!");
-      fetchPlaceDetails(placeId, token);
       form.reset();
+
+      // ✅ go back to place details after submit
+      window.location.href = `place.html?id=${encodeURIComponent(placeId)}`;
     } catch (err) {
       console.error(err);
       alert(err.message || "Error submitting review");
