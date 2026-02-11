@@ -566,3 +566,12 @@ function escapeHtml(str) {
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  const closeBtn = document.querySelector(".modal-close");
+  if (closeBtn) {
+    closeBtn.addEventListener("click", () => {
+      window.location.href = "index.html";
+    });
+  }
+});
