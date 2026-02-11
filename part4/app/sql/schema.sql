@@ -2,6 +2,7 @@
 -- HBnB Schema (SQLite)
 -- ====================
 -- Drop existing tables if they exist (for clean setup)
+DROP TABLE IF EXISTS PlaceImage;
 DROP TABLE IF EXISTS Place_Amenity;
 DROP TABLE IF EXISTS Review;
 DROP TABLE IF EXISTS Place;
@@ -17,7 +18,9 @@ CREATE TABLE IF NOT EXISTS "User" (
     last_name  VARCHAR(255),
     email      VARCHAR(255) UNIQUE NOT NULL,
     password   VARCHAR(255) NOT NULL,
-    is_admin   BOOLEAN NOT NULL DEFAULT 0
+    is_admin   BOOLEAN NOT NULL DEFAULT 0,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
 -- ---------- Place --------------
@@ -29,10 +32,14 @@ CREATE TABLE IF NOT EXISTS Place (
     latitude FLOAT NOT NULL,
     longitude FLOAT NOT NULL,
     owner_id CHAR(36) NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
 
     -- Foreign key 
     FOREIGN KEY (owner_id) REFERENCES User(id) ON DELETE CASCADE
 );
+-- ---------- Place Image --------------
+
 -- ---------- Review --------------
 CREATE TABLE IF NOT EXISTS Review (
     id CHAR(36) PRIMARY KEY,
@@ -40,6 +47,8 @@ CREATE TABLE IF NOT EXISTS Review (
     rating INT CHECK (rating >= 1 AND rating <= 5),
     user_id CHAR(36) NOT NULL,
     place_id CHAR(36) NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES "User"(id) ON DELETE CASCADE,
     FOREIGN KEY (place_id) REFERENCES "Place"(id) ON DELETE CASCADE,
     UNIQUE (user_id, place_id) -- ensures one review per user per place
@@ -48,7 +57,9 @@ CREATE TABLE IF NOT EXISTS Review (
 -- ---------- Amenity --------------
 CREATE TABLE IF NOT EXISTS Amenity (
     id CHAR(36) PRIMARY KEY,
-    name VARCHAR(255) UNIQUE NOT NULL
+    name VARCHAR(255) UNIQUE NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
 
