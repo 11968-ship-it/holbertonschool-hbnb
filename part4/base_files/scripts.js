@@ -589,6 +589,46 @@ function displayPlaceDetails(place) {
   if (!placeSection) return;
   placeSection.innerHTML = "";
 
+   function displayPlaceDetails(place) {
+  const placeSection = document.getElementById("place-details");
+  if (!placeSection) return;
+
+  placeSection.innerHTML = "";
+
+  /* === IMAGE GALLERY === */
+  const imagesContainer = document.createElement("div");
+  imagesContainer.className = "place-images";
+
+  const images = place.images || [place.image_url] || [];
+
+  if (images && images.length) {
+    images.forEach((imgUrl) => {
+      const img = document.createElement("img");
+      img.src = imgUrl || getFallbackImage(place);
+      img.alt = place.name || "Place image";
+      imagesContainer.appendChild(img);
+    });
+  } else {
+    const fallback = document.createElement("img");
+    fallback.src = getFallbackImage(place);
+    fallback.alt = "Place image";
+    imagesContainer.appendChild(fallback);
+  }
+
+  placeSection.appendChild(imagesContainer);
+
+  /* === PLACE INFO === */
+  const infoDiv = document.createElement("div");
+  infoDiv.className = "place-info";
+
+  infoDiv.innerHTML = `
+    <h1>${escapeHtml(place.name)}</h1>
+    <p>${escapeHtml(place.description)}</p>
+    <p><strong>Price:</strong> ${formatPrice(place.price)}</p>
+  `;
+
+  placeSection.appendChild(infoDiv);
+
   const nameEl = document.createElement("h1");
   nameEl.textContent = place.name;
   placeSection.appendChild(nameEl);
