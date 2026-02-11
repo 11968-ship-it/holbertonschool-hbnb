@@ -28,6 +28,16 @@ document.addEventListener("DOMContentLoaded", () => {
   if (currentPage === 'login') handleLoginForm();
   if (currentPage === 'signup') handleSignupForm();
   
+  if (currentPage === 'add_place') {
+    const token = getCookie("token");
+    if (!token) {
+      window.location.href = "index.html";
+      return;
+    }
+    setupLogout();
+    handleAddPlaceForm();
+  }
+  
   if (currentPage === 'index') {
     checkAuthentication();
     initPriceFilter();
