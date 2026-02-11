@@ -230,19 +230,28 @@ async function registerUser(firstName, lastName, email, password) {
    AUTH UI (SHOW/HIDE ELEMENTS)
 ========================================================= */
 function checkAuthentication() {
-  const token = getCookie('token');
-  const loginLink = document.querySelector('.login-button');
-  const logoutBtn = document.getElementById('logout-btn');
+  const token = getCookie("token");
 
-  const isValidToken = token && token.split('.').length === 3;
+  const signupLink = document.getElementById("signup-link");
+  const loginLink  = document.getElementById("login-link");
+  const createLink = document.getElementById("create-place-link");
+  const logoutBtn  = document.getElementById("logout-btn");
 
-  if (!isValidToken) {
-    if (loginLink) loginLink.style.display = 'block';
-    if (logoutBtn) logoutBtn.style.display = 'none';
-    if (token) document.cookie = 'token=; path=/; max-age=0';
+  const isValidToken = token && token.split(".").length === 3;
+
+  if (isValidToken) {
+    if (signupLink) signupLink.style.display = "none";
+    if (loginLink)  loginLink.style.display = "none";
+    if (createLink) createLink.style.display = "inline-block";
+    if (logoutBtn)  logoutBtn.style.display = "inline-block";
   } else {
-    if (loginLink) loginLink.style.display = 'none';
-    if (logoutBtn) logoutBtn.style.display = 'block';
+    if (signupLink) signupLink.style.display = "inline-block";
+    if (loginLink)  loginLink.style.display = "inline-block";
+    if (createLink) createLink.style.display = "none";
+    if (logoutBtn)  logoutBtn.style.display = "none";
+
+    // clear bad token if present
+    if (token) document.cookie = "token=; path=/; max-age=0";
   }
 
   fetchPlaces(isValidToken ? token : null);
