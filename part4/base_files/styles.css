@@ -1100,27 +1100,41 @@ footer ul li a:hover {
   margin-top: 0;
 }
 
+/* 3 cards layout like your example */
 #places-list{
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(3, minmax(0, 320px)); /* fixed-ish card width */
+  gap: 28px;
+  justify-content: center;  /* center the 3 cards */
+  align-items: start;
 }
 
-.place-card__img {
-  width: 50%;
-  aspect-ratio: 1 / 1;   /* makes it a perfect square */
-  object-fit: cover;     /* crops nicely */
-  border-radius: 12px;
-  margin-bottom: 12px;
+/* responsive */
+@media (max-width: 980px){
+  #places-list{ grid-template-columns: repeat(2, minmax(0, 320px)); }
+}
+@media (max-width: 640px){
+  #places-list{ grid-template-columns: minmax(0, 360px); }
+}
+
+/* card should not add extra padding around image */
+.place-card{
+  padding: 0;
+  overflow: hidden;
+  border-radius: 16px;
+}
+
+/* image like your example: full card width, fixed height */
+.place-card__img{
+  width: 100%;
+  height: 180px;        /* adjust: 160/180/200 */
+  object-fit: cover;
   display: block;
+  border-radius: 16px 16px 0 0; /* rounded only on top */
+  margin: 0;
 }
 
-.place-card__link {
-  display: block;
-  text-decoration: none;
-  color: inherit;
-}
-
-.place-card__link:hover{
-  text-decoration: none;
+/* content spacing inside card */
+.place-card__body{
+  padding: 14px 16px 16px;
 }
