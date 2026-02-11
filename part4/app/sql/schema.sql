@@ -68,7 +68,7 @@ CREATE TABLE IF NOT EXISTS Review (
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES "User"(id) ON DELETE CASCADE,
-    FOREIGN KEY (place_id) REFERENCES "Place"(id) ON DELETE CASCADE,
+    FOREIGN KEY (place_id) REFERENCES Place(id) ON DELETE CASCADE,
     UNIQUE (user_id, place_id) -- ensures one review per user per place
 );
 
@@ -88,10 +88,10 @@ CREATE TABLE IF NOT EXISTS Place_Amenity (
 
     PRIMARY KEY (place_id, amenity_id),
 
-    FOREIGN KEY (place_id) REFERENCES "Place"(id)
+    FOREIGN KEY (place_id) REFERENCES Place(id)
         ON DELETE CASCADE
         ON UPDATE CASCADE,
-    FOREIGN KEY (amenity_id) REFERENCES "Amenity"(id)
+    FOREIGN KEY (amenity_id) REFERENCES Amenity(id)
         ON DELETE CASCADE
         ON UPDATE CASCADE
     );
