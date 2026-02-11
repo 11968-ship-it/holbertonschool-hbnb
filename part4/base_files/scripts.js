@@ -77,7 +77,15 @@ if (currentPage === 'place') {
     window.location.href = "index.html";
     return;
   }
+
+  const placeId = getPlaceIdFromURL();
+  if (!placeId) {
+    window.location.href = "index.html";
+    return;
+  }
+
   setupLogout();
+  loadReviewPlacePreview(placeId);   // 🔥 THIS loads the image
   setupAddReviewForm();
 }
 
@@ -527,6 +535,29 @@ function setupAddReviewForm() {
       alert(err.message || "Error submitting review");
     }
   });
+}
+
+async function loadReviewPlacePreview(placeId) {
+  try {
+    const res = await fetch(`${API_BASE_URL}/places/${placeId}`);
+    if (!res.ok) throw new Error("Failed to load place");
+
+    const place = await res.json();
+
+    const img = document.getElementById("review-place-image");
+    const title = document.getElementById("review-place-title");
+
+    if (img) {
+      img.src = place.image_url || "images/place-01.jpg"; 
+    }
+
+    if (title) {
+      title.textContent = place.name;
+    }
+
+  } catch (err) {
+    console.error(err);
+  }
 }
 
 /* =========================================================
