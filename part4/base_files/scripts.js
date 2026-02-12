@@ -2,7 +2,7 @@ const API_BASE_URL = 'http://127.0.0.1:5000/api/v1';
 let ALL_PLACES = [];
 
 /* =========================================================
-   PAGE DETECTION
+        PAGE DETECTION
 ========================================================= */
 function detectCurrentPage() {
   const path = window.location.pathname;
@@ -19,7 +19,7 @@ function detectCurrentPage() {
 }
 
 /* =========================================================
-   DOM READY
+               DOM READY
 ========================================================= */
 document.addEventListener("DOMContentLoaded", () => {
   const currentPage = detectCurrentPage();
@@ -44,6 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
     setupLogout();
     populateLocationDatalist();
     setupIndexSearch();
+    initCustomDatePicker(); 
   }
 
   if (currentPage === 'place') {
@@ -567,19 +568,21 @@ function setupIndexSearch() {
       const maxGuests = Number(p.max_guests ?? 0);
       const matchesGuests = !guests || (maxGuests >= guests);
 
-       // Date filter
+  // Date filter
   let matchesDate = true;
-  const checkInInput = document.getElementById("check-in")?.value;
-  const checkOutInput = document.getElementById("check-out")?.value;
-  if (checkInInput && checkOutInput && p.available_from && p.available_to) {
-    const checkIn = new Date(checkInInput);
-    const checkOut = new Date(checkOutInput);
+  const checkInText = document.getElementById("checkin-display")?.textContent;
+  const checkOutText = document.getElementById("checkout-display")?.textContent;
+
+  // Only filter if the user actually selected dates
+  if (checkInText !== "Add dates" && checkOutText !== "Add dates" && p.available_from && p.available_to) {
+    const checkIn = new Date(checkInText);
+    const checkOut = new Date(checkOutText);
     const availableFrom = new Date(p.available_from);
     const availableTo = new Date(p.available_to);
     matchesDate = availableFrom <= checkIn && availableTo >= checkOut;
   }
        
-      return matchesLocation && matchesPrice && matchesGuests;
+     return matchesLocation && matchesPrice && matchesGuests && matchesDate;
     });
 
     displayPlaces(filtered);
@@ -946,3 +949,37 @@ function populateLocationDatalist() {
     datalist.appendChild(option);
   });
 }
+
+
+/* =========================================================
+   DATE PICKER UI LOGIC
+========================================================= */
+function initCustomDatePicker() {
+  const zones = document.querySelectorAll('.date-zone');
+  const amPmBtns = document.querySelectorAll('.time-btn');
+
+  // 1. Handle AM/PM Toggle Buttons
+  amPmBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation(); // Prevents clicking the whole zone
+      const parent = btn.parentElement;
+      parent.querySelector('.time-btn.active').classList.remove('active');
+      btn.classList.add('active');
+    });
+  });
+
+  // 2. Handle Zone Selection (Highlighting)
+  zones.forEach(zone => {
+    zone.addEventListener('click', () => {
+      zones.forEach(z => z.classList.remove('active-zone'));
+      zone.classList.add('active-zone');
+      
+      // Temporary: Simulate picking a date so the search filter works
+      const display = zone.querySelector('.date-display');
+      if (display.textContent === "Add dates") {
+        display.textContent = new Date().toLocaleDateString();
+      }
+    });
+  });
+}
+
