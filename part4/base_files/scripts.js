@@ -235,6 +235,7 @@ function handleAddPlaceForm() {
   const priceInput = document.getElementById("price");
   const latitudeInput = document.getElementById("latitude");
   const longitudeInput = document.getElementById("longitude");
+  const imageInput = document.getElementById("image_url");
   const errorEl = document.getElementById("error-message");
   const addPlaceBtn = document.getElementById("add-place-btn");
 
@@ -248,6 +249,7 @@ function handleAddPlaceForm() {
     const price = parseFloat(priceInput?.value);
     const latitude = parseFloat(latitudeInput?.value);
     const longitude = parseFloat(longitudeInput?.value);
+    const imageUrl = imageInput?.value.trim();
 
     // Validation
     if (!title || !description || !price || !latitude || !longitude) {
@@ -278,14 +280,19 @@ function handleAddPlaceForm() {
         description,
         price,
         latitude,
-        longitude
+        longitude,
+        image_url: imageUrl
       });
       
       // Show success message
-      alert("Place created successfully!");
+      addPlaceBtn.textContent = "✓ Created!";
+      addPlaceBtn.style.backgroundColor = "#28a745";
+      
+      setTimeout(() => {
+        window.location.href = "index.html";
+      }, 1500);
       
       // Redirect to home page
-      window.location.href = "index.html";
     } catch (error) {
       if (errorEl) {
         errorEl.textContent = error.message || "Failed to create place. Please try again.";
@@ -542,7 +549,6 @@ function setupIndexSearch() {
         desc.includes(location);
 
       const matchesPrice = price <= maxPrice;
-
       const maxGuests = Number(p.max_guests ?? 0);
       const matchesGuests = !guests || (maxGuests >= guests);
 
