@@ -100,10 +100,10 @@ header nav button:hover{
 }
 
 /* =======================
-    Date input styling 
+    Date input styling: Creative Date Input
 ============================ */
-/* ===== Creative Date Input ===== */
-input[type="date"] {
+input[type="date"],
+input[type="datetime-local"] {
   border: 2px solid var(--color-primary);
   border-radius: 12px;
   padding: 10px 16px;
@@ -116,25 +116,32 @@ input[type="date"] {
   cursor: pointer;
 }
 
-input[type="date"]:hover {
+/* hover */
+input[type="date"]:hover,
+input[type="datetime-local"]:hover {
   background: linear-gradient(145deg, #fff3c0, #fff);
   box-shadow: 6px 6px 15px rgba(0,0,0,0.12), -6px -6px 15px rgba(255,255,255,0.9);
 }
 
-input[type="date"]:focus {
+/* focus */
+input[type="date"]:focus,
+input[type="datetime-local"]:focus {
   border-color: #c41717;
   box-shadow: 0 0 8px rgba(196,23,23,0.4);
   outline: none;
   transform: translateY(-1px) scale(1.02);
 }
 
-input[type="date"]::-webkit-calendar-picker-indicator {
+/* calendar picker */
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="datetime-local"]::-webkit-calendar-picker-indicator {
   cursor: pointer;
   filter: brightness(1.2);
   padding: 8px;
 }
 
-/* =================================== */
+/* ========================================================
+===========================================================*/
 
 textarea {
   min-height: 120px;
@@ -874,6 +881,15 @@ select:focus {
   border-bottom-right-radius: 50%;
 }
 
+.date-display {
+  padding: 4px 0;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.date-display:hover {
+  color: var(--color-primary);
+}
 
 /* ====================================================
                   Footer Section
