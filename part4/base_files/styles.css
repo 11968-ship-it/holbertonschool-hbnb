@@ -810,8 +810,73 @@ select:focus {
   color: #222;
 }
 
+/* =========================
+   CUSTOM CALENDAR (DRAG SELECT)
+========================= */
+
+.calendar-wrapper {
+  max-width: 420px;
+  margin: 30px auto;
+  padding: 20px;
+  background: var(--color-white);
+  border-radius: 20px;
+  border: 1px solid var(--color-border);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  user-select: none; /* important for drag */
+}
+
+.calendar-day {
+  padding: 12px 0;
+  text-align: center;
+  border-radius: 14px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.calendar-day:hover {
+  background: #f3f3f3;
+}
+
+/* Dragging visual feedback */
+.calendar-day.dragging {
+  transform: scale(0.95);
+}
+
+/* Start + End circles */
+.range-start,
+.range-end {
+  background: var(--color-primary);
+  color: var(--color-white);
+  border-radius: 50%;
+}
+
+/* Middle selection */
+.range-middle {
+  background: #f8dede; /* soft light red to match your theme */
+  border-radius: 0;
+}
+
+/* Smooth connection edges */
+.range-start + .range-middle {
+  border-top-left-radius: 50%;
+  border-bottom-left-radius: 50%;
+}
+
+.range-middle + .range-end {
+  border-top-right-radius: 50%;
+  border-bottom-right-radius: 50%;
+}
+
+
 /* ====================================================
-      Footer
+                  Footer Section
 ======================================================== */
 footer {
   background-color: var(--color-primary);
