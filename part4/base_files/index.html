@@ -39,13 +39,28 @@
                 </div>
                 
                 <!-- WHEN: Check-in & Checkout -->
-                <div class="filter-group">
-                    <label for="check-in">When</label>
-                    <div class="date-inputs">
-                        <input type="datetime-local" id="check-in" name="check-in">
-                        <input type="datetime-local" id="check-out" name="check-out">
+                <div class="filter-group date-filter-group" id=""date-picker-trigger">
+                    <label>When</label>
+                    <div class="date-inputs-container">
+                    <div class="date-zone" id="checkin-zone">
+                        <span class="date-label">Check-in</span>
+                        <span class="date-display" id="checkin-display">Add dates</span>
+                        <div class="time-ampm" id="checkin-time">
+                            <span class="time-btn active" data-time="am">AM</span>
+                            <span class="time-btn" data-time="pm">PM</span>
+                        </div>
+                    </div>
+                        <div class="date-zone" id="checkout-zone">
+                            <span class="date-label">Check-out</span>
+                            <span class="date-display" id="checkout-display">Add dates</span>
+                            <div class="time-ampm" id="checkout-time">
+                                <span class="time-btn" data-time="am">AM</span>
+                                <span class="time-btn active" data-time="pm">PM</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
+                
                 <!-- WHO: Guests -->
                 <div class="filter-group">
                     <label for="guests">Who</label>
