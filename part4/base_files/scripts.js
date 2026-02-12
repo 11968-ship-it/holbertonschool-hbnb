@@ -462,7 +462,7 @@ function setupLogout() {
 }
 
 /* =========================================================
-                 PLACE DETAILS
+                ---- PLACE DETAILS ----
 ========================================================= */
 function getPlaceIdFromURL() {
   const params = new URLSearchParams(window.location.search);
@@ -504,6 +504,7 @@ async function fetchPlaces(token) {
     const places = await res.json();
      ALL_PLACES = Array.isArray(places) ? places : [];
      displayPlaces(ALL_PLACES);
+     setupIndexSearch();
   } catch (error) {
     console.error('Error fetching places:', error);
     const placesList = document.getElementById('places-list');
@@ -527,7 +528,7 @@ function setupIndexSearch() {
   form.addEventListener("submit", (e) => {
     e.preventDefault();
 
-    const location = document.getElementById("location-input")?.value.trim().toLowerCase();
+    const location = document.getElementById("location")?.value.trim().toLowerCase();
     const guests = Number(document.getElementById("guests")?.value || 0);
     const maxPrice = Number(document.getElementById("price-range")?.value || Infinity);
 
@@ -680,9 +681,9 @@ function setupAddReviewForm() {
     window.location.href = "index.html";
     return;
   }
-
-  
-  // --- Fetch existing reviews ---
+/* =================================================
+           --- Fetch existing reviews ---
+==================================================== */
   async function loadReviews() {
     try {
       const res = await fetch(`${API_BASE_URL}/places/${placeId}/reviews`, {
@@ -743,8 +744,6 @@ function setupAddReviewForm() {
     }
   });
 }
-
-
 
 async function loadReviewPlacePreview(placeId) {
   try {
@@ -811,13 +810,16 @@ function initPriceFilter() {
   }
 
   function applyFilter() {
-    const maxPrice = Number(priceRange.value);
+     const form = document.getElementById("filter-form");
+     if (form) {
+        form.dispatchEvent(new Event('submit'));
+    }
+    /*const maxPrice = Number(priceRange.value);
     document.querySelectorAll(".place-card").forEach(card => {
       const price = getCardPrice(card);
       card.style.display = price <= maxPrice ? "" : "none";
-    });
+    });*/
   }
-
   priceRange.addEventListener("input", () => {
     updateUI();
     applyFilterDebounced();
@@ -834,7 +836,7 @@ function initPriceFilter() {
 }
 
 /* =========================================================
-   DISPLAY PLACES (INDEX PAGE)
+       DISPLAY PLACES (INDEX PAGE)
 ========================================================= */
 function displayPlaces(places) {
   const placesList = document.getElementById("places-list");
@@ -857,8 +859,7 @@ function displayPlaces(places) {
     if (place.price != null) card.setAttribute("data-price", String(place.price));
 
     const id = place.id || place._id || place.place_id; // covers common API shapes
-     
-     const imgSrc = place.image_url || getFallbackImage(place);
+    const imgSrc = place.image_url || getFallbackImage(place);
 
      card.innerHTML = `
   <a class="place-card__link" href="place.html?id=${encodeURIComponent(id)}">
@@ -895,7 +896,7 @@ function escapeHtml(str) {
 }
 
 /* =========================================================
-   POPULATE LOCATION DATALIST
+       POPULATE LOCATION DATALIST
 ========================================================= */
 function populateLocationDatalist() {
   const locations = [
