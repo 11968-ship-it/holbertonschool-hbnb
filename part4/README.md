@@ -1,38 +1,28 @@
-# HBnB Project – Part 3: Enhanced Backend with Authentication & Database Integration
+# # HBnB Project - Part 4: Simple Web Client
+
+In this phase of the project, the focus is on building the front-end of the application using HTML5, CSS3, and JavaScript (ES6). The goal is to design and implement an interactive user interface that communicates with the back-end API developed in previous parts.
+
+This web client allows users to:
+* Log in
+* Browse places
+* View detailed place information
+* Add reviews
+
+All through a dynamic and responsive interface.
 
 ## Project Overview
-Part 3 of the HBnB Project focuses on transforming the backend from a prototype into a secure, persistent, and production-ready system. This phase introduces JWT-based authentication, role-based authorization, and database integration using SQLAlchemy with SQLite for development and MySQL for production.
-
-By the end of this part, the backend supports authenticated users, enforces permissions, persists data reliably, and is structured to scale in real-world environments.
+The web client connects to the back-end API created in previous phases. It uses modern JavaScript (ES6) and the Fetch API to interact with REST endpoints and manage authentication using JWT tokens stored in cookies.
 
 
 ## Objectives
 
-### Authentication & Authorization
-- Implement JWT authentication using Flask-JWT-Extended
-- Secure protected endpoints
-- Enforce role-based access control (RBAC) using the is_admin attribute
+- Develop a user-friendly interface based on provided design specifications.
+- Implement client-side functionality to communicate with the back-end API.
+- Handle authentication and session management using JWT.
+- Apply modern web development practices to build a dynamic web application.
 
-### Database Integration
-- Replace in-memory storage with SQLite for development
-- Prepare the application for MySQL in production
-- Use SQLAlchemy ORM for database interactions
 
-### CRUD Operations
-- Refactor all CRUD operations to use persistent database storage
-- Ensure consistent and reliable data handling
-
-### Database Design & Visualization
-- Design relational schemas for all entities
-- Visualize entity relationships using Mermaid.js ER diagrams
-
-### Data Validation & Consistency
-- Enforce constraints and validation rules at the model level
-- Maintain data integrity across relationships
-
----
-
-## Project Structure
+## Project Structure?
 
 ```
 part4/
@@ -105,94 +95,81 @@ part4/
 - **requirements.txt**: Lists required Python packages.
 ---
 
-## Authentication & Authorization
-### Password Management
-- User passwords are securely hashed using bcrypt
-- Plain-text passwords are never stored
+# Tasks Breakdown
 
-### JWT Authentication
-- Token-based authentication using Flask-JWT-Extended
-- Access tokens required for protected routes
+General Tasks are:
 
-### Role-Based Access Control
-- is_admin flag determines administrative privileges
-- Admin-only endpoints are strictly enforced
+1. Design
+2. Login
+3. List of Places
+4. Place Details
+5. Add Review
 
-## Database Integration
-### Development
-- SQLite is used for lightweight, local development
-- Database managed through SQLAlchemy
-
-### Production
-- Configured to switch seamlessly to MySQL
-- Environment-based configuration ensures flexibility
-
-### ORM Mapping
-- Entities mapped using SQLAlchemy:
-      - User
-      - Place
-      - Review
-      - Amenity
-- Relationships are properly defined with foreign keys and constraints.
-
-## Installation
-
-### Clone the repository:
-   
-   ```bash
-   git clone <repository-url>
-   cd holbertonschool-hbnb
-   ```
-
-### Install dependencies:
-
-   ```
-   pip install -r requirements.txt
-   ```
-
-### To initialize the database and create the table, run:
-
-   ```
-   flask shell
-   >>> from app import db
-   >>> db.create_all()
-   ```
-
-### Loading Schema and Seed Data
-
-1. Open the SQLite database:
-   ```
-   sqlite3 hbnb.db
-   ```
-
-2. Load the schema
-   ```
-   .read schema.sql
-   ```
-
-3. Load the seed (initial) data:
-   ```
-   .read seed.sql
-   ```
-
-**These steps will:**
-
-- Create all required tables and relationships
-- Insert initial test or development data
-- Allow immediate interaction with the database without running migrations
-
-4. Exit the SQLite prompt when finished:
-   ```
-   .exit
-   ```
 
 ## Running the Application
 
-Start the Flask development server:
-
+1. Starting the Back-End (API) using:
+Depending on the Python installation, we used one of the following:
+   ```
+   python run.py
+   ```
+or
    ```
    python3 run.py
    ```
+It will start the Flask API server.
+
+2. Starting the Front-End (Web Client):
+
+  ```
+  python3 -m http.server (Port-number)
+  ```
+or
+  ```
+  python -m http.server (port-number)
+
+  ```
+Placing available port number, and in our case we used ``` 5000 ``` and ``` 5500 ```.
+
+3. Open the Application:
+
+In the browser:
+   ```
+   http://localhost:(port-number)
+   ```
+
+## Task 1: Design
+
+1. Complete the provided HTML and CSS files.
+2. Create pages for:
+   - Login
+   - List of Places
+   - Place Details
+   - Add Review
+
+## Task 2: Login
+
+1. Implement login using the back-end API.
+2. Store the returned JWT token in a cookie for session management.
+
+## Task 3: List of Places
+
+1. Display all places on the main page.
+2. Fetch data from the API.
+3. Implement client-side filtering by country.
+4. Redirect unauthenticated users to the login page.
+
+## Task 4: Place Details
+
+1. Fetch and display detailed information for a selected place.
+2. Allow authenticated users to access the add review form.
+
+## Task 5: Add Review
+
+1. Implement a review submission form.
+2. Restrict access to authenticated users only.
+
+
 
 ## API Tests (cURL)
 - Environment variables used
