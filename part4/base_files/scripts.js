@@ -150,7 +150,7 @@ function setLoginLoading(isLoading, button) {
 }
 
 /* =========================================================
-   SIGNUP FORM HANDLING
+          SIGNUP FORM HANDLING
 ========================================================= */
 function handleSignupForm() {
   const signupForm = document.getElementById("signup-form");
@@ -218,7 +218,7 @@ function setSignupLoading(isLoading, button) {
   button.textContent = isLoading ? "Creating Account..." : "Create Account";
 }
 /* =========================================================
-   ADD PLACE FORM HANDLING
+         ADD PLACE FORM HANDLING
 ========================================================= */
 function handleAddPlaceForm() {
   const addPlaceForm = document.getElementById("add-place-form");
@@ -520,7 +520,6 @@ async function fetchPlaces(token) {
 /* =============================================
                 Searching bar
 ================================================ */
-
 function setupIndexSearch() {
   const form = document.getElementById("filter-form");
   if (!form) return;
@@ -528,13 +527,13 @@ function setupIndexSearch() {
   form.addEventListener("submit", (e) => {
     e.preventDefault();
 
-    const location = document.getElementById("location")?.value.trim().toLowerCase();
+    const location = document.getElementById("location-input")?.value.trim().toLowerCase();
     const guests = Number(document.getElementById("guests")?.value || 0);
     const maxPrice = Number(document.getElementById("price-range")?.value || Infinity);
 
     const filtered = ALL_PLACES.filter((p) => {
-      const name = String(p.name ?? "").toLowerCase();
-      const desc = String(p.description ?? "").toLowerCase();
+      const name = String(p.title || p.name || "").toLowerCase();
+      const desc = String(p.description || "").toLowerCase();
       const price = Number(p.price ?? Infinity);
 
       const matchesLocation =
@@ -771,7 +770,7 @@ async function loadReviewPlacePreview(placeId) {
 }
 
 /* =========================================================
-   PRICE RANGE FILTER
+          PRICE RANGE FILTER
 ========================================================= */
 function initPriceFilter() {
   const priceRange = document.getElementById("price-range");
