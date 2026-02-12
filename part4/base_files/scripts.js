@@ -23,18 +23,20 @@ function detectCurrentPage() {
 ========================================================= */
 document.addEventListener("DOMContentLoaded", () => {
   const currentPage = detectCurrentPage();
+  const token = getCookie("token");
 
+ // --- GLOBAL SETUP ---
+  setupLogout();
+        
   // --- MAIN PAGE LOGIC ---
   if (currentPage === 'login') handleLoginForm();
   if (currentPage === 'signup') handleSignupForm();
   
   if (currentPage === 'add_place') {
-    const token = getCookie("token");
     if (!token) {
       window.location.href = "index.html";
       return;
     }
-    setupLogout();
     handleAddPlaceForm();
   }
   
@@ -51,7 +53,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const placeId = getPlaceIdFromURL();
 
   // Show/hide Login vs Logout in the header
-  const token = getCookie("token");
   const loginLink = document.querySelector(".login-button");
   const logoutBtn = document.getElementById("logout-btn");
   if (token) {
@@ -62,14 +63,10 @@ document.addEventListener("DOMContentLoaded", () => {
     if (logoutBtn) logoutBtn.style.display = "none";
   }
 
-  setupLogout();
-
-
 /* ==================================
-              addReview
+         addReview Section
 ====================================
 */
-
   const addReviewSection = document.getElementById("add-review");
   const addReviewLink = document.getElementById("add-review-link");
   if (token && addReviewSection && addReviewLink && placeId) {
@@ -84,39 +81,20 @@ document.addEventListener("DOMContentLoaded", () => {
     if (placeSection) {
       placeSection.innerHTML = `<p>No place ID provided in the URL. Please go back to <a href="index.html">Home</a>.</p>`;
     }
-    return;
+  } else {
+    fetchPlaceDetails(placeId, token);
   }
+ }
 
-  fetchPlaceDetails(placeId, token);
-}
-
-   if (currentPage === 'review') {
-  const token = getCookie("token");
-  if (!token) {
-    window.location.href = "index.html";
-    return;
-  }
-
-  const placeId = getPlaceIdFromURL();
-  if (!placeId) {
-    window.location.href = "index.html";
-    return;
-  }
-
-  setupLogout();
-  loadReviewPlacePreview(placeId);   // 🔥 THIS loads the image
-  setupAddReviewForm();
-}
-
-   if (currentPage === 'add_place') {
-  const token = getCookie("token");
-  if (!token) {
-    window.location.href = "index.html";
-    return;
-  }
-
-  setupLogout();
-}
+    if (currentPage === 'review') {
+       const placeId = getPlaceIdFromURL();
+       if (!token || !placeId) {
+         window.location.href = "index.html";
+         return;
+       }
+       loadReviewPlacePreview(placeId);   // 🔥 THIS loads the image
+       setupAddReviewForm();
+    }
 });
 
  // --- MODAL CLOSE BUTTON ---
@@ -126,6 +104,7 @@ document.addEventListener("DOMContentLoaded", () => {
       window.location.href = "index.html";
     });
   }
+
 /* =========================================================
    LOGIN FORM HANDLING
 ========================================================= */
@@ -950,36 +929,57 @@ function populateLocationDatalist() {
   });
 }
 
-
 /* =========================================================
-   DATE PICKER UI LOGIC
+    DATE PICKER UI LOGIC (CORRECTED)
 ========================================================= */
 function initCustomDatePicker() {
   const zones = document.querySelectorAll('.date-zone');
   const amPmBtns = document.querySelectorAll('.time-btn');
 
-  // 1. Handle AM/PM Toggle Buttons
+  // 1. Handle AM/PM Toggle
   amPmBtns.forEach(btn => {
     btn.addEventListener('click', (e) => {
-      e.stopPropagation(); // Prevents clicking the whole zone
+      e.stopPropagation(); // Stops the calendar from opening when clicking buttons
       const parent = btn.parentElement;
-      parent.querySelector('.time-btn.active').classList.remove('active');
+      const activeBtn = parent.querySelector('.time-btn.active');
+      if (activeBtn) activeBtn.classList.remove('active');
       btn.classList.add('active');
+      
+      // Store period (AM/PM) on the zone for filtering
+      const zone = btn.closest('.date-zone');
+      if (zone) zone.dataset.period = btn.textContent;
     });
   });
 
-  // 2. Handle Zone Selection (Highlighting)
+  // 2. Handle Date Picking & Highlighting
   zones.forEach(zone => {
+    // Create hidden input to trigger the browser's native calendar
+    const hiddenInput = document.createElement('input');
+    hiddenInput.type = 'date';
+    // Prevent picking past dates
+    hiddenInput.min = new Date().toISOString().split("T")[0];
+    hiddenInput.style.cssText = "position:absolute; opacity:0; pointer-events:none; left:0; top:0;";
+    zone.appendChild(hiddenInput);
+
     zone.addEventListener('click', () => {
+      // Manage Active Highlight UI
       zones.forEach(z => z.classList.remove('active-zone'));
       zone.classList.add('active-zone');
       
-      // Temporary: Simulate picking a date so the search filter works
+      // Open Calendar
+      if (typeof hiddenInput.showPicker === 'function') {
+        hiddenInput.showPicker();
+      } else {
+        hiddenInput.click(); // Fallback
+      }
+    });
+
+    // Update UI when a real date is chosen
+    hiddenInput.addEventListener('change', (e) => {
       const display = zone.querySelector('.date-display');
-      if (display.textContent === "Add dates") {
-        display.textContent = new Date().toLocaleDateString();
+      if (e.target.value && display) {
+        display.textContent = e.target.value; 
       }
     });
   });
 }
-
