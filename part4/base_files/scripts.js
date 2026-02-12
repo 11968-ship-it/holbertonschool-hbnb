@@ -13,7 +13,7 @@ function detectCurrentPage() {
    if (page === 'place.html' || page === 'place') return 'place';
    if (page === 'add_review.html' || page === 'review') return 'review';
    if (page === 'add_place.html' || page === 'add_place') return 'add_place';
-   if (page === 'index.html' || page === 'index' || page === '') return 'index';
+   if (page === 'index.html' || page === 'index' || !page || page.includes('base_files')) return 'index';
 
   return 'index';
 }
@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (currentPage === 'place') {
   const placeId = getPlaceIdFromURL();
-
+     
   // Show/hide Login vs Logout in the header
   const token = getCookie("token");
   const loginLink = document.querySelector(".login-button");
@@ -88,7 +88,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   fetchPlaceDetails(placeId, token);
 }
-
+}
+                          
    if (currentPage === 'review') {
   const token = getCookie("token");
   if (!token) {
@@ -118,13 +119,14 @@ document.addEventListener("DOMContentLoaded", () => {
 }
 });
 
- // --- MODAL CLOSE BUTTON ---
+ /*--- MODAL CLOSE BUTTON --- */
   const closeBtn = document.querySelector(".modal-close");
   if (closeBtn) {
     closeBtn.addEventListener("click", () => {
       window.location.href = "index.html";
     });
   }
+
 /* =========================================================
    LOGIN FORM HANDLING
 ========================================================= */
