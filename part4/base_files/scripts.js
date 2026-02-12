@@ -517,7 +517,6 @@ async function fetchPlaces(token) {
     }
   }
 }
-
 /* =============================================
                 Searching bar
 ================================================ */
@@ -565,7 +564,6 @@ function setupIndexSearch() {
     });
 
     displayPlaces(filtered);
-    initPriceFilter(); // re-apply slider visuals
   });
 }
 
@@ -828,7 +826,7 @@ function initPriceFilter() {
   resetBtn?.addEventListener("click", () => {
     priceRange.value = String(DEFAULT_MAX);
     updateUI();
-    applyFilter();
+    /*applyFilter();*/
   });
 
   updateUI();
