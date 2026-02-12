@@ -103,37 +103,82 @@ header nav button:hover{
     Date input styling 
 ============================ */
 /* ===== Creative Date Input ===== */
-input[type="date"] {
-  border: 2px solid var(--color-primary);
-  border-radius: 12px;
-  padding: 10px 16px;
-  font-size: 0.95rem;
-  color: var(--color-text);
-  background: linear-gradient(145deg, #fff8e7, #fff);
-  box-shadow: 4px 4px 12px rgba(0,0,0,0.08), -4px -4px 12px rgba(255,255,255,0.8);
-  transition: all 0.25s ease;
-  width: 100%;
-  cursor: pointer;
+/* ====================================================
+    NEW Date Picker Styling (Pill-Style)
+======================================================== */
+
+.date-inputs-container {
+    display: flex;
+    gap: 0; /* Keeps them connected like a single unit */
+    position: relative;
+    margin-top: 4px;
 }
 
-input[type="date"]:hover {
-  background: linear-gradient(145deg, #fff3c0, #fff);
-  box-shadow: 6px 6px 15px rgba(0,0,0,0.12), -6px -6px 15px rgba(255,255,255,0.9);
+.date-zone {
+    flex: 1;
+    padding: 6px 12px;
+    cursor: pointer;
+    position: relative;
+    border-radius: 8px;
+    transition: background 0.2s ease;
 }
 
-input[type="date"]:focus {
-  border-color: #c41717;
-  box-shadow: 0 0 8px rgba(196,23,23,0.4);
-  outline: none;
-  transform: translateY(-1px) scale(1.02);
+.date-zone:hover {
+    background: rgba(0, 0, 0, 0.04);
 }
 
-input[type="date"]::-webkit-calendar-picker-indicator {
-  cursor: pointer;
-  filter: brightness(1.2);
-  padding: 8px;
+.date-zone.active-zone {
+    background: #fff;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.12);
 }
 
+/* The actual hidden input that triggers the calendar */
+.hidden-date-input {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 1; /* Sits above the text but below the AM/PM buttons */
+}
+
+.date-label {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--color-text);
+}
+
+.date-display {
+    display: block;
+    font-size: 0.9rem;
+    color: #717171;
+    white-space: nowrap;
+}
+
+/* AM/PM Toggle Styling */
+.time-ampm {
+    display: flex;
+    gap: 4px;
+    margin-top: 4px;
+    position: relative;
+    z-index: 2; /* Ensures buttons stay clickable over the hidden input */
+}
+
+.time-btn {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: #eee;
+    color: #555;
+    cursor: pointer;
+}
+
+.time-btn.active {
+    background: var(--color-primary);
+    color: white;
+}
 /* =================================== */
 
 textarea {
