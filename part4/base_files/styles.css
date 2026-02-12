@@ -100,10 +100,10 @@ header nav button:hover{
 }
 
 /* =======================
-    Date input styling: Creative Date Input
+    Date input styling 
 ============================ */
-input[type="date"],
-input[type="datetime-local"] {
+/* ===== Creative Date Input ===== */
+input[type="date"] {
   border: 2px solid var(--color-primary);
   border-radius: 12px;
   padding: 10px 16px;
@@ -116,32 +116,25 @@ input[type="datetime-local"] {
   cursor: pointer;
 }
 
-/* hover */
-input[type="date"]:hover,
-input[type="datetime-local"]:hover {
+input[type="date"]:hover {
   background: linear-gradient(145deg, #fff3c0, #fff);
   box-shadow: 6px 6px 15px rgba(0,0,0,0.12), -6px -6px 15px rgba(255,255,255,0.9);
 }
 
-/* focus */
-input[type="date"]:focus,
-input[type="datetime-local"]:focus {
+input[type="date"]:focus {
   border-color: #c41717;
   box-shadow: 0 0 8px rgba(196,23,23,0.4);
   outline: none;
   transform: translateY(-1px) scale(1.02);
 }
 
-/* calendar picker */
-input[type="date"]::-webkit-calendar-picker-indicator,
-input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+input[type="date"]::-webkit-calendar-picker-indicator {
   cursor: pointer;
   filter: brightness(1.2);
   padding: 8px;
 }
 
-/* ========================================================
-===========================================================*/
+/* =================================== */
 
 textarea {
   min-height: 120px;
@@ -817,82 +810,8 @@ select:focus {
   color: #222;
 }
 
-/* =========================
-   CUSTOM CALENDAR (DRAG SELECT)
-========================= */
-
-.calendar-wrapper {
-  max-width: 420px;
-  margin: 30px auto;
-  padding: 20px;
-  background: var(--color-white);
-  border-radius: 20px;
-  border: 1px solid var(--color-border);
-  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
-}
-
-.calendar-grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 8px;
-  user-select: none; /* important for drag */
-}
-
-.calendar-day {
-  padding: 12px 0;
-  text-align: center;
-  border-radius: 14px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: background 0.15s ease, transform 0.1s ease;
-}
-
-.calendar-day:hover {
-  background: #f3f3f3;
-}
-
-/* Dragging visual feedback */
-.calendar-day.dragging {
-  transform: scale(0.95);
-}
-
-/* Start + End circles */
-.range-start,
-.range-end {
-  background: var(--color-primary);
-  color: var(--color-white);
-  border-radius: 50%;
-}
-
-/* Middle selection */
-.range-middle {
-  background: #f8dede; /* soft light red to match your theme */
-  border-radius: 0;
-}
-
-/* Smooth connection edges */
-.range-start + .range-middle {
-  border-top-left-radius: 50%;
-  border-bottom-left-radius: 50%;
-}
-
-.range-middle + .range-end {
-  border-top-right-radius: 50%;
-  border-bottom-right-radius: 50%;
-}
-
-.date-display {
-  padding: 4px 0;
-  cursor: pointer;
-  font-size: 0.9rem;
-}
-
-.date-display:hover {
-  color: var(--color-primary);
-}
-
 /* ====================================================
-                  Footer Section
+      Footer
 ======================================================== */
 footer {
   background-color: var(--color-primary);
