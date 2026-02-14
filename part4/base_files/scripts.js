@@ -690,6 +690,10 @@ function setupAddReviewForm() {
     window.location.href = "index.html";
     return;
   }
+
+  const reviewsContainer = document.getElementById("reviews-container");
+  if (!reviewsContainer) return;
+
 /* =================================================
            --- Fetch existing reviews ---
 ==================================================== */
@@ -725,7 +729,8 @@ function setupAddReviewForm() {
       reviewsContainer.innerHTML = "<p>Failed to load reviews.</p>";
     }
   }
-   
+
+         loadReviews();
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
