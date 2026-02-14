@@ -1255,7 +1255,7 @@ footer ul li a:hover {
 }
 
 .details-button.danger {
-  background: #dc2626;          /* red */
+  background: linear-gradient(135deg, #ef4444, #dc2626);
   color: #fff;
   border: none;
   border-radius: 12px;
@@ -1266,18 +1266,18 @@ footer ul li a:hover {
   gap: 8px;
   cursor: pointer;
   box-shadow: 0 8px 18px rgba(0,0,0,0.12);
-  transition: transform 0.12s ease, box-shadow 0.12s ease, opacity 0.12s ease;
+  transition: all 0.18s cubic-bezier(.4,0,.2,1);
 }
 
 .details-button.danger:hover {
   opacity: 0.95;
-  transform: translateY(-1px);
-  box-shadow: 0 10px 22px rgba(0,0,0,0.16);
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px rgba(220, 38, 38, 0.28);
 }
 
 .details-button.danger:active {
-  transform: translateY(0px);
-  box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+  transform: translateY(0);
+  box-shadow: 0 8px 18px rgba(220, 38, 38, 0.18);
 }
 
 .details-button.danger:disabled {
@@ -1290,5 +1290,5 @@ footer ul li a:hover {
 .delete-wrapper {
   display: flex;
   justify-content: center;
-  margin: 30px 0;
+  margin: 32px 0;
 }
