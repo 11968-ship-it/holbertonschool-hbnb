@@ -21,8 +21,19 @@ The web client connects to the back-end API created in previous phases. It uses 
 - Handle authentication and session management using JWT.
 - Apply modern web development practices to build a dynamic web application.
 
+## Technologies Used
+- **Front-End**
+      - HTML5
+      - CSS3
+      - JavaScript (ES6)
+      - Fetch API
 
-## Project Structure?
+- **Back-End (from previous parts)**
+      - Flask
+      - REST API
+      - JWT Authentication
+
+## Project Structure
 
 ```
 part4/
@@ -150,190 +161,63 @@ In the browser:
 
 ## Task 2: Login
 
-1. Implement login using the back-end API.
-2. Store the returned JWT token in a cookie for session management.
+1. Implement login using the back-end API:
+   ```POST /api/v1/auth/login```
+3. Store the returned JWT token in a cookie for session management.
 
 ## Task 3: List of Places
 
 1. Display all places on the main page.
-2. Fetch data from the API.
-3. Implement client-side filtering by country.
-4. Redirect unauthenticated users to the login page.
+2. Fetch data from the API:
+   ```GET /api/v1/places/```
+4. Implement client-side filtering by country.
+5. Redirect unauthenticated users to the login page.
 
 ## Task 4: Place Details
 
-1. Fetch and display detailed information for a selected place.
-2. Allow authenticated users to access the add review form.
+1. Fetch and display detailed information for a selected place:
+   ```GET /api/v1/places/<place_id>```
+3. Allow authenticated users to access the add review form.
 
 ## Task 5: Add Review
 
 1. Implement a review submission form.
-2. Restrict access to authenticated users only.
+2. Sent review data using:
+   ```POST /api/v1/reviews/```
+4. Restrict access to authenticated users only.
 
+## Authentication Flow
+1. User logs in.
+2. API returns JWT token.
+3. Token is stored in browser cookie.
+4. Protected pages verify token existence.
+5. Requests include Authorization header:
+   ```Authorization: Bearer <token>```
 
+## Handling CORS
+During development, the client and API run on different ports, causing CORS errors.
 
-## API Tests (cURL)
-- Environment variables used
-      - ```ADMIN_TOKEN```: JWT for admin user
-      - ```USER_TOKEN```: JWT for normal user (place owner)
-      - ```USER2_TOKEN```: JWT for another normal user
-      - ```PLACE_ID```: Place created by USER_TOKEN
-      - ```AMENITY_ID```: Amenity created by admin
-      - ```REVIEW_ID```: Review created by USER2_TOKEN
-
-| Resource  | Endpoint | Method | Who | Expected | Actual | Result | Notes / Error |
-|---|---|---:|---|---|---|---|---|
-| Users | `/api/v1/users/` | POST | Admin | 201 | 201 | ✅ | Admin can create users |
-| Users | `/api/v1/users/` | POST | User | 403 | 403 | ✅ | `Admin privileges required` |
-| Places | `/api/v1/places/` | POST | User | 201 | 201 | ✅ | User can create place (owner_id = user) |
-| Places | `/api/v1/places/<place_id>` | PUT | Owner | 200 | 200 | ✅ | Must send required fields if validation requires them |
-| Places | `/api/v1/places/<place_id>` | PUT | Admin | 200 | 200 | ✅ | Admin bypass ownership |
-| Places | `/api/v1/places/<place_id>` | DELETE | Admin | 200 | 200 | ✅ | Admin bypass ownership works |
-| Amenities | `/api/v1/amenities/` | POST | User | 403 | 403 | ✅ | `Admin privileges required` |
-| Amenities | `/api/v1/amenities/` | POST | Admin | 201 | 201 | ✅ | Amenity created |
-| Amenities | `/api/v1/amenities/<amenity_id>` | PUT | Admin | 200 | 200 | ✅ | Amenity updated |
-| Amenities | `/api/v1/amenities/<amenity_id>` | DELETE | Admin | 200 | 200 | ✅ | Amenity deleted |
-| Reviews | `/api/v1/reviews/` | POST | Owner | 400 | 400 | ✅ | `You cannot review your own place.` |
-| Reviews | `/api/v1/reviews/` | POST | User2 | 201 | 201 | ✅ | Review created successfully |
-| Reviews | `/api/v1/reviews/` | POST | Same user2 again | 400 | 400 | ✅ | `You already reviewed this place.` (enforce unique user+place) |
-| Reviews | `/api/v1/reviews/<review_id>` | PUT | Other user | 403 | 403 | ✅ | `Unauthorized action` |
-| Reviews | `/api/v1/reviews/<review_id>` | PUT | Admin | 200 | 200 | ✅ | Admin bypass ownership |
-| Reviews | `/api/v1/reviews/<review_id>` | DELETE | Admin | 200 | 200 | ✅ | Admin bypass ownership |
-
-### Creating admin test on thr 29/1/2025
-
-<img width="1044" height="478" alt="image" src="https://github.com/user-attachments/assets/a643b493-7ae7-4a29-b7ba-cd55ffb5c135" />
-
-2. <img width="1060" height="879" alt="image" src="https://github.com/user-attachments/assets/7954e6f2-de45-4761-9871-42ae4eddc12c" />
-
-Login as Admin to Get JWT Token
-
-```bash
-curl -X POST "http://127.0.0.1:5000/api/v1/auth/login" \
-     -H "Content-Type: application/json" \
-     -d '{
-       "email": "admin@example.com",
-       "password": "admin123"
-     }'
-```
-Test Creating an Amenity (Admin Only)
-Replace <admin_token> with the actual token you received:
-
-```bash
-curl -X POST "http://127.0.0.1:5000/api/v1/amenities/" \
-     -H "Authorization: Bearer <admin_token>" \
-     -H "Content-Type: application/json" \
-     -d '{"name": "Swimming Pool"}'
-```
- Get All Amenities (Verify Creation)
-
- ```bash
-curl -X GET "http://127.0.0.1:5000/api/v1/amenities/"
-```
-Update an Amenity (Admin Only)
-```bash
-curl -X PUT "http://127.0.0.1:5000/api/v1/amenities/<amenity_id>" \
-     -H "Authorization: Bearer <admin_token>" \
-     -H "Content-Type: application/json" \
-     -d '{"name": "Updated Swimming Pool"}'
-```
-Test Non-Admin User (Optional - to verify access control)
-```bash
-# Register regular user
-curl -X POST "http://127.0.0.1:5000/api/v1/users/" \
-     -H "Content-Type: application/json" \
-     -d '{
-       "email": "user@example.com",
-       "password": "user123",
-       "first_name": "Regular",
-       "last_name": "User"
-     }'
-
-# Login as regular user
-curl -X POST "http://127.0.0.1:5000/api/v1/auth/login" \
-     -H "Content-Type: application/json" \
-     -d '{
-       "email": "user@example.com",
-       "password": "user123"
-     }'
-
-# Try to create amenity with regular user token (should fail)
-curl -X POST "http://127.0.0.1:5000/api/v1/amenities/" \
-     -H "Authorization: Bearer <regular_user_token>" \
-     -H "Content-Type: application/json" \
-     -d '{"name": "Gym"}'
-
+To resolve this, CORS support was added to the Flask API:
+```py
+from flask_cors import CORS
+CORS(app)
 ```
 
-## Database Schema
-
-### ER Diagram
-
-> The following ER diagram was generated using Mermaid.js and reflects the SQLAlchemy models used in the application.
-<img width="1167" height="875" alt="Screenshot (587)" src="https://github.com/user-attachments/assets/96e55801-558f-48d3-822e-8b4a7b159f7c" />
-
-This ER diagram represents the relational structure of the HBnB backend.  
-It defines users, places, reviews, amenities, and their relationships while enforcing data integrity through foreign keys and constraints.
-
-- A **User** can own multiple **Places** and write multiple **Reviews**.
-- A **Place** belongs to one **User** (owner) and can receive multiple **Reviews**.
-- A **Review** links a **User** to a **Place**, with a uniqueness constraint ensuring one review per user per place.
-- **Amenities** are linked to **Places** through a many-to-many relationship using the `Place_Amenity` join table.
-- Administrative privileges are handled via the `is_admin` flag on the `User` entity.
-
-This schema ensures normalized data storage, clear ownership rules, and consistent relationships across all core entities.
-
-erDiagram
-
-    USER {
-        char(36) id PK
-        varchar first_name
-        varchar last_name
-        varchar email "UNIQUE, NOT NULL"
-        varchar password "NOT NULL"
-        boolean is_admin "DEFAULT false"
-    }
-
-    PLACE {
-        char(36) id PK
-        varchar title "NOT NULL"
-        text description
-        decimal price "NOT NULL"
-        float latitude "NOT NULL"
-        float longitude "NOT NULL"
-        char(36) owner_id FK
-    }
-
-    REVIEW {
-        char(36) id PK
-        text text "NOT NULL"
-        int rating "CHECK 1..5"
-        char(36) user_id FK
-        char(36) place_id FK
-        %% also: UNIQUE(user_id, place_id)
-    }
-
-    AMENITY {
-        char(36) id PK
-        varchar name "UNIQUE, NOT NULL"
-    }
-
-    PLACE_AMENITY {
-        char(36) place_id PK, FK
-        char(36) amenity_id PK, FK
-    }
-
-    %% Relationships
-    USER  ||--o{ PLACE  : owns
-    USER  ||--o{ REVIEW : writes
-    PLACE ||--o{ REVIEW : receives
-
-    PLACE   ||--o{ PLACE_AMENITY : has
-    AMENITY ||--o{ PLACE_AMENITY : included_in
+This allows the web client to communicate with the API securely.
 
 # Conclusion
 
-Part 3 elevates the HBnB backend into a secure, scalable, and production-ready system. With authentication, authorization, and database persistence in place, the application is now aligned with industry-standard backend practices and ready for further expansion.
+Part 4 completes the HBnB project by integrating a fully functional front-end web client with the existing back-end API. Using HTML5, CSS3, and JavaScript (ES6), the application now provides a dynamic and interactive user experience without page reloads.
+
+Through this phase, we successfully:
+
+- Implemented JWT-based authentication on the client side
+- Managed user sessions using cookies
+- Connected the interface to RESTful API endpoints using the Fetch API
+- Applied client-side validation and filtering
+- Resolved CORS issues for cross-origin communication
+
+This phase demonstrates a full-stack integration where the frontend and backend work together securely and efficiently. The HBnB application is now a complete web platform that follows modern development practices and industry standards.
 
 # Authors
 - Lamyaa Mohammed Alghaihab 11955@holbertonstudents.com 💻✍️
