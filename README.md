@@ -183,8 +183,8 @@ Authentication is handled via:
 
 ## Authors
 
-Lamyaa Mohammed Alghaihab 11955@holbertonstudents.com 💻✍️
-Thekira A. Ahmed 11968@holbertonstudents.com 💻✍️
-Yara K. Alrasheed 11982@holbertonstudents.com 💻✍️
+* Lamyaa Mohammed Alghaihab 11955@holbertonstudents.com 💻✍️
+* Thekira A. Ahmed 11968@holbertonstudents.com 💻✍️
+* Yara K. Alrasheed 11982@holbertonstudents.com 💻✍️
 
-Holberton School
+**Holberton School**
