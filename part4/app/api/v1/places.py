@@ -27,6 +27,7 @@ review_model = api.model('PlaceReview', {
 place_input_model = api.model('PlaceInput', {
     'title': fields.String(required=True, description='Title of the place'),
     'description': fields.String(description='Description of the place'),
+    'location': fields.String(required=True, description='Location/city of the place'),
     'price': fields.Float(required=True, description='Price per night'),
     'latitude': fields.Float(required=True, description='Latitude of the place'),
     'longitude': fields.Float(required=True, description='Longitude of the place')
@@ -36,6 +37,7 @@ place_model = api.model('Place', {
     'id': fields.String(description='Place ID'),
     'title': fields.String(required=True, description='Title of the place'),
     'description': fields.String(description='Description of the place'),
+    'location': fields.String(required=True, description='Location/city of the place'),
     'price': fields.Float(required=True, description='Price per night'),
     'latitude': fields.Float(required=True, description='Latitude of the place'),
     'longitude': fields.Float(required=True, description='Longitude of the place'),
@@ -51,6 +53,7 @@ def serialize_place(place, include_owner=True, include_amenities=True, include_r
         "id": place.id,
         "title": place.title,
         "description": place.description,
+        "location": place.location,
         "price": place.price,
         "latitude": place.latitude,
         "longitude": place.longitude,
