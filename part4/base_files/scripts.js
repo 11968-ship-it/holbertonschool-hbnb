@@ -636,8 +636,8 @@ function displayPlaceDetails(place) {
       const reviewCard = document.createElement("div");
       reviewCard.className = "review-card";
       reviewCard.innerHTML = `
-        <p><strong>${escapeHtml(review.user ?? "User")}</strong> rated <strong>${review.rating ?? "?"}/5</strong></p>
-        <p>${escapeHtml(review.comment ?? "")}</p>
+        <p><strong>${escapeHtml(review.user_name ?? "User")}</strong> rated <strong>${review.rating ?? "?"}/5</strong></p>
+        <p>${escapeHtml(review.text ?? "")}</p>
       `;
       placeSection.appendChild(reviewCard);
     });
