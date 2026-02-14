@@ -2,7 +2,6 @@
 -- HBnB Schema (SQLite)
 -- ====================
 -- Drop existing tables if they exist (for clean setup)
-DROP TABLE IF EXISTS PlaceImage;
 DROP TABLE IF EXISTS Place_Amenity;
 DROP TABLE IF EXISTS Review;
 DROP TABLE IF EXISTS Place;
@@ -28,6 +27,7 @@ CREATE TABLE IF NOT EXISTS Place (
     id CHAR(36) PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
     description TEXT,
+    location VARCHAR(255) NOT NULL,
     price DECIMAL(10, 2) NOT NULL,
     latitude FLOAT NOT NULL,
     longitude FLOAT NOT NULL,
@@ -38,26 +38,6 @@ CREATE TABLE IF NOT EXISTS Place (
     -- Foreign key 
     FOREIGN KEY (owner_id) REFERENCES "User"(id) ON DELETE CASCADE
 );
--- ---------- Place Image --------------
-CREATE TABLE IF NOT EXISTS PlaceImage (
-    id CHAR(36) PRIMARY KEY,
-    place_id CHAR(36) NOT NULL,
-    image_url VARCHAR(500) NOT NULL,
-    display_order INTEGER DEFAULT 0,
-    is_primary BOOLEAN DEFAULT 0,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    
-    -- Foreign key: When place is deleted, delete all its images
-    FOREIGN KEY (place_id) REFERENCES Place(id) ON DELETE CASCADE,
-    
-    -- Ensure display order is unique per place
-    UNIQUE(place_id, display_order)
-);
-
--- Indexes
-CREATE INDEX IF NOT EXISTS idx_place_images_place_id ON PlaceImage(place_id);
-CREATE INDEX IF NOT EXISTS idx_place_images_primary ON PlaceImage(is_primary) WHERE is_primary = 1;
 -- ---------- Review --------------
 CREATE TABLE IF NOT EXISTS Review (
     id CHAR(36) PRIMARY KEY,
