@@ -15,13 +15,13 @@ The goal of the project is to apply concepts in:
 * Authentication & authorization
 
 ## Features
-👤 User registration & authentication
-🏡 Create, update, delete property listings
-🔍 Browse and search properties
-📅 Booking system
-⭐ Reviews and ratings
-🔐 Secure login system
-🗄 Database persistence
+* 👤 User registration & authentication
+* 🏡 Create, update, delete property listings
+* 🔍 Browse and search properties
+* 📅 Booking system
+* ⭐ Reviews and ratings
+* 🔐 Secure login system
+* 🗄 Database persistence
 
 ## Tech Stack
 ### Backend
