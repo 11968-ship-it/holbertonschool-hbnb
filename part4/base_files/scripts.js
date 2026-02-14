@@ -631,16 +631,19 @@ function displayPlaceDetails(place) {
     const reviewsTitle = document.createElement("h2");
     reviewsTitle.textContent = "Reviews";
     placeSection.appendChild(reviewsTitle);
-
-    place.reviews.forEach((review) => {
-      const reviewCard = document.createElement("div");
-      reviewCard.className = "review-card";
-      reviewCard.innerHTML = `
-        <p><strong>${escapeHtml(review.user_name ?? "User")}</strong> rated <strong>${review.rating ?? "?"}/5</strong></p>
-        <p>${escapeHtml(review.text ?? "")}</p>
-      `;
-      placeSection.appendChild(reviewCard);
-    });
+          
+          place.reviews.forEach((review) => {
+                  const reviewCard = document.createElement("div");
+                  reviewCard.className = "review-card";
+                  const name = review.user_name || "User";
+                  const rating = review.rating ?? "?";
+                  const text = review.text || "";
+                  reviewCard.innerHTML = `
+                  <p><strong>${escapeHtml(name)}</strong> rated <strong>${escapeHtml(rating)}/5</strong></p>
+                  <p>${escapeHtml(text)}</p>
+                  `;
+                  placeSection.appendChild(reviewCard);
+          });
   }
 }
 
