@@ -777,7 +777,7 @@ async function loadReviewPlacePreview(placeId) {
     }
 
     if (title) {
-      title.textContent = place.name;
+      title.textContent = place.title ?? place.name ?? "Unnamed place";
     }
 
   } catch (err) {
