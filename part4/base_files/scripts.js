@@ -602,7 +602,7 @@ function displayPlaceDetails(place) {
   const infoDiv = document.createElement("div");
   infoDiv.className = "place-info";
   infoDiv.innerHTML = `
-    <h1>${escapeHtml(place.name ?? "Unnamed place")}</h1>
+    <h1>${escapeHtml(place.title ?? place.name ?? "Unnamed place")}</h1>
     <p>${escapeHtml(place.description ?? "")}</p>
     <p><strong>Price:</strong> ${formatPrice(place.price)}</p>
   `;
