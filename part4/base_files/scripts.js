@@ -710,10 +710,14 @@ function setupAddReviewForm() {
       reviews.forEach((review) => {
         const div = document.createElement("div");
         div.className = "review-card";
-        div.innerHTML = `
-          <p><strong>${escapeHtml(review.user ?? "User")}</strong> rated ${review.rating ?? "?"}/5</p>
-          <p>${escapeHtml(review.text ?? review.comment ?? "")}</p>
-        `;
+              const name = review.user_name || "User";
+              const rating = review.rating ?? "?";
+              const text = review.text || "";
+              
+              div.innerHTML = `
+              <p><strong>${escapeHtml(name)}</strong> rated <strong>${rating}/5</strong></p>
+              <p>${escapeHtml(text)}</p>
+              `;
         reviewsContainer.appendChild(div);
       });
     } catch (err) {
