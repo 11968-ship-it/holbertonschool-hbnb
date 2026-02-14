@@ -667,56 +667,102 @@ function displayPlaceDetails(place) {
                   reviewCard.innerHTML = `
                   <p><strong>${escapeHtml(name)}</strong> rated <strong>${escapeHtml(rating)}/5</strong></p>
                   <p>${escapeHtml(text)}</p>
+
+                <div class="review-actions">
+                <button class="details-button danger review-delete-btn" style="display:none;"
+                data-review-id="${escapeHtml(review.id)}">
+                <i class="fa fa-trash"></i> Delete Review
+                </button>
+                </div>
                   `;
                   placeSection.appendChild(reviewCard);
           });
   }
+        
+        const token = getCookie("token");
+        const { userId, isAdmin } = token ? getAuthInfoFromToken(token) : { userId: null, isAdmin: false };
+        
+        setupReviewDeleteButtons(place, token, userId, isAdmin);
+        
+        setupPlaceDeleteButton(place, token, userId, isAdmin);
+}
 
-          // === DELETE PLACE (only admin or owner) ===
-  const token = getCookie("token");
-  const deleteBtn = document.getElementById("delete-place-btn");
+function setupReviewDeleteButtons(place, token, userId, isAdmin) {
+  if (!token) return;
 
-  if (deleteBtn) {
-    deleteBtn.style.display = "none"; // default hidden
+  document.querySelectorAll(".review-delete-btn").forEach((btn) => {
+    const reviewId = btn.dataset.reviewId;
 
-    if (token) {
-      const { userId, isAdmin } = getAuthInfoFromToken(token);
-      const ownerId = place.owner_id ? String(place.owner_id) : null;
+    const reviewObj = (place.reviews || []).find((r) => String(r.id) === String(reviewId));
+    const reviewOwnerId = reviewObj?.user_id ? String(reviewObj.user_id) : null;
 
-      const canDelete = isAdmin || (userId && ownerId && userId === ownerId);
+    const canDelete = isAdmin || (userId && reviewOwnerId && userId === reviewOwnerId);
+    if (!canDelete) return;
 
-      if (canDelete) {
-        deleteBtn.style.display = "inline-block";
+    btn.style.display = "inline-flex";
 
-        deleteBtn.onclick = async () => {
-          const ok = confirm("Are you sure you want to delete this place?");
-          if (!ok) return;
+    btn.onclick = async () => {
+      if (!confirm("Delete this review?")) return;
 
-          try {
-            const res = await fetch(`${API_BASE_URL}/places/${place.id}`, {
-              method: "DELETE",
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            });
+      try {
+        const res = await fetch(`${API_BASE_URL}/places/${place.id}/reviews/${reviewId}`, {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
-            const data = await res.json().catch(() => ({}));
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) {
+          alert(data?.error || data?.message || "Failed to delete review");
+          return;
+        }
 
-            if (!res.ok) {
-              alert(data?.error || data?.message || "Failed to delete place");
-              return;
-            }
-
-            alert("Place deleted successfully!");
-            window.location.href = "index.html";
-          } catch (err) {
-            console.error(err);
-            alert("Network error while deleting place");
-          }
-        };
+        alert("Review deleted!");
+        fetchPlaceDetails(place.id, token);
+      } catch (err) {
+        console.error(err);
+        alert("Network error while deleting review");
       }
+    };
+  });
+}
+
+function setupPlaceDeleteButton(place, token, userId, isAdmin) {
+  const deleteBtn = document.getElementById("delete-place-btn");
+  if (!deleteBtn) return;
+
+  deleteBtn.style.display = "none";
+
+  if (!token) return;
+
+  const ownerId = place.owner_id ? String(place.owner_id) : null;
+  const canDelete = isAdmin || (userId && ownerId && userId === ownerId);
+
+  if (!canDelete) return;
+
+  deleteBtn.style.display = "inline-flex";
+
+  deleteBtn.onclick = async () => {
+    if (!confirm("Are you sure you want to delete this place?")) return;
+
+    try {
+      const res = await fetch(`${API_BASE_URL}/places/${place.id}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        alert(data?.error || data?.message || "Failed to delete place");
+        return;
+      }
+
+      alert("Place deleted successfully!");
+      window.location.href = "index.html";
+    } catch (err) {
+      console.error(err);
+      alert("Network error while deleting place");
     }
-  }
+  };
 }
 
 function getFallbackImage(place) {
