@@ -198,6 +198,10 @@ class PlaceReviewList(Resource):
                 "text": r.text,
                 "rating": r.rating,
                 "user_id": r.user.id if r.user else r.user_id,
+                "user_name": (
+                    f"{r.user.first_name} {r.user.last_name}"
+                    if r.user else "User"
+                ),
                 "place_id": place_id
             }
             for r in place.reviews
