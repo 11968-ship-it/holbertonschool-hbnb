@@ -1298,3 +1298,11 @@ footer ul li a:hover {
   justify-content: center;
   margin-top: 12px;
 }
+
+.section-divider{
+  border: 0;
+  height: 1px;
+  background: rgba(0,0,0,0.08);
+  margin: 18px auto;
+  width: min(900px, 92%);
+}
