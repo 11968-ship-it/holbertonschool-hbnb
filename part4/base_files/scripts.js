@@ -709,7 +709,7 @@ function setupAddReviewForm() {
         div.className = "review-card";
         div.innerHTML = `
           <p><strong>${escapeHtml(review.user ?? "User")}</strong> rated ${review.rating ?? "?"}/5</p>
-          <p>${escapeHtml(review.comment ?? "")}</p>
+          <p>${escapeHtml(review.text ?? review.comment ?? "")}</p>
         `;
         reviewsContainer.appendChild(div);
       });
@@ -728,13 +728,17 @@ function setupAddReviewForm() {
     if (!comment) return alert("Please enter a review.");
 
     try {
-const response = await fetch(`${API_BASE_URL}/places/${placeId}/reviews`, {
+const response = await fetch(`${API_BASE_URL}/reviews/`, {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
-    Authorization: `Bearer ${token}`,
+    "Authorization": `Bearer ${token}`,
   },
-  body: JSON.stringify({ rating, comment }),
+  body: JSON.stringify({
+    place_id: placeId,
+    text: comment,
+    rating: Number(rating),
+  }),
 });
 
       if (!response.ok) throw new Error("Failed to submit review");
