@@ -728,14 +728,14 @@ function setupAddReviewForm() {
     if (!comment) return alert("Please enter a review.");
 
     try {
-      const response = await fetch(`${API_BASE_URL}/places/${placeId}/reviews`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ rating, comment }),
-      });
+const response = await fetch(`${API_BASE_URL}/places/${placeId}/reviews`, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  },
+  body: JSON.stringify({ rating, comment }),
+});
 
       if (!response.ok) throw new Error("Failed to submit review");
 
