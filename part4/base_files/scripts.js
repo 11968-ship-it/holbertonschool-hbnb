@@ -634,6 +634,18 @@ function displayPlaceDetails(place) {
   `;
   placeSection.appendChild(infoDiv);
 
+// === DELETE ===
+const deleteWrapper = document.createElement("div");
+deleteWrapper.className = "delete-wrapper";
+
+deleteWrapper.innerHTML = `
+  <button id="delete-place-btn" class="details-button danger" style="display:none;">
+    <i class="fa fa-trash"></i> Delete Place
+  </button>
+`;
+
+placeSection.appendChild(deleteWrapper);
+
   // === AMENITIES ===
   if (place.amenities?.length) {
     const amenitiesTitle = document.createElement("h2");
