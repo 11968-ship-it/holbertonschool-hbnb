@@ -1286,3 +1286,9 @@ footer ul li a:hover {
   transform: none;
   box-shadow: none;
 }
+
+.delete-wrapper {
+  display: flex;
+  justify-content: center;
+  margin: 30px 0;
+}
