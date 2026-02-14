@@ -1,4 +1,5 @@
 # # HBnB Project - Part 4: Simple Web Client
+<img width="2454" height="1036" alt="logo" src="https://github.com/user-attachments/assets/d6175ea6-3b88-4986-9123-10996ef5635f" />
 
 In this phase of the project, the focus is on building the front-end of the application using HTML5, CSS3, and JavaScript (ES6). The goal is to design and implement an interactive user interface that communicates with the back-end API developed in previous parts.
 
