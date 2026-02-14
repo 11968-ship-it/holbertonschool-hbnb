@@ -671,34 +671,8 @@ function displayPlaceDetails(place) {
                   placeSection.appendChild(reviewCard);
           });
   }
-}
 
-function getFallbackImage(place) {
-  const imgs = ["images/place-01.jpg", "images/place-02.jpg", "images/place-03.jpg"];
-  const id = String(place.id || "");
-  const idx = id.length ? (id.charCodeAt(id.length - 1) % imgs.length) : 0;
-  return imgs[idx];
-}
-
-function getPlaceImages(place) {
-  // If API sends an array:
-  if (Array.isArray(place?.images) && place.images.length) return place.images;
-  if (Array.isArray(place?.photos) && place.photos.length) return place.photos;
-
-  // If API sends single image:
-  if (place?.image_url) return [place.image_url];
-
-  // Otherwise: fallbacks
-  return [getFallbackImage(place), "images/place-02.jpg"];
-}
-
-function getPlaceCardImage(place) {
-  // for index page thumbnail (just 1 image)
-  const imgs = getPlaceImages(place);
-  return imgs[0];
-}
-
-  // === DELETE PLACE (only admin or owner) ===
+          // === DELETE PLACE (only admin or owner) ===
   const token = getCookie("token");
   const deleteBtn = document.getElementById("delete-place-btn");
 
@@ -743,6 +717,32 @@ function getPlaceCardImage(place) {
       }
     }
   }
+}
+
+function getFallbackImage(place) {
+  const imgs = ["images/place-01.jpg", "images/place-02.jpg", "images/place-03.jpg"];
+  const id = String(place.id || "");
+  const idx = id.length ? (id.charCodeAt(id.length - 1) % imgs.length) : 0;
+  return imgs[idx];
+}
+
+function getPlaceImages(place) {
+  // If API sends an array:
+  if (Array.isArray(place?.images) && place.images.length) return place.images;
+  if (Array.isArray(place?.photos) && place.photos.length) return place.photos;
+
+  // If API sends single image:
+  if (place?.image_url) return [place.image_url];
+
+  // Otherwise: fallbacks
+  return [getFallbackImage(place), "images/place-02.jpg"];
+}
+
+function getPlaceCardImage(place) {
+  // for index page thumbnail (just 1 image)
+  const imgs = getPlaceImages(place);
+  return imgs[0];
+}
 
 /* =========================================================
               ADD REVIEW FORM
