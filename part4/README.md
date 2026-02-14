@@ -95,6 +95,11 @@ part4/
 
 ### Directory Purpose
 
+#### **Front-End**
+- **base_files/**
+Contains all client-side files including HTML pages, CSS styling, JavaScript logic, and static assets (images). This directory represents the web client interface.
+
+#### **Back-end**
 - **api/**: Defines REST API endpoints (users, places, reviews, amenities).
 - **models/**: Contains core entity classes.
 - **services/**: Implements the Facade pattern to coordinate interactions between layers.
