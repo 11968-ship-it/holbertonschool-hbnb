@@ -9,6 +9,7 @@ class Place(BaseModel):
     
     title = db.Column(db.String(100), nullable=False) #Title of the place.
     description = db.Column(db.Text, nullable=True) # Description of the place.
+    location = db.Column(db.String(255), nullable=False)  # Location/city of the place
     price = db.Column(db.Float, nullable=False) # Price per night.
     latitude = db.Column(db.Float, nullable=False) # Latitude of the place.
     longitude = db.Column(db.Float, nullable=False) # Longitude of the place.
@@ -32,6 +33,18 @@ class Place(BaseModel):
             raise ValueError("Title cannot be empty")
         if len(value) > 100:
             raise ValueError("Title must be at most 100 characters")
+        return value
+
+    @validates('location')
+    def validate_location(self, key, value):
+        """Validate location is not empty and within length."""
+        if not isinstance(value, str):
+            raise TypeError("Location must be a string")
+        value = value.strip()
+        if not value:
+            raise ValueError("Location cannot be empty")
+        if len(value) > 255:
+            raise ValueError("Location must be at most 255 characters")
         return value
 
     @validates('price')
@@ -63,4 +76,4 @@ class Place(BaseModel):
         return value
 
     def __repr__(self):
-        return f"<Place '{self.title}' - ${self.price}/night>"
+        return f"<Place '{self.title}' in {self.location} - ${self.price}/night>"
