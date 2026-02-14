@@ -63,6 +63,7 @@ class HBnBFacade:
         place_data_clean = {
             'title': place_data['title'],
             'description': place_data.get('description', ''),
+            'location': place_data['location'],
             'price': place_data['price'],
             'latitude': place_data['latitude'],
             'longitude': place_data['longitude'],
