@@ -57,7 +57,7 @@ def serialize_place(place, include_owner=True, include_amenities=True, include_r
         "price": place.price,
         "latitude": place.latitude,
         "longitude": place.longitude,
-        "owner_id": place.owner.id if place.owner else None
+        "owner_id": str(place.owner_id) if place.owner_id else None
     }
 
     if include_owner and place.owner:
@@ -170,13 +170,15 @@ class PlaceResource(Resource):
         """Delete a place (admin bypass allowed)"""
         current_user = get_jwt()
         user_id = str(current_user.get('sub'))
-        is_admin = current_user.get('is_admin', False)
+        is_admin = bool(current_user.get('is_admin', False))
 
         place = facade.get_place(place_id)
         if not place:
             return {"error": "Place not found"}, 404
 
-        if not is_admin and str(place.owner_id) != user_id:
+        owner_id = str(place.owner_id)
+
+        if not is_admin and owner_id != user_id:
             return {"error": "Unauthorized action"}, 403
 
         facade.delete_place(place_id)
