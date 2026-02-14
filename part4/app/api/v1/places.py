@@ -80,7 +80,11 @@ def serialize_place(place, include_owner=True, include_amenities=True, include_r
                 "id": r.id,
                 "text": r.text,
                 "rating": r.rating,
-                "user_id": r.user_id if r.user else r.user_id
+                "user_id": r.user_id if r.user else r.user_id,
+                "user_name": (
+                    f"{r.user.first_name} {r.user.last_name}"
+                    if r.user else "User"
+                )
             }
             for r in place.reviews
         ]
