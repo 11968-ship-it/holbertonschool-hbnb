@@ -221,86 +221,87 @@ function setSignupLoading(isLoading, button) {
          ADD PLACE FORM HANDLING
 ========================================================= */
 function handleAddPlaceForm() {
-  const addPlaceForm = document.getElementById("add-place-form");
-  if (!addPlaceForm) return;
-
-  const token = getCookie("token");
-  if (!token) {
-    window.location.href = "index.html";
-    return;
-  }
-
-  const titleInput = document.getElementById("title");
-  const descriptionInput = document.getElementById("description");
-  const priceInput = document.getElementById("price");
-  const latitudeInput = document.getElementById("latitude");
-  const longitudeInput = document.getElementById("longitude");
-  const imageInput = document.getElementById("image_url");
-  const errorEl = document.getElementById("error-message");
-  const addPlaceBtn = document.getElementById("add-place-btn");
-
-  addPlaceForm.addEventListener("submit", async (event) => {
-    event.preventDefault();
-    if (errorEl) errorEl.textContent = "";
-
-    // Get form values
-    const title = titleInput?.value.trim();
-    const description = descriptionInput?.value.trim();
-    const price = parseFloat(priceInput?.value);
-    const latitude = parseFloat(latitudeInput?.value);
-    const longitude = parseFloat(longitudeInput?.value);
-    const imageUrl = imageInput?.value.trim();
-
-    // Validation
-    if (!title || !description || !price || !latitude || !longitude) {
-      if (errorEl) errorEl.textContent = "All fields are required.";
-      return;
-    }
-
-    if (price <= 0) {
-      if (errorEl) errorEl.textContent = "Price must be greater than 0.";
-      return;
-    }
-
-    if (latitude < -90 || latitude > 90) {
-      if (errorEl) errorEl.textContent = "Latitude must be between -90 and 90.";
-      return;
-    }
-
-    if (longitude < -180 || longitude > 180) {
-      if (errorEl) errorEl.textContent = "Longitude must be between -180 and 180.";
-      return;
-    }
-
-    setAddPlaceLoading(true, addPlaceBtn);
-
-    try {
-      const placeData = await createPlace(token, {
-        title,
-        description,
-        price,
-        latitude,
-        longitude,
-        image_url: imageUrl
-      });
-      
-      // Show success message
-      addPlaceBtn.textContent = "✓ Created!";
-      addPlaceBtn.style.backgroundColor = "#28a745";
-      
-      setTimeout(() => {
-        window.location.href = "index.html";
-      }, 1500);
-      
-      // Redirect to home page
-    } catch (error) {
-      if (errorEl) {
-        errorEl.textContent = error.message || "Failed to create place. Please try again.";
-      }
-    } finally {
-      setAddPlaceLoading(false, addPlaceBtn);
-    }
-  });
+        const addPlaceForm = document.getElementById("add-place-form");
+        if (!addPlaceForm) return;
+        const token = getCookie("token");
+        if (!token) {
+                window.location.href = "index.html";
+                return;
+        }
+        const titleInput = document.getElementById("title");
+        const descriptionInput = document.getElementById("description");
+        const locationInput = document.getElementById("location");
+        const priceInput = document.getElementById("price");
+        const latitudeInput = document.getElementById("latitude");
+        const longitudeInput = document.getElementById("longitude");
+        const imageInput = document.getElementById("image_url");
+        const errorEl = document.getElementById("error-message");
+        const addPlaceBtn = document.getElementById("add-place-btn");
+        
+        addPlaceForm.addEventListener("submit", async (event) => {
+                event.preventDefault();
+                if (errorEl) errorEl.textContent = "";
+                
+                // Get form values
+                const title = titleInput?.value.trim();
+                const description = descriptionInput?.value.trim();
+                const location = locationInput?.value.trim();
+                const price = parseFloat(priceInput?.value);
+                const latitude = parseFloat(latitudeInput?.value);
+                const longitude = parseFloat(longitudeInput?.value);
+                const imageUrl = imageInput?.value.trim();
+                
+                // Validation
+                if (!title || !description || !location || !price || !latitude || !longitude) {
+                        if (errorEl) errorEl.textContent = "All fields are required.";
+                        return;
+                }
+                
+                if (price <= 0) {
+                        if (errorEl) errorEl.textContent = "Price must be greater than 0.";
+                        return;
+                }
+                
+                if (latitude < -90 || latitude > 90) {
+                        if (errorEl) errorEl.textContent = "Latitude must be between -90 and 90.";
+                        return;
+                }
+                
+                if (longitude < -180 || longitude > 180) {
+                        if (errorEl) errorEl.textContent = "Longitude must be between -180 and 180.";
+                        return;
+                }
+                
+                setAddPlaceLoading(true, addPlaceBtn);
+                
+                try {
+                        const placeData = await createPlace(token, {
+                                title,
+                                description,
+                                location,
+                                price,
+                                latitude,
+                                longitude,
+                                image_url: imageUrl
+                        });
+                        
+                        // Show success message
+                        addPlaceBtn.textContent = "✓ Created!";
+                        addPlaceBtn.style.backgroundColor = "#28a745";
+                        
+                        setTimeout(() => {
+                                window.location.href = "index.html";
+                        }, 1500);
+                        
+                        // Redirect to home page
+                } catch (error) {
+                        if (errorEl) {
+                                errorEl.textContent = error.message || "Failed to create place. Please try again.";
+                        }
+                } finally {
+                        setAddPlaceLoading(false, addPlaceBtn);
+                }
+        });
 }
 
 function setAddPlaceLoading(isLoading, button) {
@@ -528,49 +529,50 @@ async function fetchPlaces(token) {
                 Searching bar
 ================================================ */
 function setupIndexSearch() {
-  const form = document.getElementById("filter-form");
-  if (!form) return;
-
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-
-    const location = document.getElementById("location")?.value.trim().toLowerCase();
-    const guests = Number(document.getElementById("guests")?.value || 0);
-    const maxPrice = Number(document.getElementById("price-range")?.value || Infinity);
-
-    const filtered = ALL_PLACES.filter((p) => {
-      const name = String(p.title || p.name || "").toLowerCase();
-      const desc = String(p.description || "").toLowerCase();
-      const price = Number(p.price ?? Infinity);
-
-      const matchesLocation =
-        !location ||
-        name.includes(location) ||
-        desc.includes(location);
-
-      const matchesPrice = price <= maxPrice;
-      const maxGuests = Number(p.max_guests ?? 0);
-      const matchesGuests = !guests || (maxGuests >= guests);
-
-  // Date filter
-  let matchesDate = true;
-  const checkInText = document.getElementById("checkin-display")?.textContent;
-  const checkOutText = document.getElementById("checkout-display")?.textContent;
-
-  // Only filter if the user actually selected dates
-  if (checkInText !== "Add dates" && checkOutText !== "Add dates" && p.available_from && p.available_to) {
-    const checkIn = new Date(checkInText);
-    const checkOut = new Date(checkOutText);
-    const availableFrom = new Date(p.available_from);
-    const availableTo = new Date(p.available_to);
-    matchesDate = availableFrom <= checkIn && availableTo >= checkOut;
-  }
-       
-     return matchesLocation && matchesPrice && matchesGuests && matchesDate;
-    });
-
-    displayPlaces(filtered);
-  });
+        const form = document.getElementById("filter-form");
+        if (!form) return;
+        
+        form.addEventListener("submit", (e) => {
+                e.preventDefault();
+                
+                const location = document.getElementById("location")?.value.trim().toLowerCase();
+                const guests = Number(document.getElementById("guests")?.value || 0);
+                const maxPrice = Number(document.getElementById("price-range")?.value || Infinity);
+                
+                const filtered = ALL_PLACES.filter((p) => {
+                        const name = String(p.title || p.name || "").toLowerCase();
+                        const desc = String(p.description || "").toLowerCase();
+                        const placeLocation = String(p.location || "").toLowerCase();
+                        const price = Number(p.price ?? Infinity);
+                        
+                        const matchesLocation =
+                                !location ||
+                                name.includes(location) ||
+                                desc.includes(location) ||
+                                placeLocation.includes(location);
+                        
+                        const matchesPrice = price <= maxPrice;
+                        const maxGuests = Number(p.max_guests ?? 0);
+                        const matchesGuests = !guests || (maxGuests >= guests);
+                        
+                        // Date filter
+                        let matchesDate = true;
+                        const checkInText = document.getElementById("checkin-display")?.textContent;
+                        const checkOutText = document.getElementById("checkout-display")?.textContent;
+                        
+                        // Only filter if the user actually selected dates
+                        if (checkInText !== "Add dates" && checkOutText !== "Add dates" && p.available_from && p.available_to) {
+                                const checkIn = new Date(checkInText);
+                                const checkOut = new Date(checkOutText);
+                                const availableFrom = new Date(p.available_from);
+                                const availableTo = new Date(p.available_to);
+                                matchesDate = availableFrom <= checkIn && availableTo >= checkOut;
+                        }
+                        
+                        return matchesLocation && matchesPrice && matchesGuests && matchesDate;
+                });
+                displayPlaces(filtered);
+        });
 }
 
 /* =========================================================
