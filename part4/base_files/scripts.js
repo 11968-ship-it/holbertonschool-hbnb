@@ -446,13 +446,39 @@ function handleAuthUI() {
 }
 
 /* =========================================================
-             COOKIE HELPERS
+                        HELPERS
 ========================================================= */
 function setCookie(name, value, days) {
   const maxAge = days ? `; max-age=${days * 24 * 60 * 60}` : "";
   const sameSite = "; samesite=lax";
   const secure = location.protocol === "https:" ? "; secure" : "";
   document.cookie = `${encodeURIComponent(name)}=${encodeURIComponent(value)}${maxAge}; path=/${sameSite}${secure}`;
+}
+
+function decodeJwt(token) {
+  try {
+    const payload = token.split(".")[1];
+    const base64 = payload.replace(/-/g, "+").replace(/_/g, "/");
+    const json = decodeURIComponent(
+      atob(base64)
+        .split("")
+        .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
+        .join("")
+    );
+    return JSON.parse(json);
+  } catch {
+    return null;
+  }
+}
+
+function getAuthInfoFromToken(token) {
+  const decoded = decodeJwt(token);
+  if (!decoded) return { userId: null, isAdmin: false };
+
+  const userId = decoded.sub ? String(decoded.sub) : null;
+  const isAdmin = Boolean(decoded.is_admin);
+
+  return { userId, isAdmin };
 }
 
 /* =========================================================
@@ -671,6 +697,52 @@ function getPlaceCardImage(place) {
   const imgs = getPlaceImages(place);
   return imgs[0];
 }
+
+  // === DELETE PLACE (only admin or owner) ===
+  const token = getCookie("token");
+  const deleteBtn = document.getElementById("delete-place-btn");
+
+  if (deleteBtn) {
+    deleteBtn.style.display = "none"; // default hidden
+
+    if (token) {
+      const { userId, isAdmin } = getAuthInfoFromToken(token);
+      const ownerId = place.owner_id ? String(place.owner_id) : null;
+
+      const canDelete = isAdmin || (userId && ownerId && userId === ownerId);
+
+      if (canDelete) {
+        deleteBtn.style.display = "inline-block";
+
+        deleteBtn.onclick = async () => {
+          const ok = confirm("Are you sure you want to delete this place?");
+          if (!ok) return;
+
+          try {
+            const res = await fetch(`${API_BASE_URL}/places/${place.id}`, {
+              method: "DELETE",
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            });
+
+            const data = await res.json().catch(() => ({}));
+
+            if (!res.ok) {
+              alert(data?.error || data?.message || "Failed to delete place");
+              return;
+            }
+
+            alert("Place deleted successfully!");
+            window.location.href = "index.html";
+          } catch (err) {
+            console.error(err);
+            alert("Network error while deleting place");
+          }
+        };
+      }
+    }
+  }
 
 /* =========================================================
               ADD REVIEW FORM
