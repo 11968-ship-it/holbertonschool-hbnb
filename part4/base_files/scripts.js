@@ -629,6 +629,10 @@ function displayPlaceDetails(place) {
   infoDiv.className = "place-info";
   infoDiv.innerHTML = `
     <h1>${escapeHtml(place.title ?? place.name ?? "Unnamed place")}</h1>
+    <p class="place-location">
+    <i class="fa fa-map-marker-alt"></i>
+    ${escapeHtml(place.location ?? "Location not specified")}
+    </p>
     <p>${escapeHtml(place.description ?? "")}</p>
     <p><strong>Price:</strong> ${formatPrice(place.price)}</p>
   `;
