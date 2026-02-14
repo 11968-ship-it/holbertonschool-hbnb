@@ -1242,3 +1242,14 @@ footer ul li a:hover {
   text-align: center;
   margin-bottom: 20px;
 }
+
+/* =========================
+   FORM HELPER TEXT STYLING
+========================= */
+.signup-form small {
+  display: block;
+  color: #666;
+  font-size: 0.85rem;
+  margin-top: 4px;
+  margin-bottom: 8px;
+}
