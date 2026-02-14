@@ -23,12 +23,12 @@ The web client connects to the back-end API created in previous phases. It uses 
 - Apply modern web development practices to build a dynamic web application.
 
 ## Technologies Used
-- **Front-End**
+### **Front-End**
 * HTML5
 * CSS3
 * JavaScript (ES6)
 * Fetch API
-- **Back-End (from previous parts)**
+### **Back-End (from previous parts)**
 * Flask
 * REST API
 * JWT Authentication
