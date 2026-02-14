@@ -38,7 +38,7 @@ The goal of the project is to apply concepts in:
 * Dev Tools
 * Git & GitHub
 
-📂 Project Structure
+## Project Structure
 ```
 holbertonschool-hbnb/
 │
