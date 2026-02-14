@@ -24,15 +24,14 @@ The web client connects to the back-end API created in previous phases. It uses 
 
 ## Technologies Used
 - **Front-End**
-      - HTML5
-      - CSS3
-      - JavaScript (ES6)
-      - Fetch API
-
+* HTML5
+* CSS3
+* JavaScript (ES6)
+* Fetch API
 - **Back-End (from previous parts)**
-      - Flask
-      - REST API
-      - JWT Authentication
+* Flask
+* REST API
+* JWT Authentication
 
 ## Project Structure
 
