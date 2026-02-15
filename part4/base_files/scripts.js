@@ -641,9 +641,6 @@ function displayPlaceDetails(place) {
 
   placeSection.innerHTML = "";
 
-        console.log("PLACE OBJECT:", place);
-console.log("AMENITIES RAW:", place.amenities, "TYPE:", typeof place.amenities);
-
   // === IMAGES ===
   const images = getPlaceImages(place);
   const imagesContainer = document.createElement("div");
@@ -660,17 +657,15 @@ console.log("AMENITIES RAW:", place.amenities, "TYPE:", typeof place.amenities);
 
   // === INFO ===
   const infoDiv = document.createElement("div");
-  infoDiv.className = "place-info";
-  infoDiv.innerHTML = `
-    <h1>${escapeHtml(place.title ?? place.name ?? "Unnamed place")}</h1>
-    <p class="place-location">
-    <i class="fa fa-map-marker-alt"></i>
-    ${escapeHtml(place.location ?? "Location not specified")}
-    </p>
-    <p>${escapeHtml(place.description ?? "")}</p>
-    <p><strong>Price:</strong> ${formatPrice(place.price)}</p>
-  `;
-  placeSection.appendChild(infoDiv);
+        infoDiv.className = "place-info";
+        infoDiv.innerHTML = `
+        <h1>${escapeHtml(place.title || place.name || "Unnamed place")}</h1>
+        ${place.owner ? `<p><strong>Host:</strong> ${escapeHtml(place.owner.first_name || "Host")}</p>` : ''}
+        <p><strong>Price per night:</strong> ${formatPrice(place.price)}</p>
+        ${place.location ? `<p><strong>Location:</strong> ${escapeHtml(place.location)}</p>` : ''}
+        <p>${escapeHtml(place.description || "")}</p>
+        `;
+        placeSection.appendChild(infoDiv);
 
 // === DELETE ===
 const deleteWrapper = document.createElement("div");
@@ -703,7 +698,7 @@ if (amenities.length) {
     ul.appendChild(li);
   });
 
-  // Put amenities inside the info box (best UX)
+  // Put amenities inside the info box
   infoDiv.appendChild(amenitiesTitle);
   infoDiv.appendChild(ul);
 }
