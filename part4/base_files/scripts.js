@@ -548,9 +548,11 @@ async function fetchPlaceDetails(placeId, token) {
     const data = await response.json();
     displayPlaceDetails(data);
   } catch (error) {
-    console.error(error);
-    const placeSection = document.getElementById("place-details");
-    if (placeSection) placeSection.innerHTML = `<p>Failed to load place details.</p>`;
+          console.error(error);
+          showToast("Failed to load place", error.message || "Please try again.");
+          
+          const placeSection = document.getElementById("place-details");
+          if (placeSection) placeSection.innerHTML = `<p>Failed to load place details.</p>`;
   }
 }
 
