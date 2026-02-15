@@ -67,34 +67,36 @@ document.addEventListener("DOMContentLoaded", () => {
          addReview Section
 ====================================
 */
-  const addReviewSection = document.getElementById("add-review");
-  addReviewLink.href = `add_review.html?place_id=${encodeURIComponent(placeId)}`;
-  if (token && addReviewSection && addReviewLink && placeId) {
-    addReviewSection.style.display = "block";
-    addReviewLink.href = `add_review.html?id=${encodeURIComponent(placeId)}`;
-  } else if (addReviewSection) {
-    addReviewSection.style.display = "none";
-  }
+          const addReviewSection = document.getElementById("add-review");
+          const addReviewLink = document.getElementById("add-review-link");
 
-  if (!placeId) {
-    const placeSection = document.getElementById("place-details");
-    if (placeSection) {
-      placeSection.innerHTML = `<p>No place ID provided in the URL. Please go back to <a href="index.html">Home</a>.</p>`;
-    }
-  } else {
-    fetchPlaceDetails(placeId, token);
+          if (token && addReviewSection && addReviewLink && placeId) {
+                  addReviewSection.style.display = "block";
+                  addReviewLink.href = `add_review.html?place_id=${encodeURIComponent(placeId)}`; // CHANGED
+          } else if (addReviewSection) {
+                  addReviewSection.style.display = "none";
+          }
+          
+          if (!placeId) {
+                  const placeSection = document.getElementById("place-details");
+                  if (placeSection) {
+                          placeSection.innerHTML = `<p>No place ID provided in the URL. Please go back to <a href="index.html">Home</a>.</p>`;
+                  }
+          } else {
+                  fetchPlaceDetails(placeId, token);
+          }
   }
- }
-
-    if (currentPage === 'review') {
-       const placeId = getPlaceIdFromURL();
-       if (!token || !placeId) {
-         window.location.href = "index.html";
-         return;
-       }
-       loadReviewPlacePreview(placeId);   // 🔥 THIS loads the image
-       setupAddReviewForm();
-    }
+        if (currentPage === 'review') {
+                const params = new URLSearchParams(window.location.search);
+                const placeId = params.get("place_id") || params.get("id");
+                
+                if (!token || !placeId) {
+                        window.location.href = "index.html";
+                        return;
+                }
+                loadReviewPlacePreview(placeId);   //  THIS loads the image
+                setupAddReviewForm();
+        }
 });
 
  // --- MODAL CLOSE BUTTON ---
