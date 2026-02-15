@@ -513,6 +513,36 @@ function showToast(title, message, type="error", timeout=3500) {
   if (timeout) setTimeout(() => t.remove(), timeout);
 }
 
+let leafletMap;
+
+function renderLeafletMap(place) {
+  const el = document.getElementById("map");
+  if (!el) return;
+
+  const lat = Number(place.latitude);
+  const lng = Number(place.longitude);
+  if (!Number.isFinite(lat) || !Number.isFinite(lng)) {
+    el.innerHTML = "<p>Location not available.</p>";
+    return;
+  }
+
+  if (typeof L === "undefined") {
+    console.warn("Leaflet not loaded");
+    return;
+  }
+
+  if (leafletMap) leafletMap.remove(); // prevent duplicates
+  leafletMap = L.map(el).setView([lat, lng], 13);
+
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    attribution: "&copy; OpenStreetMap contributors",
+  }).addTo(leafletMap);
+
+  L.marker([lat, lng]).addTo(leafletMap)
+    .bindPopup(escapeHtml(place.title ?? place.name ?? "Place"))
+    .openPopup();
+}
+
 /* =========================================================
                  LOGOUT FUNCTIONALITY
 ========================================================= */
@@ -749,6 +779,8 @@ if (amenities.length) {
         const token = getCookie("token");
         const { userId, isAdmin } = token ? getAuthInfoFromToken(token) : { userId: null, isAdmin: false };
         setupPlaceDeleteButton(place, token, userId, isAdmin);
+
+        renderLeafletMap(place);
 }
 
 function setupReviewDeleteButtons(place, token, userId, isAdmin) {
