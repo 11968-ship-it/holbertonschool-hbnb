@@ -656,16 +656,23 @@ deleteWrapper.innerHTML = `
 
 placeSection.appendChild(deleteWrapper);
 
-// === AMENITIES ===
-if (place.amenities?.length) {
+// === AMENITIES (robust) ===
+const amenities = Array.isArray(place.amenities)
+  ? place.amenities
+      .map(a => (typeof a === "string" ? a : (a?.name ?? a?.title ?? "")))
+      .map(s => String(s).trim())
+      .filter(Boolean)
+  : [];
+
+if (amenities.length) {
   const amenitiesTitle = document.createElement("h2");
   amenitiesTitle.textContent = "Amenities";
-  infoDiv.appendChild(amenitiesTitle);
+  infoDiv.appendChild(amenitiesTitle); // 👈 put it inside infoDiv (cleaner)
 
   const ul = document.createElement("ul");
   ul.className = "amenities-list";
 
-  place.amenities.forEach((amenity) => {
+  amenities.forEach((amenity) => {
     const li = document.createElement("li");
     li.innerHTML = `<i class="fa fa-check"></i> ${escapeHtml(amenity)}`;
     ul.appendChild(li);
@@ -673,6 +680,7 @@ if (place.amenities?.length) {
 
   infoDiv.appendChild(ul);
 }
+
         const reviews = Array.isArray(place.reviews) ? place.reviews : [];
         const reviewCount = reviews.length;
         
