@@ -1,72 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Review</title>
-    <link rel="icon" href="images/icon.png" type="image/png">
-    <link rel="stylesheet" href="styles.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Add Review</title>
+  <link rel="icon" href="images/icon.png" type="image/png" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700&display=swap" rel="stylesheet" />
 </head>
+
 <body>
+  <header>
+    <div class="header-container">
+      <a href="index.html" class="brand">
+        <img src="images/logo.png" alt="Application logo" class="logo header-logo" />
+      </a>
 
-    <header>
-  <div class="header-container">
-    <a href="index.html" class="brand">
-      <img src="images/logo.png" alt="Application logo" class="logo header-logo">
-    </a>
-
-    <nav>
+      <nav>
         <a href="index.html">Home</a>
         <a href="login.html" id="login-link" class="login-button">Login</a>
-        <button id="logout-btn" style="display: none;">Logout</button>
-    </nav>
-  </div>
-</header>
+        <button id="logout-btn" style="display:none;">Logout</button>
+      </nav>
+    </div>
+  </header>
 
-    <main>
+  <main class="page">
+    <div class="page-header">
+      <h1 class="page-title">Add a Review</h1>
+      <p class="page-subtitle">Share your experience to help others.</p>
+    </div>
 
-        <section>
-            <h2>Reviews</h2>
+    <div class="review-layout">
+      <!-- Left: existing reviews -->
+      <section class="card">
+        <div class="card-header">
+          <h2 class="card-title">Existing Reviews</h2>
+          <p class="card-subtitle">What others said about this place</p>
+        </div>
 
-            <!-- Previous reviews -->
-            <div id="reviews-container">
-                <!-- Existing reviews will be added here via JavaScript -->
-            </div>
-        </section>
+        <div id="reviews-container" class="reviews-container">
+          <!-- Existing reviews injected by JS -->
+          <p class="empty-hint">Loading reviews…</p>
+        </div>
+      </section>
 
-            
-        <section class="add-review">
-            <h2>Add a Review</h2>
-            
-            <!-- Hidden field to identify the place -->
-            <form id="review-form" class="form">
-            
-                <label for="review">Your Review:</label>
-                <textarea id="review-text" name="review" required></textarea>
+      <!-- Right: add review form -->
+      <section class="card">
+        <div class="card-header">
+          <h2 class="card-title">Write yours</h2>
+          <p class="card-subtitle">Be honest and kind ✨</p>
+        </div>
 
-                <label for="rating">Rating:</label>
-                <select id="review-rating" name="rating" required>
-                    <option value="">Select rating</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                </select>
+        <form id="review-form" class="form nice-form">
+          <div class="form-row">
+            <label for="review-text">Your Review</label>
+            <textarea id="review-text" name="review" placeholder="Tell us what you liked (or didn’t)..." required></textarea>
+          </div>
 
-                <button type="submit">Submit Review</button>
-            </form>
-        </section>
-    </main>
+          <div class="form-row">
+            <label for="review-rating">Rating</label>
+            <select id="review-rating" name="rating" required>
+              <option value="">Select rating</option>
+              <option value="5">⭐ 5 - Excellent</option>
+              <option value="4">⭐ 4 - Good</option>
+              <option value="3">⭐ 3 - Okay</option>
+              <option value="2">⭐ 2 - Bad</option>
+              <option value="1">⭐ 1 - Terrible</option>
+            </select>
+          </div>
 
-    <footer>
-        <p>© 2026 All rights reserved.</p>
-    </footer>
+          <button type="submit" class="primary-btn">Submit Review</button>
+          <a href="index.html" class="text-btn">Cancel</a>
+        </form>
+      </section>
+    </div>
+  </main>
 
-    <script src="scripts.js" defer></script>
+  <footer class="footer">
+    <p>© 2026 All rights reserved.</p>
+  </footer>
 
+  <script src="scripts.js" defer></script>
 </body>
 </html>
