@@ -85,7 +85,6 @@ document.addEventListener("DOMContentLoaded", () => {
                   fetchPlaceDetails(placeId, token);
           }
   }
-}
         if (currentPage === 'review') {
                 const params = new URLSearchParams(window.location.search);
                 const placeId = params.get("place_id") || params.get("id");
