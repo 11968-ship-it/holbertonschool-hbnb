@@ -31,7 +31,7 @@ place_input_model = api.model('PlaceInput', {
     'price': fields.Float(required=True, description='Price per night'),
     'latitude': fields.Float(required=True, description='Latitude of the place'),
     'longitude': fields.Float(required=True, description='Longitude of the place'),
-    'amenities': fields.List(fields.String, description='List of amenity IDs')
+    'amenities': fields.List(fields.String, description='List of amenity names (comma separated in UI)')
 })
 
 place_model = api.model('Place', {
