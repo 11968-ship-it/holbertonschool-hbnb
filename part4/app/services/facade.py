@@ -59,8 +59,6 @@ class HBnBFacade:
     # --- Places ---
     def create_place(self, place_data):
         """ Create a new place"""
-
-        amenity_ids = place_data.get("amenities", []) or []
         
         place_data_clean = {
             'title': place_data['title'],
@@ -72,18 +70,23 @@ class HBnBFacade:
             'owner_id': place_data['owner_id'],
         }
 
+        amenity_names = place_data.get("amenities", []) or []
+        amenity_names = [n.strip() for n in amenity_names if isinstance(n, str) and n.strip()]
+        
         place = Place(**place_data_clean)
-
-        if amenity_ids:
-            amenities = Amenity.query.filter(Amenity.id.in_(amenity_ids)).all()
-
-            # optional validation: fail if any id doesn't exist
-            if len(amenities) != len(set(amenity_ids)):
-                found = {a.id for a in amenities}
-                missing = [aid for aid in amenity_ids if aid not in found]
-                raise ValueError(f"Invalid amenity id(s): {missing}")
+        
+        if amenity_names:
+            existing = Amenity.query.filter(Amenity.name.in_(amenity_names)).all()
+            existing_by_name = {a.name.lower(): a for a in existing}
             
-            place.amenities = amenities
+            amenities_to_attach = []
+            for name in amenity_names:
+                a = existing_by_name.get(name.lower())
+                if not a:
+                    a = Amenity(name=name)   # create new amenity if not found
+                amenities_to_attach.append(a)
+                
+            place.amenities = amenities_to_attach
         
         self.place_repo.add(place)
         return place
@@ -107,23 +110,27 @@ class HBnBFacade:
 
         updated = self.place_repo.update(place_id, place_data)
         place = updated if updated is not None else place
-    
+
         if amenities_were_sent:
-            amenity_ids = amenity_ids or []
+            amenity_names = amenity_ids or []
+            amenity_names = [n.strip() for n in amenity_names if isinstance(n, str) and n.strip()]
+            
+            if amenity_names:
+                existing = Amenity.query.filter(Amenity.name.in_(amenity_names)).all()
+                existing_by_name = {a.name.lower(): a for a in existing}
                 
-            if amenity_ids:
-                amenities = Amenity.query.filter(Amenity.id.in_(amenity_ids)).all()
+                amenities_to_attach = []
+                for name in amenity_names:
+                    a = existing_by_name.get(name.lower())
+                    if not a:
+                        a = Amenity(name=name)  # create if missing
+                    amenities_to_attach.append(a)
                     
-                if len(amenities) != len(set(amenity_ids)):
-                    found = {a.id for a in amenities}
-                    missing = [aid for aid in amenity_ids if aid not in found]
-                    raise ValueError(f"Invalid amenity id(s): {missing}")
-                        
-                place.amenities = amenities
+                place.amenities = amenities_to_attach
             else:
-                place.amenities = []  # clear if empty list was sent
-                        
-            self.place_repo.add(place)  # persist relationship change
+                place.amenities = []  # clear if empty list sent
+                
+            self.place_repo.add(place)
             
         return place
     
