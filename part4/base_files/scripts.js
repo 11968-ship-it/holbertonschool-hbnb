@@ -301,18 +301,18 @@ function handleAddPlaceForm() {
     try {
       await createPlace(token, payload);
 
-      addPlaceBtn.textContent = "✓ Created!";
-      addPlaceBtn.style.backgroundColor = "#28a745";
+            setAddPlaceLoading(false, addPlaceBtn);
+            
+            showToast("Place created", "Redirecting you to Home…", "success", 2000);
 
       setTimeout(() => {
         window.location.href = "index.html";
       }, 1500);
     } catch (error) {
-      if (errorEl) {
-        errorEl.textContent = error.message || "Failed to create place. Please try again.";
-      }
-    } finally {
-      setAddPlaceLoading(false, addPlaceBtn);
+  showToast("Couldn’t create place", error.message || "Please try again.");
+    }
+    finally {
+            setAddPlaceLoading(false, addPlaceBtn);
     }
   });
 }
