@@ -221,6 +221,9 @@ function setSignupLoading(isLoading, button) {
          ADD PLACE FORM HANDLING
 ========================================================= */
 function handleAddPlaceForm() {
+        console.log("SENDING place payload:", {
+                title, description, location, price, latitude, longitude, image_url: imageUrl, amenities
+        });
         const addPlaceForm = document.getElementById("add-place-form");
         if (!addPlaceForm) return;
         const token = getCookie("token");
