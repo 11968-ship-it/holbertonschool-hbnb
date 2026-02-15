@@ -62,6 +62,17 @@
                     <label for="longitude">Longitude</label>
                     <input type="number" id="longitude" name="longitude" step="any" placeholder="46.6753" required>
                 </div>
+
+                <div>
+                    <label for="amenities">Amenities</label>
+                    <input
+                        type="text"
+                        id="amenities"
+                        name="amenities"
+                        placeholder="WiFi, Kitchen, Pool, Parking"
+                        />
+                    <small>Enter amenities separated by commas (e.g., WiFi, Kitchen, Pool).</small>
+                </div>
                 
                 <button type="submit" id="add-place-btn">Create Place</button>
                 <button type="button" class="cancel-btn" onclick="window.location.href='index.html'">Cancel</button>
