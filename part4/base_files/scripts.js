@@ -567,19 +567,41 @@ function setupIndexSearch() {
         const form = document.getElementById("filter-form");
         if (!form) return;
         
+        const locationInput = document.getElementById("location")
+        const guestsInput = document.getElementById("guests")
+        const priceRange = document.getElementById("price-range")
+
+        // filtering when user types in location
+        if (locationInput) {
+                locationInput.addEventListener("input", applyFilters);
+        }
+        
+        if (guestsInput) {
+                guestsInput.addEventListener("input", applyFilters);
+        }
+        
+        if (priceRange) {
+                priceRange.addEventListener("input", applyFilters);
+        }
+
+        // also handle form submit (when user presses Enter or clicks search button)
         form.addEventListener("submit", (e) => {
                 e.preventDefault();
-                
-                const location = document.getElementById("location")?.value.trim().toLowerCase();
-                const guests = Number(document.getElementById("guests")?.value || 0);
-                const maxPrice = Number(document.getElementById("price-range")?.value || Infinity);
-                
+                applyFilters();
+        });
+
+        function applyFilters() {
+                const location = locationInput?.value.trim().toLowerCase() || "";
+                const guests = Number(guestsInput?.value || 0);
+                const maxPrice = Number(priceRange?.value || Infinity);
+
                 const filtered = ALL_PLACES.filter((p) => {
                         const name = String(p.title || p.name || "").toLowerCase();
                         const desc = String(p.description || "").toLowerCase();
                         const placeLocation = String(p.location || "").toLowerCase();
                         const price = Number(p.price ?? Infinity);
-                        
+
+                        // searches in title, description, and location field
                         const matchesLocation =
                                 !location ||
                                 name.includes(location) ||
@@ -607,7 +629,7 @@ function setupIndexSearch() {
                         return matchesLocation && matchesPrice && matchesGuests && matchesDate;
                 });
                 displayPlaces(filtered);
-        });
+        }
 }
 
 /* =========================================================
