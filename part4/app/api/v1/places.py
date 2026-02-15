@@ -30,7 +30,8 @@ place_input_model = api.model('PlaceInput', {
     'location': fields.String(required=True, description='Location/city of the place'),
     'price': fields.Float(required=True, description='Price per night'),
     'latitude': fields.Float(required=True, description='Latitude of the place'),
-    'longitude': fields.Float(required=True, description='Longitude of the place')
+    'longitude': fields.Float(required=True, description='Longitude of the place'),
+    'amenities': fields.List(fields.String, description='Amenity names')
 })
 
 place_model = api.model('Place', {
@@ -109,7 +110,7 @@ class PlaceList(Resource):
 
         try:
             place = facade.create_place(payload)
-            return serialize_place(place, include_owner=False, include_amenities=False, include_reviews=False), 201
+            return serialize_place(place, include_owner=False, include_amenities=True, include_reviews=False), 201
         except (ValueError, TypeError) as e:
             return {"error": str(e)}, 400
 
@@ -118,7 +119,7 @@ class PlaceList(Resource):
         """Retrieve all places"""
         places = facade.get_all_places()
         return [
-            serialize_place(p, include_owner=False, include_amenities=False, include_reviews=False)
+            serialize_place(p, include_owner=False, include_amenities=True, include_reviews=False)
             for p in places
         ], 200
 
