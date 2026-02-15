@@ -667,11 +667,25 @@ placeSection.appendChild(deleteWrapper);
 
     placeSection.appendChild(ul);
   }
+        const reviews = Array.isArray(place.reviews) ? place.reviews : [];
+        const reviewCount = reviews.length;
+        
+        let averageRating = 0;
+        if (reviewCount > 0) {
+                const total = reviews.reduce((sum, r) => sum + Number(r.rating || 0), 0);
+                averageRating = total / reviewCount;
+        }
+        
+        const ratingValueEl = document.querySelector(".rating-value");
+        const reviewCountEl = document.querySelector(".review-count");
+        
+        if (ratingValueEl) ratingValueEl.textContent = reviewCount ? averageRating.toFixed(1) : "0.0";
+        if (reviewCountEl) reviewCountEl.textContent = reviewCount === 1 ? " • 1 review" : ` • ${reviewCount} reviews`;
+        
         renderReviews(place);
         
         const token = getCookie("token");
         const { userId, isAdmin } = token ? getAuthInfoFromToken(token) : { userId: null, isAdmin: false };
-        
         setupPlaceDeleteButton(place, token, userId, isAdmin);
 }
 
