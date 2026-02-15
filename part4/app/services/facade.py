@@ -1,3 +1,4 @@
+from app import db
 from app.models.user import User
 from app.persistence.repository import SQLAlchemyRepository
 from app.models.place import Place
@@ -58,38 +59,43 @@ class HBnBFacade:
     
     # --- Places ---
     def create_place(self, place_data):
-        """ Create a new place"""
-        
-        place_data_clean = {
-            'title': place_data['title'],
-            'description': place_data.get('description', ''),
-            'location': place_data['location'],
-            'price': place_data['price'],
-            'latitude': place_data['latitude'],
-            'longitude': place_data['longitude'],
-            'owner_id': place_data['owner_id'],
-        }
+    place_data_clean = {
+        'title': place_data['title'],
+        'description': place_data.get('description', ''),
+        'location': place_data['location'],
+        'price': place_data['price'],
+        'latitude': place_data['latitude'],
+        'longitude': place_data['longitude'],
+        'owner_id': place_data['owner_id'],
+    }
 
-        amenity_names = place_data.get("amenities", []) or []
-        amenity_names = [n.strip() for n in amenity_names if isinstance(n, str) and n.strip()]
-        
-        place = Place(**place_data_clean)
-        
-        if amenity_names:
-            existing = Amenity.query.filter(Amenity.name.in_(amenity_names)).all()
-            existing_by_name = {a.name.lower(): a for a in existing}
-            
-            amenities_to_attach = []
-            for name in amenity_names:
-                a = existing_by_name.get(name.lower())
-                if not a:
-                    a = Amenity(name=name)   # create new amenity if not found
-                amenities_to_attach.append(a)
-                
-            place.amenities = amenities_to_attach
-        
-        self.place_repo.add(place)
-        return place
+    amenity_names = place_data.get("amenities", []) or []
+    amenity_names = [n.strip() for n in amenity_names if isinstance(n, str) and n.strip()]
+
+    place = Place(**place_data_clean)
+
+    if amenity_names:
+        # case-insensitive match
+        amenity_names_lc = [n.lower() for n in amenity_names]
+        existing = Amenity.query.filter(db.func.lower(Amenity.name).in_(amenity_names_lc)).all()
+        existing_by_name = {a.name.lower(): a for a in existing}
+
+        amenities_to_attach = []
+        for name in amenity_names:
+            a = existing_by_name.get(name.lower())
+            if not a:
+                a = Amenity(name=name)
+                db.session.add(a)  # ✅ ensure it becomes persistent
+            amenities_to_attach.append(a)
+
+        db.session.flush()          # ✅ ensures new amenities get IDs
+        place.amenities = amenities_to_attach
+
+    db.session.add(place)
+    db.session.commit()
+    db.session.refresh(place)      # ✅ ensures place is fresh for serialization
+
+    return place
         
     def get_place(self, place_id):
         """get place by id"""
