@@ -616,6 +616,9 @@ function displayPlaceDetails(place) {
 
   placeSection.innerHTML = "";
 
+        console.log("PLACE OBJECT:", place);
+console.log("AMENITIES RAW:", place.amenities, "TYPE:", typeof place.amenities);
+
   // === IMAGES ===
   const images = getPlaceImages(place);
   const imagesContainer = document.createElement("div");
