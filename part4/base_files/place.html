@@ -30,100 +30,23 @@
 
   <main>
     <!-- Place details section -->
-    <section id="place-details" class="place-details"></section>
+    <section id="place-details" class="place-details">
+      <p>Loading place details...</p>
+    </section>
 
-    <hr class="section-divider">
-    
-    <div class="delete-wrapper">
-    <button id="delete-place-btn" class="details-button danger" style="display:none;">
-      <i class="fa fa-trash"></i> Delete Place
-    </button>
-    </div>
-
-    <hr class="section-divider">
-
-    <!-- Review summary -->
-    <section class="review-summary">
-      <div class="summary-header">
-        <div class="overall-rating">
-          <i class="fas fa-star"></i>
-          <span class="rating-value">5.0</span>
-          <span class="review-count"> • 2 reviews</span>
-        </div>
-      </div>
-
-      <div class="summary-content">
-        <div class="rating-distribution">
-          <div class="rating-bar-row">
-            <span>5</span>
-            <div class="bar-container">
-              <div class="bar filled" style="width: 100%;"></div>
-            </div>
-          </div>
-          <div class="rating-bar-row">
-            <span>4</span>
-            <div class="bar-container">
-              <div class="bar" style="width: 40%;"></div>
-            </div>
-          </div>
-          <div class="rating-bar-row">
-            <span>3</span>
-            <div class="bar-container">
-              <div class="bar" style="width: 20%;"></div>
-            </div>
-          </div>
-          <div class="rating-bar-row">
-            <span>2</span>
-            <div class="bar-container">
-              <div class="bar" style="width: 10%;"></div>
-            </div>
-          </div>
-          <div class="rating-bar-row">
-            <span>1</span>
-            <div class="bar-container">
-              <div class="bar" style="width: 5%;"></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="category-ratings">
-          <div class="category">
-            <div class="category-name"><i class="fas fa-broom"></i> Cleanliness</div>
-            <div class="category-score">5.0</div>
-          </div>
-          <div class="category">
-            <div class="category-name"><i class="fas fa-check-circle"></i> Accuracy</div>
-            <div class="category-score">5.0</div>
-          </div>
-          <div class="category">
-            <div class="category-name"><i class="fas fa-key"></i> Check-in</div>
-            <div class="category-score">5.0</div>
-          </div>
-          <div class="category">
-            <div class="category-name"><i class="fas fa-comment-alt"></i> Communication</div>
-            <div class="category-score">5.0</div>
-          </div>
-          <div class="category">
-            <div class="category-name"><i class="fas fa-map"></i> Location</div>
-            <div class="category-score">5.0</div>
-          </div>
-          <div class="category">
-            <div class="category-name"><i class="fas fa-tag"></i> Value</div>
-            <div class="category-score">4.5</div>
-          </div>
-        </div>
+    <!-- Reviews section -->
+    <section id="reviews-section" class="reviews">
+      <h2>Reviews</h2>
+      <div id="reviews-container">
+        <p>Loading reviews...</p>
       </div>
     </section>
 
-    <!-- Reviews -->
-    <section class="reviews" id="reviews-section">
-      <div id="reviews-list"></div>
-    </section>
-
-    <!-- Add review form -->
+    <!-- Add review button (only for logged-in users) -->
     <section id="add-review" style="display:none;">
       <a class="details-button" id="add-review-link" href="#">Add Review</a>
     </section>
+  
   </main>
 
 
