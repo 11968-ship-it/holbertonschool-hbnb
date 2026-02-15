@@ -1,101 +1,105 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Place - HBnB</title>
-    <link rel="icon" href="images/icon.png" type="image/png">
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Place - HBnB</title>
+  <link rel="icon" href="images/icon.png" type="image/png">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <div class="header-container">
-            <div class="brand">
-                <a href="index.html">
-                    <img src="images/logo.png" alt="HBnB Logo" class="header-logo">
-                </a>
-            </div>
-            <nav>
-                <a href="index.html">Home</a>
-                <a href="#" id="logout-btn">Logout</a>
-            </nav>
-            <div></div>
+  <header>
+    <div class="header-container">
+      <div class="brand">
+        <a href="index.html">
+          <img src="images/logo.png" alt="HBnB Logo" class="header-logo">
+        </a>
+      </div>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="#" id="logout-btn">Logout</a>
+      </nav>
+      <div></div>
+    </div>
+  </header>
+
+  <main>
+    <div class="signup-container">
+      <h1>Add Your Place</h1>
+
+      <form id="add-place-form" class="signup-form">
+        <div>
+          <label for="title">Title</label>
+          <input type="text" id="title" name="title" placeholder="Cozy Beach House" required>
         </div>
-    </header>
 
-    <main>
-        <div class="signup-container">
-            <h1>Add Your Place</h1>
-            
-            <form id="add-place-form" class="signup-form">
-                <div>
-                    <label for="title">Title</label>
-                    <input type="text" id="title" name="title" placeholder="Cozy Beach House" required>
-                </div>
-                
-                <div>
-                    <label for="description">Description</label>
-                    <textarea id="description" name="description" placeholder="Describe your place..." required class="place-description"></textarea>
-                </div>
-                
-                <div>
-                    <label for="location">Location / City</label>
-                    <input type="text" id="location" name="location" placeholder="Riyadh, Saudi Arabia" required>
-                    <small>Enter the city or area where your place is located.</small>
-                </div>
-                
-                <div>
-                    <label for="price">Price per Night (SAR)</label>
-                    <input type="number" id="price" name="price" step="0.01" min="1" placeholder="100.00" required>
-                </div>
-                <div>
-                    <label for="image_url">Place Image URL</label>
-                    <input type="url" id="image_url" name="image_url" placeholder="https://example.com/photo.jpg">
-                    <small style="color: #666;">Paste a link to a photo of your place.</small>
-                </div>
-                <div>
-                    <label for="latitude">Latitude</label>
-                    <input type="number" id="latitude" name="latitude" step="any" placeholder="24.7136" required>
-                </div>
-                
-                <div>
-                    <label for="longitude">Longitude</label>
-                    <input type="number" id="longitude" name="longitude" step="any" placeholder="46.6753" required>
-                </div>
-
-                <div>
-                    <label for="amenities">Amenities (comma separated)</label>
-                    <input id="amenities" name="amenities" placeholder="WiFi, Kitchen, Pool" />
-                </div>
-                
-                <button type="submit" id="add-place-btn">Create Place</button>
-                <button type="button" class="cancel-btn" onclick="window.location.href='index.html'">Cancel</button>
-            </form>
+        <div>
+          <label for="description">Description</label>
+          <textarea id="description" name="description" placeholder="Describe your place..." required class="place-description"></textarea>
         </div>
-    </main>
 
-    <footer>
-        <p>&copy; 2024 HBnB. All rights reserved.</p>
-        <ul>
-            <li><a href="#">Privacy</a></li>
-            <li><a href="#">Terms</a></li>
-            <li><a href="#">Contact</a></li>
-        </ul>
-    </footer>
+        <div>
+          <label for="location">Location / City</label>
+          <input type="text" id="location" name="location" placeholder="Riyadh, Saudi Arabia" required>
+          <small>Enter the city or area where your place is located.</small>
+        </div>
 
-                    <!-- Success Modal -->
-                <div id="success-modal" class="modal-overlay" aria-hidden="true">
-                    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="success-title">
-                        <h2 id="success-title">✅ Place created!</h2>
-                        <p id="success-message">Your place was added successfully.</p>
-                        
-                        <div class="modal-actions">
-                            <button type="button" id="success-go-home" class="details-button">Go to Home</button>
-                            <button type="button" id="success-stay" class="cancel-btn">Stay here</button>
-                        </div>
-                    </div>
-                </div>
-    
-    <script src="scripts.js"></script>
+        <div>
+          <label for="price">Price per Night (SAR)</label>
+          <input type="number" id="price" name="price" step="0.01" min="1" placeholder="100.00" required>
+        </div>
+
+        <div>
+          <label for="image_url">Place Image URL</label>
+          <input type="url" id="image_url" name="image_url" placeholder="https://example.com/photo.jpg">
+          <small style="color: #666;">Paste a link to a photo of your place.</small>
+        </div>
+
+        <div>
+          <label for="latitude">Latitude</label>
+          <input type="number" id="latitude" name="latitude" step="any" placeholder="24.7136" required>
+        </div>
+
+        <div>
+          <label for="longitude">Longitude</label>
+          <input type="number" id="longitude" name="longitude" step="any" placeholder="46.6753" required>
+        </div>
+
+        <div>
+          <label for="amenities">Amenities (comma separated)</label>
+          <input id="amenities" name="amenities" placeholder="WiFi, Kitchen, Pool" />
+        </div>
+
+        <button type="submit" id="add-place-btn">Create Place</button>
+        <button type="button" class="cancel-btn" onclick="window.location.href='index.html'">Cancel</button>
+
+        <div id="error-message" class="form-error"></div>
+      </form>
+    </div>
+
+    <!-- ✅ Success Modal (outside the form) -->
+    <div id="success-modal" class="modal-overlay" aria-hidden="true">
+      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="success-title">
+        <h2 id="success-title">✅ Place created!</h2>
+        <p id="success-message">Your place was added successfully.</p>
+
+        <div class="modal-actions">
+          <button type="button" id="success-go-home" class="details-button">Go to Home</button>
+          <button type="button" id="success-stay" class="cancel-btn">Stay here</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2024 HBnB. All rights reserved.</p>
+    <ul>
+      <li><a href="#">Privacy</a></li>
+      <li><a href="#">Terms</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+  </footer>
+
+  <script src="scripts.js"></script>
 </body>
 </html>
