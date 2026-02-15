@@ -520,6 +520,7 @@ function renderLeafletMap(place) {
 
   const lat = Number(place.latitude);
   const lng = Number(place.longitude);
+
   if (!Number.isFinite(lat) || !Number.isFinite(lng)) {
     el.innerHTML = "<p>Location not available.</p>";
     return;
@@ -530,14 +531,21 @@ function renderLeafletMap(place) {
     return;
   }
 
-  if (leafletMap) leafletMap.remove(); // prevent duplicates
+  if (leafletMap) {
+    leafletMap.remove();
+    leafletMap = null;
+  }
+
+  el.innerHTML = ""; // ✅ clear after remove
+
   leafletMap = L.map(el).setView([lat, lng], 13);
 
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution: "&copy; OpenStreetMap contributors",
   }).addTo(leafletMap);
 
-  L.marker([lat, lng]).addTo(leafletMap)
+  L.marker([lat, lng])
+    .addTo(leafletMap)
     .bindPopup(escapeHtml(place.title ?? place.name ?? "Place"))
     .openPopup();
 }
