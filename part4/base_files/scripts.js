@@ -663,28 +663,28 @@ deleteWrapper.innerHTML = `
 placeSection.appendChild(deleteWrapper);
 
 // === AMENITIES (robust) ===
-const amenities = Array.isArray(place.amenities)
-  ? place.amenities
-      .map(a => (typeof a === "string" ? a : (a?.name ?? a?.title ?? "")))
-      .map(s => String(s).trim())
-      .filter(Boolean)
-  : [];
+// === AMENITIES ===
+const amenities = Array.isArray(place.amenities) ? place.amenities : [];
+const amenitiesSection = document.getElementById("amenities-section");
+const amenitiesList = document.getElementById("amenities-list");
 
-if (amenities.length) {
-  const amenitiesTitle = document.createElement("h2");
-  amenitiesTitle.textContent = "Amenities";
-  infoDiv.appendChild(amenitiesTitle); // 👈 put it inside infoDiv (cleaner)
+if (amenitiesSection && amenitiesList) {
+  amenitiesList.innerHTML = "";
 
-  const ul = document.createElement("ul");
-  ul.className = "amenities-list";
+  if (amenities.length) {
+    amenitiesSection.style.display = "block";
 
-  amenities.forEach((amenity) => {
-    const li = document.createElement("li");
-    li.innerHTML = `<i class="fa fa-check"></i> ${escapeHtml(amenity)}`;
-    ul.appendChild(li);
-  });
+    amenities.forEach((a) => {
+      const name = typeof a === "string" ? a : (a?.name ?? "");
+      if (!name) return;
 
-  infoDiv.appendChild(ul);
+      const li = document.createElement("li");
+      li.innerHTML = `<i class="fa fa-check"></i> ${escapeHtml(name)}`;
+      amenitiesList.appendChild(li);
+    });
+  } else {
+    amenitiesSection.style.display = "none";
+  }
 }
 
         const reviews = Array.isArray(place.reviews) ? place.reviews : [];
