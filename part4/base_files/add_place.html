@@ -70,19 +70,6 @@
                 
                 <button type="submit" id="add-place-btn">Create Place</button>
                 <button type="button" class="cancel-btn" onclick="window.location.href='index.html'">Cancel</button>
-                
-                <!-- Success Modal -->
-                <div id="success-modal" class="modal-overlay" aria-hidden="true">
-                    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="success-title">
-                        <h2 id="success-title">✅ Place created!</h2>
-                        <p id="success-message">Your place was added successfully.</p>
-                        
-                        <div class="modal-actions">
-                            <button type="button" id="success-go-home" class="details-button">Go to Home</button>
-                            <button type="button" id="success-stay" class="cancel-btn">Stay here</button>
-                        </div>
-                    </div>
-                </div>
             </form>
         </div>
     </main>
@@ -96,6 +83,19 @@
         </ul>
     </footer>
 
+                    <!-- Success Modal -->
+                <div id="success-modal" class="modal-overlay" aria-hidden="true">
+                    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="success-title">
+                        <h2 id="success-title">✅ Place created!</h2>
+                        <p id="success-message">Your place was added successfully.</p>
+                        
+                        <div class="modal-actions">
+                            <button type="button" id="success-go-home" class="details-button">Go to Home</button>
+                            <button type="button" id="success-stay" class="cancel-btn">Stay here</button>
+                        </div>
+                    </div>
+                </div>
+    
     <script src="scripts.js"></script>
 </body>
 </html>
