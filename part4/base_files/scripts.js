@@ -667,38 +667,10 @@ placeSection.appendChild(deleteWrapper);
 
     placeSection.appendChild(ul);
   }
-
-  // === REVIEWS ===
-  if (place.reviews?.length) {
-    const reviewsTitle = document.createElement("h2");
-    reviewsTitle.textContent = "Reviews";
-    placeSection.appendChild(reviewsTitle);
-          
-          place.reviews.forEach((review) => {
-                  const reviewCard = document.createElement("div");
-                  reviewCard.className = "review-card";
-                  const name = review.user_name || "User";
-                  const rating = review.rating ?? "?";
-                  const text = review.text || "";
-                  reviewCard.innerHTML = `
-                  <p><strong>${escapeHtml(name)}</strong> rated <strong>${escapeHtml(rating)}/5</strong></p>
-                  <p>${escapeHtml(text)}</p>
-
-                <div class="review-actions">
-                <button class="details-button danger review-delete-btn" style="display:none;"
-                data-review-id="${escapeHtml(review.id)}">
-                <i class="fa fa-trash"></i> Delete Review
-                </button>
-                </div>
-                  `;
-                  placeSection.appendChild(reviewCard);
-          });
-  }
+        renderReviews(place);
         
         const token = getCookie("token");
         const { userId, isAdmin } = token ? getAuthInfoFromToken(token) : { userId: null, isAdmin: false };
-        
-        setupReviewDeleteButtons(place, token, userId, isAdmin);
         
         setupPlaceDeleteButton(place, token, userId, isAdmin);
 }
@@ -779,6 +751,48 @@ function setupPlaceDeleteButton(place, token, userId, isAdmin) {
       alert("Network error while deleting place");
     }
   };
+}
+
+function renderReviews(place) {
+  const reviewsList = document.getElementById("reviews-list");
+  if (!reviewsList) return;
+
+  reviewsList.innerHTML = "";
+
+  const reviews = Array.isArray(place.reviews) ? place.reviews : [];
+
+  if (!reviews.length) {
+    reviewsList.innerHTML = "<p class='empty-message'>No reviews yet.</p>";
+    return;
+  }
+
+  reviews.forEach((review) => {
+    const reviewCard = document.createElement("div");
+    reviewCard.className = "review-card";
+
+    const name = review.user_name || "User";
+    const rating = review.rating ?? "?";
+    const text = review.text || "";
+
+    reviewCard.innerHTML = `
+      <p><strong>${escapeHtml(name)}</strong> rated <strong>${escapeHtml(rating)}/5</strong></p>
+      <p>${escapeHtml(text)}</p>
+
+      <div class="review-actions">
+        <button class="details-button danger review-delete-btn" style="display:none;"
+          data-review-id="${escapeHtml(review.id)}">
+          <i class="fa fa-trash"></i> Delete Review
+        </button>
+      </div>
+    `;
+
+    reviewsList.appendChild(reviewCard);
+  });
+
+  // enable delete buttons after rendering
+  const token = getCookie("token");
+  const { userId, isAdmin } = token ? getAuthInfoFromToken(token) : { userId: null, isAdmin: false };
+  setupReviewDeleteButtons(place, token, userId, isAdmin);
 }
 
 function getFallbackImage(place) {
