@@ -1476,3 +1476,11 @@ footer ul li a:hover {
   from{ transform:translateY(10px); opacity:0; }
   to{ transform:translateY(0); opacity:1; }
 }
+
+.map-wrap { margin: 24px 0; }
+.map {
+  height: 320px;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid #e6e6e6;
+}
