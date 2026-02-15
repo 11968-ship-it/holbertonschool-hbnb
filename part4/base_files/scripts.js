@@ -662,29 +662,28 @@ deleteWrapper.innerHTML = `
 
 placeSection.appendChild(deleteWrapper);
 
-// === AMENITIES (robust) ===
 // === AMENITIES ===
 const amenities = Array.isArray(place.amenities) ? place.amenities : [];
-const amenitiesSection = document.getElementById("amenities-section");
-const amenitiesList = document.getElementById("amenities-list");
 
-if (amenitiesSection && amenitiesList) {
-  amenitiesList.innerHTML = "";
+if (amenities.length) {
+  const amenitiesTitle = document.createElement("h2");
+  amenitiesTitle.textContent = "Amenities";
 
-  if (amenities.length) {
-    amenitiesSection.style.display = "block";
+  const ul = document.createElement("ul");
+  ul.className = "amenities-list";
 
-    amenities.forEach((a) => {
-      const name = typeof a === "string" ? a : (a?.name ?? "");
-      if (!name) return;
+  amenities.forEach((a) => {
+    const name = typeof a === "string" ? a : (a?.name ?? "");
+    if (!name) return;
 
-      const li = document.createElement("li");
-      li.innerHTML = `<i class="fa fa-check"></i> ${escapeHtml(name)}`;
-      amenitiesList.appendChild(li);
-    });
-  } else {
-    amenitiesSection.style.display = "none";
-  }
+    const li = document.createElement("li");
+    li.innerHTML = `<i class="fa fa-check"></i> ${escapeHtml(name)}`;
+    ul.appendChild(li);
+  });
+
+  // Put amenities inside the info box (best UX)
+  infoDiv.appendChild(amenitiesTitle);
+  infoDiv.appendChild(ul);
 }
 
         const reviews = Array.isArray(place.reviews) ? place.reviews : [];
