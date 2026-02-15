@@ -221,96 +221,100 @@ function setSignupLoading(isLoading, button) {
          ADD PLACE FORM HANDLING
 ========================================================= */
 function handleAddPlaceForm() {
-        console.log("SENDING place payload:", {
-                title, description, location, price, latitude, longitude, image_url: imageUrl, amenities
-        });
-        const addPlaceForm = document.getElementById("add-place-form");
-        if (!addPlaceForm) return;
-        const token = getCookie("token");
-        if (!token) {
-                window.location.href = "index.html";
-                return;
-        }
-        const titleInput = document.getElementById("title");
-        const descriptionInput = document.getElementById("description");
-        const locationInput = document.getElementById("location");
-        const priceInput = document.getElementById("price");
-        const latitudeInput = document.getElementById("latitude");
-        const longitudeInput = document.getElementById("longitude");
-        const amenitiesInput = document.getElementById("amenities");
-        const imageInput = document.getElementById("image_url");
-        const errorEl = document.getElementById("error-message");
-        const addPlaceBtn = document.getElementById("add-place-btn");
-        
-        addPlaceForm.addEventListener("submit", async (event) => {
-                event.preventDefault();
-                if (errorEl) errorEl.textContent = "";
-                
-                // Get form values
-                const title = titleInput?.value.trim();
-                const description = descriptionInput?.value.trim();
-                const location = locationInput?.value.trim();
-                const price = parseFloat(priceInput?.value);
-                const latitude = parseFloat(latitudeInput?.value);
-                const longitude = parseFloat(longitudeInput?.value);
-                const imageUrl = imageInput?.value.trim();
-                const amenitiesRaw = amenitiesInput?.value.trim() || "";
-                const amenities = amenitiesRaw
-                        ? amenitiesRaw.split(",").map(a => a.trim()).filter(Boolean)
-                        : [];
-                
-                // Validation
-                if (!title || !description || !location || !price || !latitude || !longitude) {
-                        if (errorEl) errorEl.textContent = "All fields are required.";
-                        return;
-                }
-                
-                if (price <= 0) {
-                        if (errorEl) errorEl.textContent = "Price must be greater than 0.";
-                        return;
-                }
-                
-                if (latitude < -90 || latitude > 90) {
-                        if (errorEl) errorEl.textContent = "Latitude must be between -90 and 90.";
-                        return;
-                }
-                
-                if (longitude < -180 || longitude > 180) {
-                        if (errorEl) errorEl.textContent = "Longitude must be between -180 and 180.";
-                        return;
-                }
-                
-                setAddPlaceLoading(true, addPlaceBtn);
-                
-                try {
-                        const placeData = await createPlace(token, {
-                                title,
-                                description,
-                                location,
-                                price,
-                                latitude,
-                                longitude,
-                                image_url: imageUrl,
-                                amenities,
-                        });
-                        
-                        // Show success message
-                        addPlaceBtn.textContent = "✓ Created!";
-                        addPlaceBtn.style.backgroundColor = "#28a745";
-                        
-                        setTimeout(() => {
-                                window.location.href = "index.html";
-                        }, 1500);
-                        
-                        // Redirect to home page
-                } catch (error) {
-                        if (errorEl) {
-                                errorEl.textContent = error.message || "Failed to create place. Please try again.";
-                        }
-                } finally {
-                        setAddPlaceLoading(false, addPlaceBtn);
-                }
-        });
+  const addPlaceForm = document.getElementById("add-place-form");
+  if (!addPlaceForm) return;
+
+  const token = getCookie("token");
+  if (!token) {
+    window.location.href = "index.html";
+    return;
+  }
+
+  const titleInput = document.getElementById("title");
+  const descriptionInput = document.getElementById("description");
+  const locationInput = document.getElementById("location");
+  const priceInput = document.getElementById("price");
+  const latitudeInput = document.getElementById("latitude");
+  const longitudeInput = document.getElementById("longitude");
+  const amenitiesInput = document.getElementById("amenities");
+  const imageInput = document.getElementById("image_url");
+  const errorEl = document.getElementById("error-message");
+  const addPlaceBtn = document.getElementById("add-place-btn");
+
+  addPlaceForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    if (errorEl) errorEl.textContent = "";
+
+    // Get form values
+    const title = titleInput?.value.trim();
+    const description = descriptionInput?.value.trim();
+    const location = locationInput?.value.trim();
+    const price = parseFloat(priceInput?.value);
+    const latitude = parseFloat(latitudeInput?.value);
+    const longitude = parseFloat(longitudeInput?.value);
+    const imageUrl = imageInput?.value.trim();
+
+    // ✅ amenities as NAMES array (WiFi, Kitchen, Pool)
+    const amenitiesRaw = amenitiesInput?.value || "";
+    const amenities = amenitiesRaw
+      .split(",")
+      .map(a => a.trim())
+      .filter(Boolean);
+
+    // Build payload
+    const payload = {
+      title,
+      description,
+      location,
+      price,
+      latitude,
+      longitude,
+      image_url: imageUrl,
+      amenities,
+    };
+
+    console.log("SENDING place payload:", payload);
+
+    // Validation
+    if (!title || !description || !location || !price || !latitude || !longitude) {
+      if (errorEl) errorEl.textContent = "All fields are required.";
+      return;
+    }
+
+    if (price <= 0) {
+      if (errorEl) errorEl.textContent = "Price must be greater than 0.";
+      return;
+    }
+
+    if (latitude < -90 || latitude > 90) {
+      if (errorEl) errorEl.textContent = "Latitude must be between -90 and 90.";
+      return;
+    }
+
+    if (longitude < -180 || longitude > 180) {
+      if (errorEl) errorEl.textContent = "Longitude must be between -180 and 180.";
+      return;
+    }
+
+    setAddPlaceLoading(true, addPlaceBtn);
+
+    try {
+      await createPlace(token, payload);
+
+      addPlaceBtn.textContent = "✓ Created!";
+      addPlaceBtn.style.backgroundColor = "#28a745";
+
+      setTimeout(() => {
+        window.location.href = "index.html";
+      }, 1500);
+    } catch (error) {
+      if (errorEl) {
+        errorEl.textContent = error.message || "Failed to create place. Please try again.";
+      }
+    } finally {
+      setAddPlaceLoading(false, addPlaceBtn);
+    }
+  });
 }
 
 function setAddPlaceLoading(isLoading, button) {
