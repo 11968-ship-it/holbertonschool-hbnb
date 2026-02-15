@@ -60,6 +60,8 @@ class HBnBFacade:
     def create_place(self, place_data):
         """ Create a new place"""
 
+        amenity_ids = place_data.get("amenities", []) or []
+        
         place_data_clean = {
             'title': place_data['title'],
             'description': place_data.get('description', ''),
@@ -71,6 +73,18 @@ class HBnBFacade:
         }
 
         place = Place(**place_data_clean)
+
+        if amenity_ids:
+            amenities = Amenity.query.filter(Amenity.id.in_(amenity_ids)).all()
+
+            # optional validation: fail if any id doesn't exist
+            if len(amenities) != len(set(amenity_ids)):
+                found = {a.id for a in amenities}
+                missing = [aid for aid in amenity_ids if aid not in found]
+                raise ValueError(f"Invalid amenity id(s): {missing}")
+            
+            place.amenities = amenities
+        
         self.place_repo.add(place)
         return place
         
@@ -88,9 +102,31 @@ class HBnBFacade:
         if not place:
             return None
 
-        updated = self.place_repo.update(place_id, place_data)
-        return updated if updated is not None else place
+        amenities_were_sent = "amenities" in place_data
+        amenity_ids = place_data.pop("amenities", None)
 
+        updated = self.place_repo.update(place_id, place_data)
+        place = updated if updated is not None else place
+    
+        if amenities_were_sent:
+            amenity_ids = amenity_ids or []
+                
+            if amenity_ids:
+                amenities = Amenity.query.filter(Amenity.id.in_(amenity_ids)).all()
+                    
+                if len(amenities) != len(set(amenity_ids)):
+                    found = {a.id for a in amenities}
+                    missing = [aid for aid in amenity_ids if aid not in found]
+                    raise ValueError(f"Invalid amenity id(s): {missing}")
+                        
+                place.amenities = amenities
+            else:
+                place.amenities = []  # clear if empty list was sent
+                        
+            self.place_repo.add(place)  # persist relationship change
+            
+        return place
+    
     def delete_place(self, place_id):
         """Delete a place."""
         place = self.place_repo.get(place_id)
