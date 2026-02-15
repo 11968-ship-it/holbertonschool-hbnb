@@ -298,23 +298,19 @@ function handleAddPlaceForm() {
     }
 
     setAddPlaceLoading(true, addPlaceBtn);
-
-    try {
-      await createPlace(token, payload);
-
-            setAddPlaceLoading(false, addPlaceBtn);
-            
-            showToast("Place created ✅", "Redirecting you to Home…", "success", 2500);
-
-      setTimeout(() => {
-        window.location.href = "index.html";
-      }, 2500);
-    } catch (error) {
-  showToast("Couldn’t create place", error.message || "Please try again.");
-    }
-    finally {
-            setAddPlaceLoading(false, addPlaceBtn);
-    }
+          
+          try {
+                  await createPlace(token, payload);
+                  // Optional: reset the form so they see it worked
+                  addPlaceForm.reset();
+                  
+                  // Show modal instead of redirect
+                  openSuccessModal("Your place was created successfully.");
+          } catch (error) {
+                  showToast("Couldn’t create place", error.message || "Please try again.")
+          } finally {
+                  setAddPlaceLoading(false, addPlaceBtn);
+          }
   });
 }
 
@@ -548,6 +544,45 @@ function renderLeafletMap(place) {
     .addTo(leafletMap)
     .bindPopup(escapeHtml(place.title ?? place.name ?? "Place"))
     .openPopup();
+}
+
+function openSuccessModal(message = "Your place was added successfully.") {
+  const overlay = document.getElementById("success-modal");
+  const msgEl = document.getElementById("success-message");
+  const goHomeBtn = document.getElementById("success-go-home");
+  const stayBtn = document.getElementById("success-stay");
+
+  if (!overlay) return;
+
+  msgEl.textContent = message;
+
+  overlay.classList.add("open");
+  overlay.setAttribute("aria-hidden", "false");
+
+  // buttons
+  goHomeBtn.onclick = () => (window.location.href = "index.html");
+  stayBtn.onclick = () => closeSuccessModal();
+
+  // click outside to close
+  overlay.onclick = (e) => {
+    if (e.target === overlay) closeSuccessModal();
+  };
+
+  // ESC to close
+  document.addEventListener("keydown", escCloseHandler);
+  function escCloseHandler(e) {
+    if (e.key === "Escape") {
+      closeSuccessModal();
+      document.removeEventListener("keydown", escCloseHandler);
+    }
+  }
+}
+
+function closeSuccessModal() {
+  const overlay = document.getElementById("success-modal");
+  if (!overlay) return;
+  overlay.classList.remove("open");
+  overlay.setAttribute("aria-hidden", "true");
 }
 
 /* =========================================================
