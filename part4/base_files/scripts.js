@@ -298,23 +298,19 @@ function handleAddPlaceForm() {
     }
 
     setAddPlaceLoading(true, addPlaceBtn);
-
-    try {
-      await createPlace(token, payload);
-
-            setAddPlaceLoading(false, addPlaceBtn);
-            
-            showToast("Place created ✅", "Redirecting you to Home…", "success", 2500);
-
-      setTimeout(() => {
-        window.location.href = "index.html";
-      }, 2500);
-    } catch (error) {
-  showToast("Couldn’t create place", error.message || "Please try again.");
-    }
-    finally {
-            setAddPlaceLoading(false, addPlaceBtn);
-    }
+          
+          try {
+                  await createPlace(token, payload);
+                  // Optional: reset the form so they see it worked
+                  addPlaceForm.reset();
+                  
+                  // Show modal instead of redirect
+                  openSuccessModal("Your place was created successfully.");
+          } catch (error) {
+                  showToast("Couldn’t create place", error.message || "Please try again.")
+          } finally {
+                  setAddPlaceLoading(false, addPlaceBtn);
+          }
   });
 }
 
