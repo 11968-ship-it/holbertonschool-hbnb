@@ -97,7 +97,6 @@ class HBnBFacade:
         db.session.add(place)
         db.session.commit()
         db.session.refresh(place)      # ✅ ensures place is fresh for serialization
-        
     return place
         
     def get_place(self, place_id):
