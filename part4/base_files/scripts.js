@@ -68,7 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
 ====================================
 */
   const addReviewSection = document.getElementById("add-review");
-  const addReviewLink = document.getElementById("add-review-link");
+  addReviewLink.href = `add_review.html?place_id=${encodeURIComponent(placeId)}`;
   if (token && addReviewSection && addReviewLink && placeId) {
     addReviewSection.style.display = "block";
     addReviewLink.href = `add_review.html?id=${encodeURIComponent(placeId)}`;
@@ -898,23 +898,110 @@ function getPlaceCardImage(place) {
               ADD REVIEW FORM
 ========================================================= */
 function setupAddReviewForm() {
-  const form = document.getElementById("review-form");
-  if (!form) return;
-
-  const token = getCookie("token");
-  if (!token) {
-    window.location.href = "index.html";
-    return;
-  }
-
-  const placeId = getPlaceIdFromURL();
-  if (!placeId) {
-    window.location.href = "index.html";
-    return;
-  }
-
-  const reviewsContainer = document.getElementById("reviews-container");
-  if (!reviewsContainer) return;
+        const form = document.getElementById("review-form");
+        const errorDiv = document.getElementById("review-error");
+        const submitBtn = form?.querySelector('button[type="submit"]');
+        
+        if (!form) return;
+        
+        const token = getCookie("token");
+        if (!token) {
+                window.location.href = "login.html";
+                return;
+        }
+        
+        // Get place_id from URL 
+        const params = new URLSearchParams(window.location.search);
+        const placeId = params.get("place_id") || params.get("id");
+        
+        if (!placeId) {
+                if (errorDiv) {
+                        errorDiv.textContent = "Error: No place ID provided";
+                        errorDiv.style.display = "block";
+                }
+                if (form) form.style.display = "none";
+                return;
+        }
+        
+        // Load place preview
+        loadReviewPlacePreview(placeId);
+        
+        // Form submission
+        form.addEventListener("submit", async (e) => {
+                e.preventDefault();
+                if (errorDiv) errorDiv.style.display = "none";
+                
+                // Get form values
+                const ratingSelect = document.getElementById("review-rating");
+                const textArea = document.getElementById("review-text");
+                
+                const rating = ratingSelect?.value;
+                const text = textArea?.value.trim();
+                
+                //  VALIDATION
+                const errors = [];
+                
+                if (!rating || rating === "") {
+                        errors.push("Please select a rating");
+                }
+                
+                if (!text) {
+                        errors.push("Review text is required");
+                } else if (text.length < 10) {
+                        errors.push("Review must be at least 10 characters long");
+                }
+                
+                if (errors.length > 0) {
+                        if (errorDiv) {
+                                errorDiv.textContent = errors.join(". ");
+                                errorDiv.style.display = "block";
+                        }
+                        return;
+                }
+                
+                // Disable button
+                if (submitBtn) {
+                        submitBtn.disabled = true;
+                        submitBtn.textContent = "Submitting...";
+                }
+                
+                try {
+                        const response = await fetch(`${API_BASE_URL}/reviews/`, {
+                                method: "POST",
+                                headers: {
+                                        "Content-Type": "application/json",
+                                        "Authorization": `Bearer ${token}`
+                                },
+                                body: JSON.stringify({
+                                        place_id: placeId,
+                                        text: text,
+                                        rating: parseInt(rating)
+                                })
+                        });
+                        
+                        if (!response.ok) {
+                                const errorData = await response.json();
+                                throw new Error(errorData.error || errorData.message || "Failed to submit review");
+                        }
+                        
+                        // SUCCESS
+                        alert("Review submitted successfully!");
+                        window.location.href = `place.html?id=${placeId}`;
+                } catch (error) {
+                        console.error("Review submission error:", error);
+                        if (errorDiv) {
+                                errorDiv.textContent = error.message;
+                                errorDiv.style.display = "block";
+                        }
+                        
+                        // Re-enable button
+                        if (submitBtn) {
+                                submitBtn.disabled = false;
+                                submitBtn.textContent = "Submit Review";
+                        }
+                }
+        });
+}
 
 /* =================================================
            --- Fetch existing reviews ---
