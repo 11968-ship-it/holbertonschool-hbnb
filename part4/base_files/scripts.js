@@ -550,6 +550,45 @@ function renderLeafletMap(place) {
     .openPopup();
 }
 
+function openSuccessModal(message = "Your place was added successfully.") {
+  const overlay = document.getElementById("success-modal");
+  const msgEl = document.getElementById("success-message");
+  const goHomeBtn = document.getElementById("success-go-home");
+  const stayBtn = document.getElementById("success-stay");
+
+  if (!overlay) return;
+
+  msgEl.textContent = message;
+
+  overlay.classList.add("open");
+  overlay.setAttribute("aria-hidden", "false");
+
+  // buttons
+  goHomeBtn.onclick = () => (window.location.href = "index.html");
+  stayBtn.onclick = () => closeSuccessModal();
+
+  // click outside to close
+  overlay.onclick = (e) => {
+    if (e.target === overlay) closeSuccessModal();
+  };
+
+  // ESC to close
+  document.addEventListener("keydown", escCloseHandler);
+  function escCloseHandler(e) {
+    if (e.key === "Escape") {
+      closeSuccessModal();
+      document.removeEventListener("keydown", escCloseHandler);
+    }
+  }
+}
+
+function closeSuccessModal() {
+  const overlay = document.getElementById("success-modal");
+  if (!overlay) return;
+  overlay.classList.remove("open");
+  overlay.setAttribute("aria-hidden", "true");
+}
+
 /* =========================================================
                  LOGOUT FUNCTIONALITY
 ========================================================= */
