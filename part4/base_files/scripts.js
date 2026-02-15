@@ -43,7 +43,6 @@ document.addEventListener("DOMContentLoaded", () => {
   if (currentPage === 'index') {
     checkAuthentication();
     initPriceFilter();
-    setupLogout();
     populateLocationDatalist();
     setupIndexSearch();
     initCustomDatePicker(); 
