@@ -660,7 +660,7 @@ function displayPlaceDetails(place) {
   placeSection.appendChild(imagesContainer);
 
   // === INFO ===
-  const infoDiv = document.createElement("div");
+        const infoDiv = document.createElement("div");
         infoDiv.className = "place-info";
         infoDiv.innerHTML = `
         <h1>${escapeHtml(place.title || place.name || "Unnamed place")}</h1>
@@ -669,6 +669,7 @@ function displayPlaceDetails(place) {
         ${place.location ? `<p><strong>Location:</strong> ${escapeHtml(place.location)}</p>` : ''}
         <p>${escapeHtml(place.description || "")}</p>
         `;
+        
         placeSection.appendChild(infoDiv);
 
 // === DELETE ===
