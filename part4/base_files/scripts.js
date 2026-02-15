@@ -85,6 +85,7 @@ document.addEventListener("DOMContentLoaded", () => {
                   fetchPlaceDetails(placeId, token);
           }
   }
+}
         if (currentPage === 'review') {
                 const params = new URLSearchParams(window.location.search);
                 const placeId = params.get("place_id") || params.get("id");
@@ -307,7 +308,7 @@ function handleAddPlaceForm() {
                   // Show modal instead of redirect
                   openSuccessModal("Your place was created successfully.");
           } catch (error) {
-                  showToast("Couldn’t create place", error.message || "Please try again.")
+                  showToast("Couldn’t create place", error.message || "Please try again.");
           } finally {
                   setAddPlaceLoading(false, addPlaceBtn);
           }
