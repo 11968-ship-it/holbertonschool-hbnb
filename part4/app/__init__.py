@@ -10,11 +10,10 @@ db = SQLAlchemy()
 
 def create_app(config_class="config.DevelopmentConfig"):
     app = Flask(__name__)
-    CORS(app)
     app.config.from_object(config_class)
 
     app.url_map.strict_slashes = False
-    """
+    
     CORS(app, resources={
         r"/api/*": {
             "origins": ["http://127.0.0.1:5500",  # Live Server default port
@@ -31,7 +30,7 @@ def create_app(config_class="config.DevelopmentConfig"):
             "max_age": 3600
         }
     })
-"""
+
     bcrypt.init_app(app)
     jwt.init_app(app)
     db.init_app(app)
