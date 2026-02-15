@@ -548,34 +548,33 @@ function renderLeafletMap(place) {
 
 function openSuccessModal(message = "Your place was added successfully.") {
   const overlay = document.getElementById("success-modal");
-  const msgEl = document.getElementById("success-message");
-  const goHomeBtn = document.getElementById("success-go-home");
-  const stayBtn = document.getElementById("success-stay");
-
   if (!overlay) return;
 
-  msgEl.textContent = message;
+  const msgEl = document.getElementById("success-message");
+  if (msgEl) msgEl.textContent = message;
 
   overlay.classList.add("open");
   overlay.setAttribute("aria-hidden", "false");
 
-  // buttons
-  goHomeBtn.onclick = () => (window.location.href = "index.html");
-  stayBtn.onclick = () => closeSuccessModal();
+  const goHomeBtn = document.getElementById("success-go-home");
+  const stayBtn = document.getElementById("success-stay");
+
+  if (goHomeBtn) goHomeBtn.onclick = () => (window.location.href = "index.html");
+  if (stayBtn) stayBtn.onclick = () => closeSuccessModal();
 
   // click outside to close
   overlay.onclick = (e) => {
     if (e.target === overlay) closeSuccessModal();
   };
 
-  // ESC to close
-  document.addEventListener("keydown", escCloseHandler);
-  function escCloseHandler(e) {
+  // ESC to close (only once)
+  const escCloseHandler = (e) => {
     if (e.key === "Escape") {
       closeSuccessModal();
       document.removeEventListener("keydown", escCloseHandler);
     }
-  }
+  };
+  document.addEventListener("keydown", escCloseHandler);
 }
 
 function closeSuccessModal() {
