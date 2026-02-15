@@ -1,8 +1,3 @@
-window.addEventListener("error", (e) => {
-  console.log("JS ERROR:", e.message, e.filename, e.lineno);
-});
-console.log("Loaded scripts.js on:", window.location.pathname);
-
 const API_BASE_URL = 'http://127.0.0.1:5000/api/v1';
 let ALL_PLACES = [];
 
