@@ -494,6 +494,23 @@ function getAuthInfoFromToken(token) {
   return { userId, isAdmin };
 }
 
+function showToast(title, message, type="error", timeout=3500) {
+  const t = document.createElement("div");
+  t.className = `toast ${type}`;
+  t.innerHTML = `
+    <div>
+      <div class="title">${escapeHtml(title)}</div>
+      <div class="msg">${escapeHtml(message)}</div>
+    </div>
+    <button class="x" aria-label="Close">×</button>
+  `;
+
+  t.querySelector(".x").onclick = () => t.remove();
+  document.body.appendChild(t);
+
+  if (timeout) setTimeout(() => t.remove(), timeout);
+}
+
 /* =========================================================
                  LOGOUT FUNCTIONALITY
 ========================================================= */
