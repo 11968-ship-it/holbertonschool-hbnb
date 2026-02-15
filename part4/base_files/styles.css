@@ -1306,3 +1306,139 @@ footer ul li a:hover {
   margin: 18px auto;
   width: min(900px, 92%);
 }
+
+/* ---------- Add Review Page Layout ---------- */
+.page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 32px 16px 60px;
+}
+
+.page-header {
+  margin-bottom: 18px;
+}
+
+.page-title {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.page-subtitle {
+  margin: 6px 0 0;
+  opacity: 0.75;
+}
+
+.review-layout {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 18px;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .review-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.card {
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+  overflow: hidden;
+}
+
+.card-header {
+  padding: 18px 18px 10px;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+
+.card-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.card-subtitle {
+  margin: 6px 0 0;
+  font-size: 14px;
+  opacity: 0.75;
+}
+
+.reviews-container {
+  padding: 16px 18px 18px;
+}
+
+.empty-hint {
+  margin: 0;
+  opacity: 0.7;
+  font-size: 14px;
+}
+
+/* ---------- Form prettiness ---------- */
+.nice-form {
+  padding: 16px 18px 18px;
+}
+
+.form-row {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.nice-form label {
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.nice-form textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.nice-form textarea,
+.nice-form select {
+  width: 100%;
+  padding: 12px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(0,0,0,0.14);
+  background: #fff;
+  outline: none;
+  font-family: inherit;
+}
+
+.nice-form textarea:focus,
+.nice-form select:focus {
+  border-color: rgba(0,0,0,0.35);
+  box-shadow: 0 0 0 4px rgba(0,0,0,0.06);
+}
+
+.primary-btn {
+  width: 100%;
+  padding: 12px 14px;
+  border: 0;
+  border-radius: 12px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.text-btn {
+  display: block;
+  text-align: center;
+  margin-top: 10px;
+  text-decoration: none;
+  font-weight: 700;
+  opacity: 0.75;
+}
+
+.text-btn:hover {
+  opacity: 1;
+}
+
+.footer {
+  padding: 20px 16px;
+  opacity: 0.85;
+}
