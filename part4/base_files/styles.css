@@ -1667,3 +1667,42 @@ footer ul li a:hover {
     flex-direction: column;
   }
 }
+
+/* Modal */
+.modal-overlay{
+  position: fixed;
+  inset: 0;
+  display: none;
+  place-items: center;
+  background: rgba(0,0,0,.55);
+  z-index: 9999;
+  padding: 16px;
+}
+
+.modal-overlay.open{
+  display: grid;
+}
+
+.modal-card{
+  width: min(520px, 100%);
+  background: #fff;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 16px 40px rgba(0,0,0,.25);
+}
+
+.modal-card h2{
+  margin: 0 0 8px;
+}
+
+.modal-card p{
+  margin: 0 0 16px;
+  color: #555;
+}
+
+.modal-actions{
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
