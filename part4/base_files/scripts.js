@@ -656,23 +656,23 @@ deleteWrapper.innerHTML = `
 
 placeSection.appendChild(deleteWrapper);
 
-  // === AMENITIES ===
-  if (place.amenities?.length) {
-    const amenitiesTitle = document.createElement("h2");
-    amenitiesTitle.textContent = "Amenities";
-    placeSection.appendChild(amenitiesTitle);
+// === AMENITIES ===
+if (place.amenities?.length) {
+  const amenitiesTitle = document.createElement("h2");
+  amenitiesTitle.textContent = "Amenities";
+  infoDiv.appendChild(amenitiesTitle);
 
-    const ul = document.createElement("ul");
-    ul.className = "amenities-list";
+  const ul = document.createElement("ul");
+  ul.className = "amenities-list";
 
-    place.amenities.forEach((amenity) => {
-      const li = document.createElement("li");
-      li.innerHTML = `<i class="fa fa-check"></i> ${escapeHtml(amenity)}`;
-      ul.appendChild(li);
-    });
+  place.amenities.forEach((amenity) => {
+    const li = document.createElement("li");
+    li.innerHTML = `<i class="fa fa-check"></i> ${escapeHtml(amenity)}`;
+    ul.appendChild(li);
+  });
 
-    placeSection.appendChild(ul);
-  }
+  infoDiv.appendChild(ul);
+}
         const reviews = Array.isArray(place.reviews) ? place.reviews : [];
         const reviewCount = reviews.length;
         
