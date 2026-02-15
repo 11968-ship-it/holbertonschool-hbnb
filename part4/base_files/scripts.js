@@ -304,11 +304,11 @@ function handleAddPlaceForm() {
 
             setAddPlaceLoading(false, addPlaceBtn);
             
-            showToast("Place created", "Redirecting you to Home…", "success", 2000);
+            showToast("Place created ✅", "Redirecting you to Home…", "success", 2500);
 
       setTimeout(() => {
         window.location.href = "index.html";
-      }, 1500);
+      }, 2500);
     } catch (error) {
   showToast("Couldn’t create place", error.message || "Please try again.");
     }
