@@ -77,7 +77,10 @@ class HBnBFacade:
     if amenity_names:
         # case-insensitive match
         amenity_names_lc = [n.lower() for n in amenity_names]
-        existing = Amenity.query.filter(db.func.lower(Amenity.name).in_(amenity_names_lc)).all()
+        
+        existing = Amenity.query.filter(
+            db.func.lower(Amenity.name).in_(amenity_names_lc)
+        ).all()
         existing_by_name = {a.name.lower(): a for a in existing}
 
         amenities_to_attach = []
@@ -87,7 +90,7 @@ class HBnBFacade:
                 a = Amenity(name=name)
                 db.session.add(a)  # ✅ ensure it becomes persistent
             amenities_to_attach.append(a)
-
+            
         db.session.flush()          # ✅ ensures new amenities get IDs
         place.amenities = amenities_to_attach
 
@@ -106,37 +109,44 @@ class HBnBFacade:
         return self.place_repo.get_all()
 
     def update_place(self, place_id, place_data):
-        """update place data"""
         place = self.place_repo.get(place_id)
         if not place:
             return None
-
+            
         amenities_were_sent = "amenities" in place_data
-        amenity_ids = place_data.pop("amenities", None)
-
+        amenity_names = place_data.pop("amenities", None)
+        
         updated = self.place_repo.update(place_id, place_data)
         place = updated if updated is not None else place
-
+        
         if amenities_were_sent:
-            amenity_names = amenity_ids or []
+            amenity_names = amenity_names or []
             amenity_names = [n.strip() for n in amenity_names if isinstance(n, str) and n.strip()]
             
             if amenity_names:
-                existing = Amenity.query.filter(Amenity.name.in_(amenity_names)).all()
+                amenity_names_lc = [n.lower() for n in amenity_names]
+                
+                existing = Amenity.query.filter(
+                    db.func.lower(Amenity.name).in_(amenity_names_lc)
+                ).all()
                 existing_by_name = {a.name.lower(): a for a in existing}
                 
                 amenities_to_attach = []
                 for name in amenity_names:
                     a = existing_by_name.get(name.lower())
                     if not a:
-                        a = Amenity(name=name)  # create if missing
+                        a = Amenity(name=name.strip())
+                        db.session.add(a)
                     amenities_to_attach.append(a)
                     
+                db.session.flush()
                 place.amenities = amenities_to_attach
             else:
-                place.amenities = []  # clear if empty list sent
+                place.amenities = []
                 
-            self.place_repo.add(place)
+            db.session.add(place)
+            db.session.commit()
+            db.session.refresh(place)
             
         return place
     
