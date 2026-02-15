@@ -13,6 +13,14 @@
     href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700&display=swap"
     rel="stylesheet"
   />
+  <link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+  <script
+  src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+  defer>
+  </script>
 </head>
 <body>
   <header>
@@ -32,6 +40,11 @@
     <!-- Place details section -->
     <section id="place-details" class="place-details">
       <p>Loading place details...</p>
+    </section>
+
+    <section class="map-wrap">
+      <h2>Location</h2>
+      <div id="map" class="map"></div>
     </section>
 
     <!-- Reviews section -->
