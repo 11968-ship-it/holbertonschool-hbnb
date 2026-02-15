@@ -944,7 +944,6 @@ function setupAddReviewForm() {
                 return;
         }
         
-        // Get place_id from URL 
         const params = new URLSearchParams(window.location.search);
         const placeId = params.get("place_id") || params.get("id");
         
@@ -957,28 +956,22 @@ function setupAddReviewForm() {
                 return;
         }
         
-        // Load place preview
         loadReviewPlacePreview(placeId);
         
-        // Form submission
         form.addEventListener("submit", async (e) => {
                 e.preventDefault();
                 if (errorDiv) errorDiv.style.display = "none";
                 
-                // Get form values
                 const ratingSelect = document.getElementById("review-rating");
                 const textArea = document.getElementById("review-text");
                 
                 const rating = ratingSelect?.value;
                 const text = textArea?.value.trim();
                 
-                //  VALIDATION
                 const errors = [];
-                
                 if (!rating || rating === "") {
                         errors.push("Please select a rating");
                 }
-                
                 if (!text) {
                         errors.push("Review text is required");
                 } else if (text.length < 10) {
@@ -993,12 +986,10 @@ function setupAddReviewForm() {
                         return;
                 }
                 
-                // Disable button
                 if (submitBtn) {
                         submitBtn.disabled = true;
                         submitBtn.textContent = "Submitting...";
                 }
-                
                 try {
                         const response = await fetch(`${API_BASE_URL}/reviews/`, {
                                 method: "POST",
@@ -1018,7 +1009,6 @@ function setupAddReviewForm() {
                                 throw new Error(errorData.error || errorData.message || "Failed to submit review");
                         }
                         
-                        // SUCCESS
                         alert("Review submitted successfully!");
                         window.location.href = `place.html?id=${placeId}`;
                 } catch (error) {
@@ -1027,8 +1017,6 @@ function setupAddReviewForm() {
                                 errorDiv.textContent = error.message;
                                 errorDiv.style.display = "block";
                         }
-                        
-                        // Re-enable button
                         if (submitBtn) {
                                 submitBtn.disabled = false;
                                 submitBtn.textContent = "Submit Review";
@@ -1040,29 +1028,17 @@ async function loadReviewPlacePreview(placeId) {
         try {
                 const res = await fetch(`${API_BASE_URL}/places/${placeId}`);
                 if (!res.ok) throw new Error("Failed to load place");
-                
                 const place = await res.json();
-                
                 const img = document.getElementById("review-place-image");
                 const title = document.getElementById("review-place-title");
                 const location = document.getElementById("review-place-location");
-                
-                if (img) {
-                        img.src = place.image_url || getFallbackImage(place);
-                }
-                
-                if (title) {
-                        title.textContent = place.title ?? place.name ?? "Unnamed place";
-                }
-                
-                if (location) {
-                        location.textContent = place.location || "";
-                }
+                if (img) img.src = place.image_url || getFallbackImage(place);
+                if (title) title.textContent = place.title ?? place.name ?? "Unnamed place";
+                if (location) location.textContent = place.location || "";
         } catch (err) {
                 console.error(err);
         }
 }
-
 /* =========================================================
           PRICE RANGE FILTER
 ========================================================= */
