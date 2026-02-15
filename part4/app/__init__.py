@@ -16,13 +16,12 @@ def create_app(config_class="config.DevelopmentConfig"):
     
     CORS(app, resources={
         r"/api/*": {
-            "origins": ["http://127.0.0.1:5500",  # Live Server default port
+            "origins": [
+                "http://127.0.0.1:5500",
+                "http://127.0.0.1:5501",
                 "http://localhost:5500",
-                "http://127.0.0.1:5501",  # Alternative Live Server port
-                "http://localhost:5501",
-                "http://127.0.0.1:8000",  # Python HTTP server
-                "http://localhost:8000",
-                "null"],
+                "http://localhost:5501"
+            ],
             "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
             "allow_headers": ["Content-Type", "Authorization"],
             "expose_headers": ["Content-Type", "Authorization"],
