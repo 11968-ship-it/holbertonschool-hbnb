@@ -234,6 +234,7 @@ function handleAddPlaceForm() {
         const priceInput = document.getElementById("price");
         const latitudeInput = document.getElementById("latitude");
         const longitudeInput = document.getElementById("longitude");
+        const amenitiesInput = document.getElementById("amenities");
         const imageInput = document.getElementById("image_url");
         const errorEl = document.getElementById("error-message");
         const addPlaceBtn = document.getElementById("add-place-btn");
@@ -250,6 +251,10 @@ function handleAddPlaceForm() {
                 const latitude = parseFloat(latitudeInput?.value);
                 const longitude = parseFloat(longitudeInput?.value);
                 const imageUrl = imageInput?.value.trim();
+                const amenitiesRaw = amenitiesInput?.value.trim() || "";
+                const amenities = amenitiesRaw
+                        ? amenitiesRaw.split(",").map(a => a.trim()).filter(Boolean)
+                        : [];
                 
                 // Validation
                 if (!title || !description || !location || !price || !latitude || !longitude) {
@@ -282,7 +287,8 @@ function handleAddPlaceForm() {
                                 price,
                                 latitude,
                                 longitude,
-                                image_url: imageUrl
+                                image_url: imageUrl,
+                                amenities,
                         });
                         
                         // Show success message
