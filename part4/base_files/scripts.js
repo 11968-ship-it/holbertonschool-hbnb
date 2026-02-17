@@ -27,6 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
  // --- GLOBAL SETUP ---
   setupLogout();
+        checkAuthentication(); 
         
   // --- MAIN PAGE LOGIC ---
   if (currentPage === 'login') handleLoginForm();
@@ -47,6 +48,21 @@ document.addEventListener("DOMContentLoaded", () => {
     setupIndexSearch();
     initCustomDatePicker(); 
   }
+        
+ 
+if (currentPage === 'review') {
+    const params = new URLSearchParams(window.location.search);
+    const placeId = params.get("place_id") || params.get("id");
+
+    if (!token || !placeId) {
+        window.location.href = "index.html";
+        return;
+    }
+
+    loadReviewPlacePreview(placeId);
+    setupAddReviewForm();
+}
+
 
   if (currentPage === 'place') {
   const placeId = getPlaceIdFromURL();
