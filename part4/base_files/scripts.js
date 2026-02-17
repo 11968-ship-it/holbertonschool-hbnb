@@ -585,6 +585,8 @@ function openSuccessModal(message = "Your place was added successfully.") {
   const overlay = document.getElementById("success-modal");
   if (!overlay) return;
 
+  showToast("Success", message, "success");
+  
   const msgEl = document.getElementById("success-message");
   if (msgEl) msgEl.textContent = message;
 
@@ -884,15 +886,15 @@ function setupReviewDeleteButtons(place, token, userId, isAdmin) {
 
         const data = await res.json().catch(() => ({}));
         if (!res.ok) {
-          alert(data?.error || data?.message || "Failed to delete review");
+          showToast("Couldn't delete review", data?.error || data?.message || "Failed to delete review", "error");
           return;
         }
 
-        alert("Review deleted!");
+        showToast("Success", "Review deleted!", "success");
         fetchPlaceDetails(place.id, token);
       } catch (err) {
         console.error(err);
-        alert("Network error while deleting review");
+        showToast("Network error", "Network error while deleting review", "error");
       }
     };
   });
@@ -924,15 +926,20 @@ function setupPlaceDeleteButton(place, token, userId, isAdmin) {
 
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
-        alert(data?.error || data?.message || "Failed to delete place");
+        showToast("Couldn't delete place", data?.error || data?.message || "Failed to delete place", "error");
         return;
       }
 
-      alert("Place deleted successfully!");
-      window.location.href = "index.html";
+      showToast("Success", "Place deleted successfully!", "success");
+
+      // optional: let the toast be visible before redirect
+      setTimeout(() => {
+        window.location.href = "index.html";
+      }, 900);
+
     } catch (err) {
       console.error(err);
-      alert("Network error while deleting place");
+      showToast("Network error", "Network error while deleting place", "error");
     }
   };
 }
