@@ -1,3 +1,6 @@
+/* =========================
+   01) VARIABLES / THEME
+========================= */
 :root {
   --color-primary: #880808;   /* main accent */
   --color-bg: #FAF9F6;        /* page background */
@@ -7,6 +10,9 @@
   --color-white: #FFFFFF;
 }
 
+/* =========================
+   02) RESET + BASE
+========================= */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -20,6 +26,33 @@ body {
   line-height: 1.6;
 }
 
+/* =========================
+   03) GLOBAL TYPOGRAPHY / SPACING
+========================= */
+h1, h2, h3, h4, h5, h6 {
+  margin-bottom: 0.5rem;
+}
+
+p {
+    margin-bottom: 0.75rem;
+}
+
+section {
+    margin-bottom: 2rem;
+}
+
+/* =========================
+   04) GLOBAL LAYOUT
+========================= */
+main {
+  padding: 2rem;
+  max-width: 1100px;
+  margin: 90px auto 0;
+}
+
+/* =========================
+   05) HEADER + NAV
+========================= */
 header {
   background-color: var(--color-primary);
   color: var(--color-white);
@@ -29,14 +62,9 @@ header {
   left: 0;
   width: 100%;
   z-index: 1000;
-
-  background-color: var(--color-primary); /* keep the red */
-  color: var(--color-white);
-
   box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
-/* ===== Header layout: logo left, nav centered ===== */
 .header-container {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
@@ -53,21 +81,61 @@ header nav {
   gap: 1.5rem;
 }
 
-nav a {
+header nav a,
+header nav button {
   color: var(--color-white);
   text-decoration: none;
+  font-weight: 600;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  font: inherit;
 }
 
-nav a:hover {
+header nav a:hover,
+header nav button:hover {
   text-decoration: underline;
 }
 
-main {
-  padding: 2rem;
-  max-width: 1100px;
-  margin: 90px auto 0;
+/* NAV underline animation */
+header nav a { position: relative; }
+header nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 100%;
+  height: 2px;
+  background: var(--color-white);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.2s ease;
+}
+header nav a:hover::after { transform: scaleX(1); }
+
+/* =========================
+   06) LOGO
+========================= */
+.logo-container {
+  text-align: center;
+  margin-bottom: 20px;
 }
 
+.logo {
+  max-width: 160px;
+  height: auto;
+}
+
+.header-logo {
+  height: 40px;
+  width: auto;
+  filter: brightness(1.6) contrast(1.25) saturate(1.05);
+}
+
+/* =========================
+   07) BUTTONS + LINKS
+========================= */
 button {
   background-color: var(--color-primary);
   color: var(--color-white);
@@ -77,36 +145,137 @@ button {
   cursor: pointer;
 }
 
-button:hover {
+button:hover { opacity: 0.9; }
+
+/* Details button */
+.details-button {
+  display: block;
+  margin-top: 10px;
+  background: var(--color-primary);
+  color: var(--color-white);
+  padding: 10px 12px;
+  border-radius: 10px;
+  text-decoration: none;
+  text-align: center;
+  font-weight: 600;
+  transition: opacity 0.15s ease;
+}
+
+.details-button:hover {
   opacity: 0.9;
 }
 
-header nav a,
-header nav button{
-  color: var(--color-white);
-  text-decoration: none;
-  font-weight: 600;
-
-  background: transparent;
-  border: 0;
-  padding: 0;
+.details-button.danger {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   cursor: pointer;
-  font: inherit; /* match link text */
+  box-shadow: 0 8px 18px rgba(0,0,0,0.12);
+  transition: all 0.18s cubic-bezier(.4,0,.2,1);
 }
 
-header nav a:hover,
-header nav button:hover{
-  text-decoration: underline;
+.details-button.danger:hover {
+  opacity: 0.95;
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px rgba(220, 38, 38, 0.28);
 }
 
-/* =======================
-    Date input styling 
-============================ */
-/* ===== Creative Date Input ===== */
-/* ====================================================
-    MODERN DATE PICKER (PILL-STYLE)
-======================================================== */
+.details-button.danger:active {
+  transform: translateY(0);
+  box-shadow: 0 8px 18px rgba(220, 38, 38, 0.18);
+}
 
+.details-button.danger:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Cancel button styling */
+.cancel-btn {
+  background-color: #666;
+  margin-top: 10px;
+  width: 100%;
+}
+
+.cancel-btn:hover {
+  background-color: #555;
+  opacity: 1;
+}
+
+/* Loading button state */
+button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* =========================
+   08) FORMS (GLOBAL)
+========================= */
+textarea {
+  min-height: 120px;
+}
+
+.form-error {
+  color: #880808;
+  font-size: 0.9rem;
+  margin-top: 6px;
+}
+
+.signup-form small {
+  display: block;
+  color: #666;
+  font-size: 0.85rem;
+  margin-top: 4px;
+  margin-bottom: 8px;
+}
+
+/* =========================
+   09) CARDS (GLOBAL)
+========================= */
+.review-card {
+  margin: 0;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-color: var(--color-accent);
+}
+
+.card {
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+  overflow: hidden;
+}
+
+.card-header {
+  padding: 18px 18px 10px;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+
+.card-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.card-subtitle {
+  margin: 6px 0 0;
+  font-size: 14px;
+  opacity: 0.75;
+}
+
+/* =========================
+   10) DATE PICKER (PILL)
+========================= */
 .date-inputs-container {
     display: flex;
     gap: 0;
@@ -201,46 +370,10 @@ header nav button:hover{
     background: var(--color-primary);
     color: white;
 }
-/* =================================== */
-
-textarea {
-  min-height: 120px;
-}
-
-.place-card,
-.review-card {
-  margin: 0;
-  padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  background-color: var(--color-accent);
-}
-
-
-/* ====================================================
-       Logo container
-======================================================== */
-
-.logo-container {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.logo {
-  max-width: 160px;
-  height: auto;
-}
-
-.header-logo {
-  height: 40px;
-  width: auto;
-filter: brightness(1.6) contrast(1.25) saturate(1.05);
-}
 
 /* =========================
-   MODAL (LOGIN PAGE)
+   11) MODALS (LOGIN + SUCCESS)
 ========================= */
-
 /* Animations */
 @keyframes modal-in {
   from {
@@ -383,49 +516,42 @@ body.modal-open {
   pointer-events: none;
 }
 
-/* ERROR */
-.form-error {
-  color: #880808;
-  font-size: 0.9rem;
-  margin-top: 6px;
+/* Modal */
+.success-overlay {
+  position: fixed;
+  inset: 0;
+  display: none;
+  place-items: center;
+  background: rgba(0,0,0,.55);
+  z-index: 9999;
+  padding: 16px;
 }
 
-/* Loading button state */
-button:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
+.success-overlay.open{
+  display: grid;
 }
 
-/* Page section spacing */
-.add-review {
-  max-width: 600px;
-  margin: 0 auto;
+.modal-card {
+  width: min(520px, 100%);
+  background: #fff;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 16px 40px rgba(0,0,0,.25);
 }
 
-.add-review h2 {
-  text-align: center;
-  margin-bottom: 20px;
-}
+.modal-card h2{ margin: 0 0 8px; }
+.modal-card p{ margin: 0 0 16px; color: #555; }
 
-/* Form as a card (matches your card spec) */
-.form-card {
-  margin: 20px;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  background-color: var(--color-accent);
-
+.modal-actions {
   display: flex;
-  flex-direction: column;
   gap: 10px;
+  justify-content: flex-end;
+  flex-wrap: wrap;
 }
 
-/* Make button full width for nicer UI */
-.form-card button {
-  width: 100%;
-}
-
-/* Container for the pill shape */
+/* =========================
+   12) SEARCH BAR + FILTERS
+========================= */
 .search-bar {
   background: var(--color-white);
   border: 1px solid var(--color-border);
@@ -496,11 +622,9 @@ button:disabled {
   background-color: #d61f1f;
 }
 
-
-/* ====================================================
-      Place images gallery (place details page)
-======================================================== */
-
+/* =========================
+   13) PLACE DETAILS: GALLERY + AMENITIES
+========================= */
 .place-images {
   display: flex;
   gap: 12px;
@@ -517,11 +641,37 @@ button:disabled {
   border-radius: 10px;
   border: 1px solid #ddd;
   cursor: pointer;
-  transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
+.amenities-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 6px 20px;
+}
+
+.amenities-list li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--color-text);
+}
+
+.amenities-list li i {
+  color: var(--color-primary);
+  font-size: 1.1rem;
+  min-width: 18px;
+}
+
+/* Thumbnail interactions */
 .place-images img:hover {
-  transform: scale(1.05);     /* subtle zoom on hover */
+  transform: translateY(-2px) scale(1.03);
+  opacity: 0.95;
 }
 
 /* make images horizontally scrollable on very small screens */
@@ -539,104 +689,27 @@ button:disabled {
   }
 }
 
-/* ==================================================================== */
-
-/* Places layout (list page) */
-.places-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 20px;
-}
-
-/* Place card */
-.place-card {
-  overflow: hidden;
-}
-
-/* Subtle muted text */
-.muted {
-  opacity: 0.85;
-}
-
-/* Details button */
-.details-button {
-  display: block;
-  margin-top: 10px;
-  background: var(--color-primary);
-  color: var(--color-white);
-  padding: 10px 12px;
-  border-radius: 10px;
-  text-decoration: none;
-  text-align: center;
-  font-weight: 600;
-  transition: opacity 0.15s ease;
-}
-
-.details-button:hover {
-  opacity: 0.9;
-}
-
-
 /* =========================
-   EXTRA ANIMATIONS (ADD-ONLY)
+   14) ANIMATIONS + MOTION
 ========================= */
-
-/* 1) Smooth base transitions */
+/* Smooth base transitions */
 a, button, input, textarea, select, .place-card, .review-card, .card, .header-logo, .place-images img {
   transition: transform 0.2s ease, opacity 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
 }
 
-/* 2) NAV underline that slides in */
-header nav a {
-  position: relative;
-}
-
-header nav a::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -6px;
-  width: 100%;
-  height: 2px;
-  background: var(--color-white);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.2s ease;
-}
-
-header nav a:hover::after {
-  transform: scaleX(1);
-}
-
-/* ====================================================
-  Add spacing between text elements
-======================================================== */
-
-h1, h2, h3, h4, h5, h6 {
-  margin-bottom: 0.5rem;
-}
-
-p {
-    margin-bottom: 0.75rem;
-}
-
-section {
-    margin-bottom: 2rem;
-}
-
-/* 3) Logo subtle tilt on hover (no glow) */
+/* Logo subtle tilt on hover (no glow) */
 .brand:hover .header-logo {
   transform: rotate(-1deg) scale(1.03);
 }
 
-/* 4) Cards float on hover */
+/* Cards float on hover */
 .place-card:hover,
 .review-card:hover,
 .card:hover {
   transform: translateY(-3px);
 }
 
-/* 5) Cards fade/slide in on page load */
+/* Cards fade/slide in on page load */
 @keyframes float-in {
   from {
     opacity: 0;
@@ -663,7 +736,7 @@ section {
 .places-grid > .place-card:nth-child(5) { animation-delay: 0.25s; }
 .places-grid > .place-card:nth-child(6) { animation-delay: 0.30s; }
 
-/* 6) Buttons: gentle pulse on hover + press feedback */
+/* Buttons: gentle pulse on hover + press feedback */
 @keyframes soft-pulse {
   0%, 100% { transform: scale(1); }
   50% { transform: scale(1.03); }
@@ -680,15 +753,9 @@ button:active,
   transform: scale(0.98);
 }
 
-/* 7) Search button: pop on hover */
+/* Search button: pop on hover */
 .search-btn:hover {
   transform: scale(1.06);
-}
-
-/* 8) Thumbnail interactions */
-.place-images img:hover {
-  transform: translateY(-2px) scale(1.03);
-  opacity: 0.95;
 }
 
 /* Selected thumbnail (add class="active" in HTML/JS when clicked) */
@@ -697,7 +764,7 @@ button:active,
   transform: scale(1.04);
 }
 
-/* 9) Inputs focus feel (no glow, just clean emphasis) */
+/* Inputs focus feel (no glow, just clean emphasis) */
 input:focus,
 textarea:focus,
 select:focus {
@@ -706,12 +773,12 @@ select:focus {
   transform: translateY(-1px);
 }
 
-/* 10) Modal close button micro-interaction */
+/* Modal close button micro-interaction */
 .modal-close:active {
   transform: scale(0.92);
 }
 
-/* 11) Respect reduced motion */
+/* Respect reduced motion */
 @media (prefers-reduced-motion: reduce) {
   * {
     animation: none !important;
@@ -720,43 +787,9 @@ select:focus {
   }
 }
 
-/* ====================================================
-   Only affects the Amenities list on place details
-======================================================== */
-.amenities-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 6px 20px;
-}
-
-.amenities-list li {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 8px;
-  font-weight: 600;
-  font-size: 0.95rem;
-  color: var(--color-text);
-}
-
-.amenities-list li i {
-  color: var(--color-primary);
-  font-size: 1.1rem;
-  min-width: 18px;
-}
-
-.amenities-list li:hover {
-  transform: translateX(2px);
-  color: var(--color-primary);
-}
-
-
-/* ====================================================
-   Review Summary section
-======================================================== */
+/* =========================
+   15) REVIEWS + REVIEW SUMMARY
+========================= */
 .review-summary {
   font-family: 'Nunito Sans', sans-serif;
   max-width: 900px;
@@ -876,9 +909,9 @@ select:focus {
   color: #222;
 }
 
-/* ====================================================
-      Footer
-======================================================== */
+/* =========================
+   16) FOOTER
+========================= */
 footer {
   background-color: var(--color-primary);
   color: var(--color-white);
@@ -925,20 +958,11 @@ footer ul li a:hover {
   footer {
     padding: 30px 15px;
   }
-
-  footer ul {
-    gap: 10px;
-  }
-
-  footer p {
-    font-size: 0.85rem;
-  }
 }
-
 /* =========================
-   PRICE FILTER (POLISHED)
+   17) PRICE FILTER
 ========================= */
-.price-filter{
+.price-filter {
   max-width: 850px;            /* match your search-bar max width */
   margin: 14px auto 24px;
   padding: 14px 16px;
@@ -1038,9 +1062,8 @@ footer ul li a:hover {
 }
 
 /* =========================
-   SIGNUP PAGE (STANDALONE)
+   18) PAGE: SIGNUP
 ========================= */
-
 .signup-container {
   max-width: 480px;
   margin: 60px auto;
@@ -1137,6 +1160,18 @@ footer ul li a:hover {
   cursor: not-allowed;
 }
 
+/* Form buttons container */
+.signup-form .button-group {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.signup-form .button-group button {
+  flex: 1;
+  margin-top: 0;
+}
+
 /* Animation */
 @keyframes slide-up {
   from {
@@ -1154,40 +1189,17 @@ footer ul li a:hover {
 }
 
 /* =========================
-   ADD PLACE PAGE
+   19) PAGE: ADD PLACE
 ========================= */
-
 /* Description textarea specific height */
 .place-description {
   min-height: 120px;
   resize: vertical; /* Allow user to resize vertically */
 }
 
-/* Cancel button styling */
-.cancel-btn {
-  background-color: #666;
-  margin-top: 10px;
-  width: 100%;
-}
-
-.cancel-btn:hover {
-  background-color: #555;
-  opacity: 1;
-}
-
-/* Form buttons container */
-.signup-form .button-group {
-  display: flex;
-  gap: 10px;
-  margin-top: 8px;
-}
-
-.signup-form .button-group button {
-  flex: 1;
-  margin-top: 0;
-}
-
-/* 3 cards layout like your example */
+/* =========================
+   20) PLACES LIST + PLACE CARD
+========================= */
 #places-list{
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 320px)); /* fixed-ish card width */
@@ -1196,22 +1208,13 @@ footer ul li a:hover {
   align-items: start;
 }
 
-/* responsive */
-@media (max-width: 980px){
-  #places-list{ grid-template-columns: repeat(2, minmax(0, 320px)); }
-}
-@media (max-width: 640px){
-  #places-list{ grid-template-columns: minmax(0, 360px); }
-}
-
-/* card should not add extra padding around image */
 .place-card{
   padding: 0;
   overflow: hidden;
   border-radius: 16px;
 }
 
-/* image like your example: full card width, fixed height */
+/* image */
 .place-card__img{
   width: 100%;
   height: 180px;        /* adjust: 160/180/200 */
@@ -1221,71 +1224,67 @@ footer ul li a:hover {
   margin: 0;
 }
 
-/* content spacing inside card */
+/* Content spacing inside card */
 .place-card__body{
   padding: 14px 16px 16px;
 }
 
-.review-place-image {
-  width: 100%;
-  max-width: 400px;     /* limits how wide it can grow */
-  height: 220px;        /* fixed preview height */
-  object-fit: cover;    /* crops nicely */
-  border-radius: 14px;
-  display: block;
-  margin: 0 auto 20px;  /* center it */
+/* Places layout (list page) */
+.places-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
 }
 
-/* Optional: wrap preview in a container */
-.review-place-image {
-  text-align: center;
-  margin-bottom: 20px;
+/* Subtle muted text */
+.muted {
+  opacity: 0.85;
 }
 
 /* =========================
-   FORM HELPER TEXT STYLING
+   21) RESPONSIVE
 ========================= */
-.signup-form small {
-  display: block;
-  color: #666;
-  font-size: 0.85rem;
-  margin-top: 4px;
-  margin-bottom: 8px;
+@media (max-width: 980px){
+  #places-list{ grid-template-columns: repeat(2, minmax(0, 320px)); }
+}
+@media (max-width: 640px){
+  #places-list{ grid-template-columns: minmax(0, 360px); }
+
+  .place-preview-card {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .preview-image {
+    width: 100%;
+    max-width: 280px;
+    height: auto;
+  }
+
+  .form-actions { flex-direction: column; }
 }
 
-.details-button.danger {
-  background: linear-gradient(135deg, #ef4444, #dc2626);
-  color: #fff;
-  border: none;
-  border-radius: 12px;
-  padding: 12px 16px;
-  font-weight: 700;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-  box-shadow: 0 8px 18px rgba(0,0,0,0.12);
-  transition: all 0.18s cubic-bezier(.4,0,.2,1);
+@media (max-width: 480px) {
+  .place-images {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 8px;
+  }
+
+  .place-images img {
+    flex: 0 0 auto;
+    width: 80vw;
+    height: auto;
+  }
+
+  footer { padding: 30px 15px; }
+  footer ul { gap: 10px; }
+  footer p { font-size: 0.85rem; }
 }
 
-.details-button.danger:hover {
-  opacity: 0.95;
-  transform: translateY(-2px);
-  box-shadow: 0 14px 28px rgba(220, 38, 38, 0.28);
-}
-
-.details-button.danger:active {
-  transform: translateY(0);
-  box-shadow: 0 8px 18px rgba(220, 38, 38, 0.18);
-}
-
-.details-button.danger:disabled {
-  opacity: 0.55;
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
-}
-
+/* =========================
+   22) FORM HELPER TEXT STYLING
+========================= */
 .delete-wrapper {
   display: flex;
   justify-content: center;
@@ -1306,78 +1305,15 @@ footer ul li a:hover {
   width: min(900px, 92%);
 }
 
-/* ---------- Add Review Page Layout ---------- */
-.page {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 32px 16px 60px;
-}
-
-.page-header {
-  margin-bottom: 18px;
-}
-
-.page-title {
-  margin: 0;
-  font-size: 32px;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-}
-
-.page-subtitle {
-  margin: 6px 0 0;
-  opacity: 0.75;
-}
-
-.review-layout {
-  display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  gap: 18px;
-  align-items: start;
-}
-
-@media (max-width: 900px) {
-  .review-layout {
-    grid-template-columns: 1fr;
-  }
-}
-
-.card {
-  background: #fff;
-  border: 1px solid rgba(0,0,0,0.08);
-  border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
-  overflow: hidden;
-}
-
-.card-header {
-  padding: 18px 18px 10px;
-  border-bottom: 1px solid rgba(0,0,0,0.06);
-}
-
-.card-title {
-  margin: 0;
-  font-size: 18px;
-  font-weight: 800;
-}
-
-.card-subtitle {
-  margin: 6px 0 0;
-  font-size: 14px;
-  opacity: 0.75;
-}
-
-.reviews-container {
-  padding: 16px 18px 18px;
-}
-
 .empty-hint {
   margin: 0;
   opacity: 0.7;
   font-size: 14px;
 }
 
-/* ---------- Form prettiness ---------- */
+/* =========================
+   23) FORM PRETTINESS
+========================= */
 .nice-form {
   padding: 16px 18px 18px;
 }
@@ -1442,6 +1378,9 @@ footer ul li a:hover {
   opacity: 0.85;
 }
 
+/* =========================
+   24) TOAST
+========================= */
 .toast{
   position:fixed;
   right:18px;
@@ -1477,6 +1416,9 @@ footer ul li a:hover {
   to{ transform:translateY(0); opacity:1; }
 }
 
+/* =========================
+   25) MAP
+========================= */
 .map-wrap { margin: 24px 0; }
 .map {
   height: 320px;
@@ -1484,10 +1426,10 @@ footer ul li a:hover {
   overflow: hidden;
   border: 1px solid #e6e6e6;
 }
-/* =========================
-   ADD REVIEW PAGE STYLES
-========================= */
 
+/* =========================
+   26) PAGE: ADD REVIEW
+========================= */
 /* Place preview card at top of add_review.html */
 .review-place-preview {
   max-width: 700px;
@@ -1635,8 +1577,7 @@ footer ul li a:hover {
   background-color: #5a6268;
 }
 
-/* Error message */
-.form-error {
+.add-review .form-error {
   color: var(--color-primary);
   background: #fee;
   padding: 12px;
@@ -1646,63 +1587,6 @@ footer ul li a:hover {
   display: none; /* Hidden by default */
 }
 
-.form-error:not(:empty) {
-  display: block; /* Show when has content */
-}
-
-/* Responsive adjustments */
-@media (max-width: 640px) {
-  .place-preview-card {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .preview-image {
-    width: 100%;
-    max-width: 280px;
-    height: auto;
-  }
-
-  .form-actions {
-    flex-direction: column;
-  }
-}
-
-/* Modal */
-.success-overlay{
-  position: fixed;
-  inset: 0;
-  display: none;
-  place-items: center;
-  background: rgba(0,0,0,.55);
-  z-index: 9999;
-  padding: 16px;
-}
-
-.success-overlay.open{
-  display: grid;
-}
-
-.modal-card{
-  width: min(520px, 100%);
-  background: #fff;
-  border-radius: 16px;
-  padding: 20px;
-  box-shadow: 0 16px 40px rgba(0,0,0,.25);
-}
-
-.modal-card h2{
-  margin: 0 0 8px;
-}
-
-.modal-card p{
-  margin: 0 0 16px;
-  color: #555;
-}
-
-.modal-actions{
-  display: flex;
-  gap: 10px;
-  justify-content: flex-end;
-  flex-wrap: wrap;
+.add-review .form-error:not(:empty) {
+  display: block;
 }
