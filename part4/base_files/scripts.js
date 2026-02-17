@@ -1,3 +1,12 @@
+/*
+  scripts.js structure:
+  1) Page detection + DOM init
+  2) Auth (login/signup/logout/token)
+  3) Places API + UI rendering
+  4) Reviews API + UI rendering
+  5) Helpers (cookies, escapeHtml, formatting)
+*/
+
 const API_BASE_URL = 'http://127.0.0.1:5000/api/v1';
 let ALL_PLACES = [];
 
@@ -27,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
  // --- GLOBAL SETUP ---
   setupLogout();
-        checkAuthentication(); 
+        updateAuthNavUI();
         
   // --- MAIN PAGE LOGIC ---
   if (currentPage === 'login') handleLoginForm();
@@ -48,40 +57,13 @@ document.addEventListener("DOMContentLoaded", () => {
     setupIndexSearch();
     initCustomDatePicker(); 
   }
-        
- 
-if (currentPage === 'review') {
-    const params = new URLSearchParams(window.location.search);
-    const placeId = params.get("place_id") || params.get("id");
-
-    if (!token || !placeId) {
-        window.location.href = "index.html";
-        return;
-    }
-
-    loadReviewPlacePreview(placeId);
-    setupAddReviewForm();
-}
-
 
   if (currentPage === 'place') {
   const placeId = getPlaceIdFromURL();
 
-  // Show/hide Login vs Logout in the header
-  const loginLink = document.querySelector(".login-button");
-  const logoutBtn = document.getElementById("logout-btn");
-  if (token) {
-    if (loginLink) loginLink.style.display = "none";
-    if (logoutBtn) logoutBtn.style.display = "inline-block";
-  } else {
-    if (loginLink) loginLink.style.display = "inline-block";
-    if (logoutBtn) logoutBtn.style.display = "none";
-  }
-
-/* ==================================
-         addReview Section
-====================================
-*/
+/* =========================================================
+   ADD REVIEW SECTION
+========================================================= */
           const addReviewSection = document.getElementById("add-review");
           const addReviewLink = document.getElementById("add-review-link");
 
@@ -112,8 +94,7 @@ if (currentPage === 'review') {
                 loadReviewPlacePreview(placeId);   //  THIS loads the image
                 setupAddReviewForm();
         }
-});
-
+        
  // --- MODAL CLOSE BUTTON ---
   const closeBtn = document.querySelector(".modal-close");
   if (closeBtn) {
@@ -121,6 +102,7 @@ if (currentPage === 'review') {
       window.location.href = "index.html";
     });
   }
+});
 
 /* =========================================================
    LOGIN FORM HANDLING
@@ -456,21 +438,30 @@ function checkAuthentication() {
   fetchPlaces(isValidToken ? token : null);
 }
 
-function getCookie(name) {
-  const cookies = document.cookie ? document.cookie.split("; ") : [];
-  for (const cookie of cookies) {
-    const eqIndex = cookie.indexOf("=");
-    const rawKey = eqIndex === -1 ? cookie : cookie.slice(0, eqIndex);
-    const rawVal = eqIndex === -1 ? "" : cookie.slice(eqIndex + 1);
-    if (decodeURIComponent(rawKey) === name) return decodeURIComponent(rawVal);
-  }
-  return null;
-}
+// ✅ UI-only auth toggle (safe to use on ANY page)
+function updateAuthNavUI() {
+  const token = getCookie("token");
 
-function deleteCookie(name) {
-  document.cookie = `${encodeURIComponent(name)}=; Max-Age=0; Path=/; SameSite=Lax`;
-  if (location.protocol === "https:") {
-    document.cookie = `${encodeURIComponent(name)}=; Max-Age=0; Path=/; SameSite=Lax; Secure`;
+  const signupLink = document.getElementById("signup-link");
+  const loginLink  = document.getElementById("login-link"); // used in index + review page header
+  const createLink = document.getElementById("create-place-link");
+  const logoutBtn  = document.getElementById("logout-btn");
+
+  const isValidToken = token && token.split(".").length === 3;
+
+  if (isValidToken) {
+    if (signupLink) signupLink.style.display = "none";
+    if (loginLink)  loginLink.style.display = "none";
+    if (createLink) createLink.style.display = "inline-block";
+    if (logoutBtn)  logoutBtn.style.display = "inline-block";
+  } else {
+    if (signupLink) signupLink.style.display = "inline-block";
+    if (loginLink)  loginLink.style.display = "inline-block";
+    if (createLink) createLink.style.display = "none";
+    if (logoutBtn)  logoutBtn.style.display = "none";
+
+    // clear bad token if present
+    if (token) deleteCookie("token");
   }
 }
 
@@ -489,6 +480,24 @@ function setCookie(name, value, days) {
   const sameSite = "; samesite=lax";
   const secure = location.protocol === "https:" ? "; secure" : "";
   document.cookie = `${encodeURIComponent(name)}=${encodeURIComponent(value)}${maxAge}; path=/${sameSite}${secure}`;
+}
+
+function getCookie(name) {
+  const cookies = document.cookie ? document.cookie.split("; ") : [];
+  for (const cookie of cookies) {
+    const eqIndex = cookie.indexOf("=");
+    const rawKey = eqIndex === -1 ? cookie : cookie.slice(0, eqIndex);
+    const rawVal = eqIndex === -1 ? "" : cookie.slice(eqIndex + 1);
+    if (decodeURIComponent(rawKey) === name) return decodeURIComponent(rawVal);
+  }
+  return null;
+}
+
+function deleteCookie(name) {
+  document.cookie = `${encodeURIComponent(name)}=; Max-Age=0; Path=/; SameSite=Lax`;
+  if (location.protocol === "https:") {
+    document.cookie = `${encodeURIComponent(name)}=; Max-Age=0; Path=/; SameSite=Lax; Secure`;
+  }
 }
 
 function decodeJwt(token) {
@@ -683,7 +692,7 @@ async function fetchPlaces(token) {
   }
 }
 /* =============================================
-                Searching bar
+                SEARCGING BAR
 ================================================ */
 function setupIndexSearch() {
         const form = document.getElementById("filter-form");
@@ -1152,11 +1161,6 @@ function initPriceFilter() {
      if (form) {
         form.dispatchEvent(new Event('submit'));
     }
-    /*const maxPrice = Number(priceRange.value);
-    document.querySelectorAll(".place-card").forEach(card => {
-      const price = getCardPrice(card);
-      card.style.display = price <= maxPrice ? "" : "none";
-    });*/
   }
   priceRange.addEventListener("input", () => {
     updateUI();
