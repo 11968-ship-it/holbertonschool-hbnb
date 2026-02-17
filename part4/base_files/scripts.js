@@ -147,7 +147,7 @@ function handleLoginForm() {
 function setLoginLoading(isLoading, button) {
   if (!button) return;
   button.disabled = isLoading;
-  button.textContent = isLoading ? "Logging in..." : "Log in";
+  button.textContent = isLoading ? "Logging in..." : "Login";
 }
 
 /* =========================================================
@@ -366,8 +366,11 @@ async function loginUser(email, password) {
     throw new Error("Invalid server response");
   }
 
-  if (!response.ok) throw new Error(data?.message || "Invalid email or password");
-
+  if (!response.ok) {
+  if (response.status === 401) throw new Error("Invalid email or password.");
+  throw new Error(data?.message || "Login failed. Please try again.");
+}
+        
   const token = data.access_token || data.token || data.jwt;
   if (!token) throw new Error("No token returned from server");
 
@@ -431,7 +434,7 @@ function checkAuthentication() {
     if (logoutBtn)  logoutBtn.style.display = "none";
 
     // clear bad token if present
-    if (token) document.cookie = "token=; path=/; max-age=0";
+    if (token) deleteCookie("token");
   }
 
   fetchPlaces(isValidToken ? token : null);
@@ -446,6 +449,13 @@ function getCookie(name) {
     if (decodeURIComponent(rawKey) === name) return decodeURIComponent(rawVal);
   }
   return null;
+}
+
+function deleteCookie(name) {
+  document.cookie = `${encodeURIComponent(name)}=; Max-Age=0; Path=/; SameSite=Lax`;
+  if (location.protocol === "https:") {
+    document.cookie = `${encodeURIComponent(name)}=; Max-Age=0; Path=/; SameSite=Lax; Secure`;
+  }
 }
 
 function handleAuthUI() {
@@ -593,7 +603,7 @@ function setupLogout() {
 
   logoutBtn.addEventListener('click', (event) => {
     event.preventDefault();
-    document.cookie = 'token=; path=/; max-age=0';
+    deleteCookie("token");
     window.location.reload();
   });
 }
